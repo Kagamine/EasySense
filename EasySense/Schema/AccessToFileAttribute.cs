@@ -7,13 +7,13 @@ using EasySense.Models;
 
 namespace EasySense.Schema
 {
-    public class RoleAttribute : BaseAuthorizeAttribute
+    public class AccessToFileAttribute : BaseAuthorizeAttribute
     {
-        private UserRole Role { get; set; }
+        private Guid FileID { get; set; }
 
-        public RoleAttribute(UserRole Role)
+        public AccessToFileAttribute(Guid FileID)
         {
-            this.Role = Role;
+            this.FileID = FileID;
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
@@ -24,9 +24,9 @@ namespace EasySense.Schema
                 {
                     var user = (from u in db.Users
                                 where u.Username == httpContext.User.Identity.Name
-                                && u.Role == Role
-                                select u).SingleOrDefault();
-                    if (user != null)
+                                select u).Single();
+                    if (user.Role >= UserRole.Root) return true;
+                    if ((from f in db.Files where f.ID == FileID && f.Public select f).Count() > 0)
                         return true;
                 }
             }

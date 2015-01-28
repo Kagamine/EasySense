@@ -47,6 +47,14 @@ namespace EasySense.Models
 
         public virtual DepartmentModel Department { get; set; }
 
+        [StringLength(64)]
+        [Index(IsUnique = true)]
+        public string Email { get; set; }
+
+        public DateTime InsertTime { get; set; }
+
+        public DateTime? LastLoginTime { get; set; }
+
         public virtual ICollection<ProjectModel> Projects { get; set; }
 
         public virtual ICollection<AlarmModel> Alarms { get; set; }

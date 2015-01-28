@@ -7,13 +7,13 @@ using EasySense.Models;
 
 namespace EasySense.Schema
 {
-    public class UserOwnedProjectAttribute : BaseAuthorizeAttribute
+    public class MinRoleAttribute : BaseAuthorizeAttribute
     {
-        private int ProjectID { get; set; }
+        private UserRole Role { get; set; }
 
-        public UserOwnedProjectAttribute(int ProjectID)
+        public MinRoleAttribute(UserRole Role)
         {
-            this.ProjectID = ProjectID;
+            this.Role = Role;
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
@@ -24,10 +24,9 @@ namespace EasySense.Schema
                 {
                     var user = (from u in db.Users
                                 where u.Username == httpContext.User.Identity.Name
-                                select u).Single();
-                    if (user.Role >= UserRole.Root) return true;
-                    var project = db.Projects.Find(ProjectID);
-                    if (project.UserID == user.ID)
+                                && u.Role == Role
+                                select u).SingleOrDefault();
+                    if (user != null)
                         return true;
                 }
             }
