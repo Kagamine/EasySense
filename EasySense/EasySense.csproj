@@ -120,9 +120,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AlarmController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\EnterpriseController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -171,7 +177,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Alarm\" />
+    <Folder Include="Views\Enterprise\" />
+    <Folder Include="Views\File\" />
     <Folder Include="Views\Home\" />
+    <Folder Include="Views\Project\" />
+    <Folder Include="Views\Report\" />
+    <Folder Include="Views\Statistics\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
