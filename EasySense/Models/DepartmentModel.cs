@@ -16,6 +16,11 @@ namespace EasySense.Models
         [Required]
         public string Title { get; set; }
 
+        [ForeignKey("User")]
+        public int? UserID { get; set; }
+
+        public virtual UserModel User { get; set; }
+
         public virtual ICollection<UserModel> Users { get; set; }
     }
 }

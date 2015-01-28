@@ -97,7 +97,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\asc.png" />
+    <Content Include="Images\avatar.png" />
+    <Content Include="Images\bg.png" />
+    <Content Include="Images\birthday.png" />
+    <Content Include="Images\button_bg.png" />
+    <Content Include="Images\desc.png" />
+    <Content Include="Images\Finance.png" />
+    <Content Include="Images\loading.gif" />
+    <Content Include="Images\logo.svg" />
+    <Content Include="Images\project.png" />
+    <Content Include="Images\Schedule.png" />
+    <Content Include="Images\search.png" />
+    <Content Include="Scripts\easysense.basic.js" />
+    <Content Include="Scripts\easysense.extend.js" />
+    <Content Include="Scripts\jquery.js" />
+    <Content Include="Styles\es_login.css" />
+    <Content Include="Styles\es_main.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +140,7 @@
     <Compile Include="Models\EasySenseContext.cs" />
     <Compile Include="Models\EnterpriseModel.cs" />
     <Compile Include="Models\FileModel.cs" />
+    <Compile Include="Models\NotificationViewModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
@@ -136,7 +155,13 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Properties\PublishProfiles\EasySense.pubxml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -146,10 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\" />
-    <Folder Include="Styles\" />
     <Folder Include="Views\Home\" />
-    <Folder Include="Views\Shared\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

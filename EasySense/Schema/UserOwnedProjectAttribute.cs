@@ -27,6 +27,8 @@ namespace EasySense.Schema
                                 select u).Single();
                     if (user.Role >= UserRole.Root) return true;
                     var project = db.Projects.Find(ProjectID);
+                    if (user.Role == UserRole.Master && project.User.Department.UserID == user.ID)
+                        return true;
                     if (project.UserID == user.ID)
                         return true;
                 }

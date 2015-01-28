@@ -59,6 +59,8 @@ namespace EasySense.Models
         [ForeignKey("Enterprise")]
         public int EnterpriseID { get; set; }
 
+        public DateTime Birthday { get; set; }
+
         public virtual EnterpriseModel Enterprise { get; set; }
 
         public virtual ICollection<ProjectModel> Projects { get; set; }
