@@ -1,0 +1,21 @@
+{
+    "environmentSettings": {
+        "webSite": {
+            "name": "EasySense",
+            "location": "China North"
+        },
+        "databases": [
+            {
+                "connectionStringName": "DefaultConnection",
+                "databaseName": "EasySense_db",
+                "serverName": "",
+                "user": "yuuko",
+                "password": "",
+                "edition": "",
+                "size": "",
+                "collation": "",
+                "location": "China North"
+            }
+        ]
+    }
+}
