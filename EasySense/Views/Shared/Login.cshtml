@@ -1,7 +1,29 @@
-﻿
-@{
-    ViewBag.Title = "Login";
+﻿@{
+    Layout = null;
+    ViewBag.Title = "登录 - Easy Sense 项目管理系统";
 }
-
-<h2>Login</h2>
-
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="/Styles/es_login.css" />
+</head>
+<body>
+    <div class="login-box">
+        <p style="text-align: center"><img class="login-box-logo" src="images/logo.svg" /></p>
+        @using (Html.BeginForm("Login", "Shared", FormMethod.Post))
+        {
+            <p>用户名/电子邮箱</p>
+            <p><input type="text" class="textbox login-field" /></p>
+            <p>密码</p>
+            <p><input type="password" class="textbox login-field" /></p>
+            <br />
+            <p>
+                <input type="submit" class="button button-def" value="登录" />
+                <a href="#" style="margin-left:20px;">忘记密码</a>
+            </p>
+        }
+    </div>
+</body>
+</html>
