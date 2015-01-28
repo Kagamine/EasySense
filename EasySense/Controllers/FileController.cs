@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace EasySense.Controllers
 {
+    [Authorize]
     public class FileController : BaseController
     {
         // GET: File
