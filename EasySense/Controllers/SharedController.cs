@@ -35,9 +35,10 @@ namespace EasySense.Controllers
                 user = (from u in DB.Users
                         where u.Username == Username
                         select u).SingleOrDefault();
-            if (user.Password != Helpers.Security.SHA256(Password))
+            var pwd = Helpers.Security.SHA256(Password);
+            if (user == null || user.Password != pwd )
             {
-                ViewBag.Info = "密码错误！";
+                ViewBag.Info = "用户名或密码错误！";
                 return View();
             }
             else
@@ -50,6 +51,14 @@ namespace EasySense.Controllers
                 else
                     return Redirect(Request.UrlReferrer.ToString());
             }
+        }
+
+        [Route("Logout")]
+        [ValidateSID]
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            return Content("OK");
         }
     }
 }

@@ -24,10 +24,10 @@ namespace EasySense.Controllers
                 #region 项目提醒
                 ViewBag.ProjectNotifications = new List<NotificationViewModel>();
                 IEnumerable<ProjectModel> projectNotifications = from p in DB.Projects
-                                            where p.Percent < 1
-                                            && DateTime.Now > p.End
-                                            orderby p.End ascending
-                                            select p;
+                                                                 where p.Percent < 1
+                                                                 && DateTime.Now > p.End
+                                                                 orderby p.End ascending
+                                                                 select p;
                 if (CurrentUser.Role == UserRole.Master)
                 {
                     projectNotifications = projectNotifications.Where(x => x.User.Department.UserID == CurrentUser.ID);
@@ -66,9 +66,9 @@ namespace EasySense.Controllers
                 #region 生日提醒
                 ViewBag.BirthdayNotifications = new List<NotificationViewModel>();
                 IEnumerable<CustomerModel> birthdayNotifications = from c in DB.Customers
-                                                                    where DateTime.Now.Month == c.Birthday.Month
-                                                                    && DateTime.Now.Day == c.Birthday.Day
-                                                                    select c;
+                                                                   where DateTime.Now.Month == c.Birthday.Month
+                                                                   && DateTime.Now.Day == c.Birthday.Day
+                                                                   select c;
                 if (CurrentUser.Role == UserRole.Master)
                 {
                     birthdayNotifications = from c in birthdayNotifications
@@ -90,6 +90,7 @@ namespace EasySense.Controllers
                     ViewBag.FinanceNotifications.Add((NotificationViewModel)b);
                 #endregion
             }
+            ViewBag.SID = requestContext.HttpContext.Session["SID"].ToString();
             ViewBag.CurrentUser = CurrentUser;
         }
     }

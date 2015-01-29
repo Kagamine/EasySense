@@ -8,10 +8,6 @@ namespace EasySense.Helpers
 {
     public static class MvcHtmlHelperExt
     {
-        public static MvcHtmlString ToContestStatus<TModel>(this HtmlHelper<TModel> self, DateTime begin, DateTime? rest_begin, DateTime?rest_end,DateTime end)
-        {
-            return new MvcHtmlString(Time.ToContestStatus(begin, rest_begin, rest_end, end));
-        }
 
         public static MvcHtmlString ToTimeTip<TModel>(this HtmlHelper<TModel> self, DateTime time)
         {
@@ -37,6 +33,15 @@ namespace EasySense.Helpers
         public static MvcHtmlString ToTimeStamp<TModel>(this HtmlHelper<TModel> self, DateTime time)
         {
             return new MvcHtmlString(Helpers.Time.ToTimeStamp(time).ToString());
+        }
+
+        public static MvcHtmlString AntiForgerySID<TModel>(this HtmlHelper<TModel> self)
+        {
+            return new MvcHtmlString("<input type=\"hidden\" name=\"sid\" value=\"" + self.ViewBag.SID + "\" />");
+        }
+        public static MvcHtmlString SID<TModel>(this HtmlHelper<TModel> self)
+        {
+            return new MvcHtmlString("sid=" + self.ViewBag.SID);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace EasySense.Schema
                         return true;
                 }
             }
-            return base.AuthorizeCore(httpContext);
+            return false;
         }
     }
 }

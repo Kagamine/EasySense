@@ -12,56 +12,77 @@
     <div class="es-header">
         <div class="container">
             <div class="es-logo">
-                <img src="images/logo.svg" class="es-logo-img" />
+                <img src="/Images/logo.svg" class="es-logo-img" />
             </div>
             <div class="es-nav">
                 <div class="es-nav-item">
                     <a href="#" data-toggle="ProjectNotification">
-                        <img src="images/project.png" />
+                        <img src="/Images/project.png" />
                         <div class="es-nav-item-text">项目</div>
                         <span class="label red left">0</span>
                     </a>
                     <div class="es-notification" id="ProjectNotification">
-                        Easy Sense 软件开发 (今天)
-                        <hr />
-                        Tyvj BUG修复 (今天)
-                        <hr />
-                        TEST (今天)
-                        <hr />
-                        TEST (今天)
-                        <hr />
-                        TEST (今天)
+                        @foreach (NotificationViewModel n in ViewBag.ProjectNotifications)
+                        {
+                            <span>@n.Title (@n.Time)</span>
+                            <hr />
+                        }
+                        共@(ViewBag.ProjectNotifications.Count)个提醒
                     </div>
                 </div>
                 <div class="es-nav-item">
-                    <a href="#">
-                        <img src="images/schedule.png" />
+                    <a href="#" data-toggle="AlarmNotification">
+                        <img src="/Images/schedule.png" />
                         <div class="es-nav-item-text">日程</div>
                         <span class="label red left">0</span>
                     </a>
+                    <div class="es-notification" id="AlarmNotification">
+                        @foreach (NotificationViewModel n in ViewBag.AlarmNotifications)
+                        {
+                            <span>@n.Title (@Html.ToTimeTip((DateTime)n.Time))</span>
+                            <hr />
+                        }
+                        共@(ViewBag.AlarmNotifications.Count)个提醒
+                    </div>
                 </div>
                 <div class="es-nav-item">
-                    <a href="#">
-                        <img src="images/finance.png" />
+                    <a href="#" data-toggle="FinanceNotification">
+                        <img src="/Images/finance.png" />
                         <div class="es-nav-item-text">财龄</div>
                         <span class="label red left">0</span>
                     </a>
+                    <div class="es-notification" id="FinanceNotification">
+                        @foreach (NotificationViewModel n in ViewBag.FinanceNotifications)
+                        {
+                            <span>@n.Title (@n.Time)</span>
+                            <hr />
+                        }
+                        共@(ViewBag.FinanceNotifications.Count)个提醒
+                    </div>
                 </div>
                 <div class="es-nav-item">
-                    <a href="#">
-                        <img src="images/birthday.png" />
+                    <a href="#" data-toggle="BirthdayNotification">
+                        <img src="/Images/birthday.png" />
                         <div class="es-nav-item-text">生日</div>
                         <span class="label red left">0</span>
                     </a>
+                    <div class="es-notification" id="BirthdayNotification">
+                        @foreach (NotificationViewModel n in ViewBag.BirthdayNotifications)
+                        {
+                            <span>@n.Title (今天)</span>
+                            <hr />
+                        }
+                        共@(ViewBag.FinanceNotifications.Count)个提醒
+                    </div>
                 </div>
             </div>
             <div class="es-header-user">
-                <img src="images/avatar.png" class="es-header-user-icon" /><span class="es-header-user-name">某某某某</span><span class="label red es-header-logout">注销</span>
+                <img src="/Images/avatar.png" class="es-header-user-icon" /><span class="es-header-user-name">某某某某</span><a href="/Logout?@Html.SID()" class="label red es-header-logout">注销</a>
             </div>
         </div>
         <div class="es-nav-item es-header-search">
             <input type="text" class="search" placeholder="ID或标题" style="width: 90px" />
-            <a href="#" data-toggle="SearchResult"><img src="images/search.png" /></a>
+            <a href="#" data-toggle="SearchResult"><img src="/Images/search.png" /></a>
             <div class="es-notification" id="SearchResult">
                 <p class="es-notification-subtitle">项目(2)</p>
                 <p><a href="#">Easy Sense</a></p>
@@ -70,13 +91,23 @@
                 <p><a href="#">AAA</a></p>
                 <p><a href="#">BBB</a></p>
                 <p class="es-notification-subtitle">员工 (2)</p>
-                <p><img src="images/avatar.png" /> Amamiya Yuuko</p>
-                <p><img src="images/avatar.png" /> Gasai Yuno</p>
+                <p><img src="/Images/avatar.png" /> Amamiya Yuuko</p>
+                <p><img src="/Images/avatar.png" /> Gasai Yuno</p>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="es-left">
+            <div class="es-menu-item active"><a href="/">首页</a></div>
+            <div class="es-menu-item"><a href="/Project">项目管理</a></div>
+            <div class="es-menu-item"><a href="/Enterprise">客户管理</a></div>
+            <div class="es-menu-item"><a href="/Alarm">提醒事项</a></div>
+            <div class="es-menu-item"><a href="/Report">工作计划</a></div>
+            <div class="es-menu-item"><a href="/File">文件资料</a></div>
+            <div class="es-menu-item"><a href="/Statistics">我的报表</a></div>
+            <div class="es-menu-item"><a href="/User">个人设置</a></div>
+        </div>
+        <div class="es-right">
             @RenderBody()
         </div>
     </div>

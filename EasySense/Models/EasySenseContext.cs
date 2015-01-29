@@ -25,6 +25,34 @@ namespace EasySense.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserModel>()
+                .HasMany(x => x.Projects)
+                .WithOptional(x => x.User);
+
+            modelBuilder.Entity<UserModel>()
+                .HasMany(x => x.Reports)
+                .WithRequired(x => x.User);
+
+            modelBuilder.Entity<UserModel>()
+                .HasMany(x => x.Files)
+                .WithRequired(x=>x.User);
+
+            modelBuilder.Entity<UserModel>()
+                .HasMany(x => x.Alarms)
+                .WithRequired(x => x.User);
+
+            modelBuilder.Entity<CategoryModel>()
+                .HasMany(x => x.Products)
+                .WithRequired(x => x.Category);
+
+            modelBuilder.Entity<EnterpriseModel>()
+                .HasMany(x => x.Customers)
+                .WithRequired(x => x.Enterprise);
+
+            modelBuilder.Entity<DepartmentModel>()
+                .HasMany(x => x.Users)
+                .WithOptional(x => x.Department);
         }
     }
 }

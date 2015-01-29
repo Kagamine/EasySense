@@ -318,6 +318,7 @@
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -346,6 +347,7 @@
     <Compile Include="Schema\BaseAuthorizeAttribute.cs" />
     <Compile Include="Schema\MinRoleAttribute.cs" />
     <Compile Include="Schema\UserOwnedProjectAttribute.cs" />
+    <Compile Include="Schema\ValidateSIDAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -366,6 +368,7 @@
     <Content Include="Scripts\ckeditor\plugins\wsc\README.md" />
     <Content Include="Scripts\ckeditor\README.md" />
     <Content Include="Scripts\ckeditor\skins\moono\readme.md" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -379,10 +382,10 @@
     <Folder Include="Views\Avatar\" />
     <Folder Include="Views\Enterprise\" />
     <Folder Include="Views\File\" />
-    <Folder Include="Views\Home\" />
     <Folder Include="Views\Project\" />
     <Folder Include="Views\Report\" />
     <Folder Include="Views\Statistics\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

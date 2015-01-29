@@ -24,7 +24,6 @@ namespace EasySense.Models
         [Index(IsUnique = true)]
         public string Username { get; set; }
 
-        [StringLength(64)]
         [Required]
         public string Password { get; set; }
 

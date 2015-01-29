@@ -19,7 +19,8 @@ $(document).ready(function(){
 	});
 	$("[data-toggle]").each(function(){
 		var nav = $(this);
-		nav.click(function(){
+		nav.click(function () {
+		    $("#" + CurrentNotification).slideUp(200);
 			$("#" + nav.attr("data-toggle")).slideDown(200);
 		});
 	});

@@ -11,19 +11,21 @@
 </head>
 <body>
     <div class="login-box">
-        <p style="text-align: center"><img class="login-box-logo" src="images/logo.svg" /></p>
+        <p style="text-align: center"><img class="login-box-logo" src="/Images/logo.svg" /></p>
         @using (Html.BeginForm("Login", "Shared", FormMethod.Post))
         {
             <p>用户名/电子邮箱</p>
-            <p><input type="text" class="textbox login-field" /></p>
+            <p><input type="text" class="textbox login-field" name="Username" /></p>
             <p>密码</p>
-            <p><input type="password" class="textbox login-field" /></p>
+            <p><input type="password" class="textbox login-field" name="Password" /></p>
             <br />
             <p>
                 <input type="submit" class="button button-def" value="登录" />
+                @Html.CheckBox("Remember") 记住我
                 <a href="#" style="margin-left:20px;">忘记密码</a>
             </p>
         }
     </div>
+    <p class="es-copyright"> Copyright © 2015 Code Comb Inc. All rights reserved.</p>
 </body>
 </html>

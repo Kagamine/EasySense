@@ -51,6 +51,22 @@ namespace EasySense.Models
         [Required]
         public string Hint { get; set; }
 
+        [StringLength(32)]
+        [Required]
+        public string Property { get; set; }
+
+        [StringLength(32)]
+        [Required]
+        public string Type { get; set; }
+
+        [StringLength(32)]
+        [Required]
+        public string Scale { get; set; }
+
+        [StringLength(32)]
+        [Required]
+        public string SalesVolume { get; set; }
+
         public virtual ICollection<CustomerModel> Customers { get; set; }
     }
 }

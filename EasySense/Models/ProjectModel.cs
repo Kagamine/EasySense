@@ -52,7 +52,7 @@ namespace EasySense.Models
         public ProjectStatus Status { get; set; }
 
         [ForeignKey("User")]
-        public int UserID { get; set; }
+        public int? UserID { get; set; }
 
         public virtual UserModel User { get; set; }
 
