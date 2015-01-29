@@ -58,7 +58,8 @@ namespace EasySense.Controllers
         [HttpGet]
         public ActionResult Logout()
         {
-            //TODO: 
+            FormsAuthentication.SignOut();
+            return Redirect("/");
         }
     }
 }

@@ -329,6 +329,7 @@
     <Compile Include="Helpers\SMTP.cs" />
     <Compile Include="Helpers\String.cs" />
     <Compile Include="Helpers\Time.cs" />
+    <Compile Include="Helpers\UrlHelper.cs" />
     <Compile Include="Models\AlarmModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />

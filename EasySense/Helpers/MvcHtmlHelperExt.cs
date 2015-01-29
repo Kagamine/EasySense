@@ -39,9 +39,32 @@ namespace EasySense.Helpers
         {
             return new MvcHtmlString("<input type=\"hidden\" name=\"sid\" value=\"" + self.ViewBag.SID + "\" />");
         }
-        public static MvcHtmlString SID<TModel>(this HtmlHelper<TModel> self)
+        public static MvcHtmlString LinkWithSID(this System.Web.Mvc.UrlHelper Url, string Title, string ActionName, string ControllerName, object RouteValues, object HtmlAttributes)
         {
-            return new MvcHtmlString("sid=" + self.ViewBag.SID);
+            string url = Url.Action(ActionName, ControllerName) + "?";
+            if (RouteValues != null)
+            {
+                var RouteValuesProperties = RouteValues.GetType().GetProperties();
+                foreach (var p in RouteValuesProperties)
+                    url += p.Name + "=" + HttpUtility.UrlEncode(p.GetValue(RouteValues).ToString()) + "&";
+            }
+            url += "sid=" + Url.RequestContext.HttpContext.Session["sid"];
+            var attributes = " ";
+            if (HtmlAttributes != null)
+            {
+                var HtmlAttributesProperties = HtmlAttributes.GetType().GetProperties();
+                foreach (var p in HtmlAttributesProperties)
+                    attributes += p.Name + "=\"" + p.GetValue(HtmlAttributes) + "\" ";
+            }
+            return new MvcHtmlString("<a href=\"javascript:window.location='" + url + "'\"" + attributes + "/>" + HttpUtility.HtmlEncode(Title) + "</a>");
+        }
+        public static MvcHtmlString LinkWithSID(this System.Web.Mvc.UrlHelper Url, string Title, string ActionName, string ControllerName, object RouteValues)
+        {
+            return LinkWithSID(Url, Title, ActionName, ControllerName, RouteValues, null);
+        }
+        public static MvcHtmlString LinkWithSID(this System.Web.Mvc.UrlHelper Url, string Title, string ActionName, string ControllerName)
+        {
+            return LinkWithSID(Url, Title, ActionName, ControllerName, null, null);
         }
     }
 }
