@@ -58,7 +58,7 @@ namespace EasySense.Controllers
         [HttpGet]
         public ActionResult Logout()
         {
-            return Content("OK");
+            //TODO: 
         }
     }
 }
