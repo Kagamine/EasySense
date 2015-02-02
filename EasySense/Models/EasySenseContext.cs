@@ -20,7 +20,7 @@ namespace EasySense.Models
         public DbSet<ReportModel> Reports { get; set; }
         public DbSet<AlarmModel> Alarms { get; set; }
 
-        public EasySenseContext() : base("sqlazure") { }
+        public EasySenseContext() : base("mssqldb") { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
