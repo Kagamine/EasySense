@@ -308,7 +308,6 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AlarmController.cs" />
-    <Compile Include="Controllers\AvatarController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CKEditorController.cs" />
     <Compile Include="Controllers\EnterpriseController.cs" />
@@ -335,6 +334,7 @@
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\DepartmentModel.cs" />
     <Compile Include="Models\EasySenseContext.cs" />
+    <Compile Include="Models\EnterpriseListViewModel.cs" />
     <Compile Include="Models\EnterpriseModel.cs" />
     <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\NotificationViewModel.cs" />
@@ -381,7 +381,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Alarm\" />
-    <Folder Include="Views\Avatar\" />
     <Folder Include="Views\File\" />
     <Folder Include="Views\Project\" />
     <Folder Include="Views\Report\" />
