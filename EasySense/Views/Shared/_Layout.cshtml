@@ -77,11 +77,11 @@
                 </div>
             </div>
             <div class="es-header-user">
-                <img src="/Images/avatar.png" class="es-header-user-icon" /><span class="es-header-user-name">@ViewBag.CurrentUser.Name</span>@Url.LinkWithSID("注销", "Logout","Shared",null, new { @class= "label red es-header-logout" })
+                <img src="/Images/avatar.png" class="es-header-user-icon" /><span class="es-header-user-name">@ViewBag.CurrentUser.Name</span>@Url.LinkWithSID("注销", "Logout", "Shared", null, new { @class = "label red es-header-logout" })
             </div>
         </div>
         <div class="es-nav-item es-header-search">
-            <input type="text" class="search" placeholder="ID或标题" style="width: 90px" />
+            <input type="text" class="search" placeholder="万能搜索" style="width: 90px" />
             <a href="#" data-toggle="SearchResult"><img src="/Images/search.png" /></a>
             <div class="es-notification" id="SearchResult">
                 <p class="es-notification-subtitle">项目(2)</p>
@@ -98,14 +98,14 @@
     </div>
     <div class="container">
         <div class="es-left">
-            <div class="es-menu-item active"><a href="/">首页</a></div>
-            <div class="es-menu-item"><a href="/Project">项目管理</a></div>
-            <div class="es-menu-item"><a href="/Enterprise">客户管理</a></div>
-            <div class="es-menu-item"><a href="/Alarm">提醒事项</a></div>
-            <div class="es-menu-item"><a href="/Report">工作计划</a></div>
-            <div class="es-menu-item"><a href="/File">文件资料</a></div>
-            <div class="es-menu-item"><a href="/Statistics">我的报表</a></div>
-            <div class="es-menu-item"><a href="/User">个人设置</a></div>
+            <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()=="Home"?" active" :"")"><a href="/">首页</a></div>
+            <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()=="Project"?" active" :"")"><a href="/Project">项目管理</a></div>
+            <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()== "Enterprise" ? " active" :"")"><a href="/Enterprise">客户管理</a></div>
+            <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()== "Alarm" ? " active" :"")"><a href="/Alarm">提醒事项</a></div>
+            <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()== "Report" ? " active" :"")"><a href="/Report">工作计划</a></div>
+            <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()== "File" ? " active" :"")"><a href="/File">文件资料</a></div>
+            <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()=="Statistics"?" active" :"")"><a href="/Statistics">我的报表</a></div>
+            <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()=="User"?" active" :"")"><a href="/User">个人设置</a></div>
         </div>
         <div class="es-right">
             @RenderBody()
