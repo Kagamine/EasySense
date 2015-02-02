@@ -25,14 +25,10 @@ $(document).ready(function(){
 	$(".es-block-menu a[data-toggle]").click(function () {
 	    $(this).addClass("es-block-menu-active");
 	});
-	$("[data-toggle]").each(function(){
-		var nav = $(this);
-		nav.click(function () {
-		    $("#" + CurrentNotification).slideUp(200);
-			$("#" + nav.attr("data-toggle")).slideDown(200);
-		});
-	});
-	$("[data-toggle]").click(function(){
+	$("[data-toggle]").click(function () {
+	    $("#" + CurrentNotification).slideUp(200);
+	    $("#" + $(this).attr("data-toggle")).slideDown(200);
+	    $("a[data-toggle='" + CurrentNotification + "']").removeClass("es-block-menu-active");
 		CurrentNotification = $(this).attr("data-toggle");
 	});
 });

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace EasySense.Controllers
 {
     [Authorize]
-    public class ProjectController : Controller
+    public class ProjectController : BaseController
     {
         // GET: Project
         public ActionResult Index()

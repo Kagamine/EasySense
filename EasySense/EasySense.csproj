@@ -372,6 +372,7 @@
     <Content Include="Scripts\ckeditor\skins\moono\readme.md" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Enterprise\Index.cshtml" />
+    <Content Include="Views\Project\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -383,7 +384,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Alarm\" />
     <Folder Include="Views\File\" />
-    <Folder Include="Views\Project\" />
     <Folder Include="Views\Report\" />
     <Folder Include="Views\Statistics\" />
     <Folder Include="Views\User\" />
