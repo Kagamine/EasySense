@@ -61,5 +61,14 @@ namespace EasySense.Controllers
             FormsAuthentication.SignOut();
             return Redirect("/");
         }
+
+        [Route("Search")]
+        [HttpGet]
+        public ActionResult Search(string Text)
+        {
+            var result = new SuperSearchViewModel();
+            //TODO: 完成超级搜索逻辑，适用于搜索ID和子串关系的标题
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }
