@@ -7,12 +7,21 @@ using System.Web.Mvc;
 namespace EasySense.Controllers
 {
     [Authorize]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         // GET: User
         public ActionResult Index()
         {
             return View();
+        }
+
+        [OutputCache(Duration = 86400)]
+        public ActionResult GetAvatar(int id)
+        {
+            var user = DB.Users.Find(id);
+            if (user.Avatar == null)
+                return File(System.IO.File.ReadAllBytes(Server.MapPath("~/Images/Avatar.png")), "image/png");
+            return File(user.Avatar, "image/png");
         }
     }
 }
