@@ -32,7 +32,7 @@ namespace EasySense.Controllers
                 {
                     projectNotifications = projectNotifications.Where(x => x.User.Department.UserID == CurrentUser.ID);
                 }
-                else
+                else if(CurrentUser.Role == UserRole.Employee)
                 {
                     projectNotifications = projectNotifications.Where(x => x.UserID == CurrentUser.ID);
                 }
