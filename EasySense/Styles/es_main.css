@@ -318,11 +318,16 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 3px solid #ff7a00;
     padding-bottom: 5px;
     text-align: left;
-    color: rgb(71, 75, 85);
+    color: #ddd;
+}
+
+th[data-col] {
+    cursor: pointer;
 }
 
 .table tbody tr {
     line-height: 22px;
+    color:#ddd;
     transition: background 0.2s linear, color 0.2s linear;
 }
 
@@ -557,4 +562,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .es-block-menu-search-btn {
     border-radius: 0 18px 18px 0!important;
+}
+
+.es-table-outer {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding:10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }

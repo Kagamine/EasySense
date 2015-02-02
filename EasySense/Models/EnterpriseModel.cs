@@ -60,6 +60,10 @@ namespace EasySense.Models
         public string Type { get; set; }
 
         [StringLength(32)]
+        [Index]
+        public string Brand { get; set; }
+
+        [StringLength(32)]
         [Required]
         public string Scale { get; set; }
 
