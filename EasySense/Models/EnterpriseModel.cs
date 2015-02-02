@@ -67,6 +67,8 @@ namespace EasySense.Models
         [Required]
         public string SalesVolume { get; set; }
 
+        public byte[] Icon { get; set; }
+
         public virtual ICollection<CustomerModel> Customers { get; set; }
     }
 }
