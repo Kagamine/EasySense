@@ -19,7 +19,7 @@
                     <a href="#" data-toggle="ProjectNotification">
                         <img src="/Images/project.png" />
                         <div class="es-nav-item-text">项目</div>
-                        <span class="label red left">0</span>
+                        <span class="label red left">@ViewBag.ProjectNotifications.Count</span>
                     </a>
                     <div class="es-notification" id="ProjectNotification">
                         @foreach (NotificationViewModel n in ViewBag.ProjectNotifications)
@@ -34,7 +34,7 @@
                     <a href="#" data-toggle="AlarmNotification">
                         <img src="/Images/schedule.png" />
                         <div class="es-nav-item-text">日程</div>
-                        <span class="label red left">0</span>
+                        <span class="label red left">@ViewBag.AlarmNotifications.Count</span>
                     </a>
                     <div class="es-notification" id="AlarmNotification">
                         @foreach (NotificationViewModel n in ViewBag.AlarmNotifications)
@@ -49,7 +49,7 @@
                     <a href="#" data-toggle="FinanceNotification">
                         <img src="/Images/finance.png" />
                         <div class="es-nav-item-text">财龄</div>
-                        <span class="label red left">0</span>
+                        <span class="label red left">@ViewBag.FinanceNotifications.Count</span>
                     </a>
                     <div class="es-notification" id="FinanceNotification">
                         @foreach (NotificationViewModel n in ViewBag.FinanceNotifications)
@@ -64,7 +64,7 @@
                     <a href="#" data-toggle="BirthdayNotification">
                         <img src="/Images/birthday.png" />
                         <div class="es-nav-item-text">生日</div>
-                        <span class="label red left">0</span>
+                        <span class="label red left">@ViewBag.BirthdayNotifications.Count</span>
                     </a>
                     <div class="es-notification" id="BirthdayNotification">
                         @foreach (NotificationViewModel n in ViewBag.BirthdayNotifications)
@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="es-header-user">
-                <img src="/Images/avatar.png" class="es-header-user-icon" /><span class="es-header-user-name">@ViewBag.CurrentUser.Name</span>@Url.LinkWithSID("注销", "Logout", "Shared", null, new { @class = "label red es-header-logout" })
+                <img src="/User/GetAvatar/@ViewBag.CurrentUser.ID" class="es-header-user-icon" /><span class="es-header-user-name">@ViewBag.CurrentUser.Name</span>@Url.LinkWithSID("注销", "Logout", "Shared", null, new { @class = "label red es-header-logout" })
             </div>
         </div>
         <div class="es-nav-item es-header-search">
