@@ -13,14 +13,52 @@
         font-size: 12px;
         line-height: 24px;
     }
+    h2 {
+        color: #fff;
+    }
     h3 {
         color: rgb(76, 80, 88);
     }
+    .status-table {
+        width:auto!important;float:right;margin-top:15px;
+    }
+        .status-table td {
+            padding:5px;
+        }
 </style>
 <div class="es-block-menu">
     <a href="/Project/Edit/@Model.ID" class="es-block-menu-active">项目信息</a>
     <a href="/Project/Bill/@Model.ID">支出</a>
     <a href="/Project/Log/@Model.ID">操作记录</a>
+</div>
+<div class="es-table-outer">
+    <table>
+        <tr>
+            <td>
+                <h2>@Model.Title</h2>
+                <p><img src="/User/Avatar/@Model.UserID" class="es-user-icon" /><span class="es-user-name">@Model.User.Name (@Model.User.Username)</span></p>
+            </td>
+            <td>
+                <table class="status-table">
+                    <tr>
+                        <td>状态</td>
+                        <td>状况</td>
+                        <td>计划完成</td>
+                        <td>进度</td>
+                    </tr>
+                    <tr>
+                        <td><span class="label blue">当前</span></td>
+                        <td><span class="label orange">存在问题</span></td>
+                        <td>2014-7-17</td>
+                        <td>
+                            <div style="width:80px;border:1px solid #fff;height:20px;text-align:center;border-radius:20px;"><span style="position:relative;z-index:1">50%</span><div style="width:50%;background-color:green;position:relative;top:-20px;left:0;height: 18px;border-radius:18px;"></div></div>
+                            
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </div>
 <div class="es-block">
     <table>
