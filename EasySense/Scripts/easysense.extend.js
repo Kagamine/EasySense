@@ -21,25 +21,25 @@ $(document).ready(function () {
             if ($("#SearchResult").length > 0) {
                 str += "<p class='es-notification-subtitle'>项目(" + data.Projects.length + ")</p>";
                 if (data.Projects.length > 0) {
-                    $.each(data.Projects, function (key, value) {
+                    $.each(data.Projects, function (value) {
                         str += "<p><a href='/Project/Show/" + value.ID + "'>" + value.Title + "</a></p>";
                     });
                 }
                 str += "<p class='es-notification-subtitle'>客户(" + data.Enterprises.length + ")</p>";
                 if (data.Enterprises.length > 0) {
-                    $.each(data.Enterprises, function (key, value) {
+                    $.each(data.Enterprises, function (value) {
                         str += "<p><a href='/Enterprise/Show/" + value.ID + "'>" + value.Title + "</a></p>";
                     });
                 }
                 str += "<p class='es-notification-subtitle'>名录(" + data.Customers.length + ")</p>";
                 if (data.Customers.length > 0) {
-                    $.each(data.Customers, function (key, value) {
+                    $.each(data.Customers, function (value) {
                         str += "<p><a href='/Customer/Show/" + value.ID + "'>" + value.Name + "</a></p>";
                     });
                 }
                 str += "<p class='es-notification-subtitle'>员工(" + data.Users.length + ")</p>";
                 if (data.Users.length > 0) {
-                    $.each(data.Users, function (key, value) {
+                    $.each(data.Users, function (value) {
                         str += "<p><img src='/User/Avatar/1' /><a href='/User/Show/" + value.ID + "'>" + value.Name + "</a></p>";
                     });
                 }
@@ -54,7 +54,7 @@ $(document).ready(function () {
             var bstr = "";
             var cstr = "";
             var dstr = "";
-            $.each(data, function (key, value) {
+            $.each(data, function (value) {
                 if (value.Level == "A") {
                     astr+="<div class='es-enterprise-item'><a href='/Enterprise/Show?id="+value.ID+"' class='title'>"+value.Title+"</a> <a href='/Enterprise/Delete?id="+value.ID+"'>删除</a> <a href='/Enterprise/Edit?id="+value.ID+"'>编辑</a></div>";
                 }

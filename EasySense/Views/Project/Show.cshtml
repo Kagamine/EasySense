@@ -1,0 +1,129 @@
+﻿@model ProjectModel
+@{
+    ViewBag.Title = Model.Title + "编辑项目";
+}
+<style>
+    table {
+        width: 100%;
+    }
+    td {
+        vertical-align: top;
+    }
+    .es-block {
+        font-size: 12px;
+        line-height: 24px;
+    }
+    h3 {
+        color: rgb(76, 80, 88);
+    }
+</style>
+<div class="es-block-menu">
+    <a href="/Project/Edit/@Model.ID" class="es-block-menu-active">项目信息</a>
+    <a href="/Project/Bill/@Model.ID">支出</a>
+    <a href="/Project/Log/@Model.ID">操作记录</a>
+</div>
+<div class="es-block">
+    <table>
+        <tr>
+            <td>
+                <h3>基本信息</h3>
+                <p>项目名称<br /><input type="text" class="textbox" placeholder="项目名称" value="@Model.Title" /></p>
+                <p>项目说明<br /><textarea class="textbox">@Model.Description</textarea></p>
+                <p>计划开始时间<br /><input type="text" class="textbox" placeholder="计划开始时间" value="@Model.Begin" /></p>
+                <p>计划完成时间<br /><input type="text" class="textbox" placeholder="计划完成时间" value="@Model.End" /></p>
+                <p>
+                    优先级
+                    <br />
+                    <select class="select">
+                        <option value="0" @(Model.Priority == ProjectPriority.Normal ? " selected" : "")>正常</option>
+                        <option value="1" @(Model.Priority == ProjectPriority.Medium ? " selected" : "")>中等</option>
+                        <option value="2" @(Model.Priority == ProjectPriority.High ? " selected" : "")>高</option>
+                    </select>
+                </p>
+                <p>
+                    项目状态
+                    <br />
+                    <select class="select">
+                        <option value="0" @(Model.Status == ProjectStatus.Current ? " selected" : "")>当前</option>
+                        <option value="1" @(Model.Status == ProjectStatus.Completed ? " selected" : "")>完成</option>
+                        <option value="2" @(Model.Status == ProjectStatus.Bidding ? " selected" : "")>竞标</option>
+                        <option value="3" @(Model.Status == ProjectStatus.Dumped ? " selected" : "")>废弃</option>
+                    </select>
+                </p>
+                <h3>客户信息</h3>
+                <p>客户名称<br /><input type="text" class="textbox" placeholder="客户名称" value="@(Model.EnterpriseID == null?"" : Model.Enterprise.Title)" /></p>
+                <p>客户联系人<br /><input type="text" class="textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" disabled /></p>
+            </td>
+            <td>
+                <h3>扩展信息</h3>
+                <p>
+                    订单状态
+                    <br />
+                    <select class="select">
+                        <option value="true"@(Model.Ordering?" selected" :"")>有订单</option>
+                        <option value="true" @(!Model.Ordering ? " selected" : "")>无订单</option>
+                    </select>
+                </p>
+                <p>
+                    项目类别
+                    <br />
+                    <select class="select">
+                        <option>未指定类别</option>
+                        @foreach (CategoryModel c in ViewBag.Categories)
+                        {
+                            <option value="@c.ID">@c.Title</option>
+                        }
+                    </select>
+                </p>
+                <p>
+                    产品名称
+                    <br />
+                    <select class="select"></select>
+                </p>
+                <p>签订日期<br /><input type="text" class="textbox" placeholder="签订日期" /></p>
+                <p>
+                    所在地区
+                    <br />
+                    <select class="select">
+                        <option>未指定类别</option>
+                        @foreach (ZoneModel z in ViewBag.Zones)
+                        {
+                            <option value="@z.ID">@z.Title</option>
+                        }
+                    </select>
+                </p>
+            </td>
+            @if (ViewBag.CurrentUser.Role >= UserRole.Finance)
+            {
+                <td>
+                    <h3>财务信息</h3>
+                    <p>项目金额<br /><input type="text" class="textbox" placeholder="项目金额" value="@Model.Charge" /></p>
+                </td>
+            }
+            <td>
+                <h3>发票信息</h3>
+                <p>发票金额<br /><input type="text" class="textbox" placeholder="发票金额" value="@Model.InvoicePrice" /></p>
+                <p>开票日期<br /><input type="text" class="textbox" placeholder="开票日期" value="@Model.InvoiceTime" /></p>
+                <p>发票号<br /><input type="text" class="textbox" placeholder="发票号" value="@Model.InvoiceSN" /></p>
+                <p>备注<br /><textarea class="textbox" placeholder="备注">@Model.Hint</textarea></p>
+                <p>收款日期<br /><input type="text" class="textbox" placeholder="收款日期" value="@Model.ChargeTime" /></p>
+                <p>
+                    交易类型
+                    <br/>
+                    <select class="select">
+                        <option value="0"@(Model.PayMethod == PayMethod.Unpaid?" selected" :"")>未确定</option>
+                        <option value="1"@(Model.PayMethod == PayMethod.Cash ? " selected" : "")>现金</option>
+                        <option value="2"@(Model.PayMethod == PayMethod.Transfer ? " selected" : "")>转账</option>
+                    </select>
+                </p>
+                <p>实收金额<br /><input type="text" class="textbox" placeholder="实收金额" value="@Model.ActualPayments" /></p>
+            </td>
+        </tr>
+    </table>
+    @if (ViewBag.CurrentUser.Role != UserRole.Finance)
+    {
+        <div class="es-block-menu">
+            <p style="text-align:center"><a href="javascript:;">保存全部信息</a></p>
+        </div>
+    }
+</div>

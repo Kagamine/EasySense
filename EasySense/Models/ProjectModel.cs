@@ -16,13 +16,14 @@ namespace EasySense.Models
 
     public enum ProjectPriority
     {
-        High,
+        Normal,
         Medium,
-        Normal
+        High
     }
 
     public enum PayMethod
     {
+        Unpaid,
         Cash,
         Transfer
     }
@@ -88,13 +89,13 @@ namespace EasySense.Models
         public virtual ZoneModel Zone { get; set; }
 
         //Finance begin
-        public decimal Charge { get; set; }
+        public decimal? Charge { get; set; }
 
-        public float SaleAllocRatioCache { get; set; }
+        public float? SaleAllocRatioCache { get; set; }
 
-        public float AwardAllocRatioCache { get; set; }
+        public float? AwardAllocRatioCache { get; set; }
 
-        public float ProfitAllocRatioCache { get; set; }
+        public float? ProfitAllocRatioCache { get; set; }
 
         [NotMapped]
         public decimal SellingCommisson
@@ -121,7 +122,7 @@ namespace EasySense.Models
         }
 
         //Invoice begin
-        public decimal InvoicePrice { get; set; }
+        public decimal? InvoicePrice { get; set; }
 
         [Index]
         public DateTime? InvoiceTime { get; set; }
@@ -130,14 +131,32 @@ namespace EasySense.Models
         [Index(IsUnique = true)]
         public string InvoiceSN { get; set; }
 
+        [Required]
         public string Hint { get; set; }
 
         [Index]
         public DateTime? ChargeTime { get; set; }
 
-        public decimal ActualPayments { get; set; }
+        public decimal? ActualPayments { get; set; }
 
         [Index]
         public PayMethod PayMethod { get; set; }
+
+        [Required]
+        public string Log { get; set; }
+
+        public virtual ICollection<BillModel> Bills { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var data = obj as ProjectModel;
+            if (data.ID == this.ID) return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID;
+        }
     }
 }

@@ -9,13 +9,6 @@ namespace EasySense.Schema
 {
     public class UserOwnedProjectAttribute : BaseAuthorizeAttribute
     {
-        private int ProjectID { get; set; }
-
-        public UserOwnedProjectAttribute(int ProjectID)
-        {
-            this.ProjectID = ProjectID;
-        }
-
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             if (httpContext.User.Identity.IsAuthenticated)
@@ -26,7 +19,7 @@ namespace EasySense.Schema
                                 where u.Username == httpContext.User.Identity.Name
                                 select u).Single();
                     if (user.Role >= UserRole.Root) return true;
-                    var project = db.Projects.Find(ProjectID);
+                    var project = db.Projects.Find(Convert.ToInt32(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"]));
                     if (user.Role == UserRole.Master && project.User.Department.UserID == user.ID)
                         return true;
                     if (project.UserID == user.ID)

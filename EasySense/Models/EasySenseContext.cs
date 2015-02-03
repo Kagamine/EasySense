@@ -19,6 +19,7 @@ namespace EasySense.Models
         public DbSet<FileModel> Files { get; set; }
         public DbSet<ReportModel> Reports { get; set; }
         public DbSet<AlarmModel> Alarms { get; set; }
+        public DbSet<BillModel> Bills { get; set; }
 
         public EasySenseContext() : base("mssqldb") { }
 
@@ -53,6 +54,10 @@ namespace EasySense.Models
             modelBuilder.Entity<DepartmentModel>()
                 .HasMany(x => x.Users)
                 .WithOptional(x => x.Department);
+
+            modelBuilder.Entity<ProjectModel>()
+                .HasMany(x => x.Bills)
+                .WithRequired(x => x.Project);
         }
     }
 }

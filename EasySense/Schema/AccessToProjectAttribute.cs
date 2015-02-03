@@ -7,7 +7,7 @@ using EasySense.Models;
 
 namespace EasySense.Schema
 {
-    public class AccessToFileAttribute : BaseAuthorizeAttribute
+    public class AccessToProjectAttribute : BaseAuthorizeAttribute
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
@@ -18,9 +18,11 @@ namespace EasySense.Schema
                     var user = (from u in db.Users
                                 where u.Username == httpContext.User.Identity.Name
                                 select u).Single();
-                    if (user.Role >= UserRole.Root) return true;
-                    var FileID = Guid.Parse(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"].ToString());
-                    if ((from f in db.Files where f.ID == FileID && f.Public select f).Count() > 0)
+                    if (user.Role >= UserRole.Finance) return true;
+                    var project = db.Projects.Find(Convert.ToInt32(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"]));
+                    if (user.Role == UserRole.Master && project.User.Department.UserID == user.ID)
+                        return true;
+                    if (project.UserID == user.ID)
                         return true;
                 }
             }
