@@ -16,7 +16,7 @@ namespace EasySense.Controllers
         }
 
         [OutputCache(Duration = 86400)]
-        public ActionResult GetAvatar(int id)
+        public ActionResult Avatar(int id)
         {
             var user = DB.Users.Find(id);
             if (user.Avatar == null)

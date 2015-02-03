@@ -22,25 +22,25 @@ $(document).ready(function () {
                 str += "<p class='es-notification-subtitle'>项目(" + data.Projects.length + ")</p>";
                 if (data.Projects.length > 0) {
                     $.each(data.Projects, function (key, value) {
-                        str += "<p><a href='/Project/Show?id=" + value.ID + "'>" + value.Title + "</a></p>";
+                        str += "<p><a href='/Project/Show/" + value.ID + "'>" + value.Title + "</a></p>";
                     });
                 }
                 str += "<p class='es-notification-subtitle'>客户(" + data.Enterprises.length + ")</p>";
                 if (data.Enterprises.length > 0) {
                     $.each(data.Enterprises, function (key, value) {
-                        str += "<p><a href='/Enterprise/Show?id=" + value.ID + "'>" + value.Title + "</a></p>";
+                        str += "<p><a href='/Enterprise/Show/" + value.ID + "'>" + value.Title + "</a></p>";
                     });
                 }
                 str += "<p class='es-notification-subtitle'>名录(" + data.Customers.length + ")</p>";
                 if (data.Customers.length > 0) {
                     $.each(data.Customers, function (key, value) {
-                        str += "<p><a href='/Project/Show?id=" + value.ID + "'>" + value.Name + "</a></p>";
+                        str += "<p><a href='/Customer/Show/" + value.ID + "'>" + value.Name + "</a></p>";
                     });
                 }
                 str += "<p class='es-notification-subtitle'>员工(" + data.Users.length + ")</p>";
                 if (data.Users.length > 0) {
                     $.each(data.Users, function (key, value) {
-                        str += "<p><img src='/Images/avatar.png' /><a href='/User/Show?id=" + value.ID + "'>" + value.Name + "</a></p>";
+                        str += "<p><img src='/User/Avatar/1' /><a href='/User/Show/" + value.ID + "'>" + value.Name + "</a></p>";
                     });
                 }
                 $("#SearchResult").html(str);
