@@ -25,6 +25,10 @@
         .status-table td {
             padding:5px;
         }
+    .es-table-outer {
+        padding-left:20px;
+        padding-right:20px;
+    }
 </style>
 <div class="es-block-menu">
     <a href="/Project/Edit/@Model.ID" class="es-block-menu-active">项目信息</a>
@@ -163,5 +167,10 @@
         <div class="es-block-menu">
             <p style="text-align:center"><a href="javascript:;">保存全部信息</a></p>
         </div>
+        <script>
+            $(".es-block input[type='text']").attr("disabled", "disabled");
+            $(".es-block input[type='select']").attr("disabled", "disabled");
+            $(".es-block textarea").attr("disabled", "disabled");
+        </script>
     }
 </div>
