@@ -20,7 +20,7 @@
         color: rgb(76, 80, 88);
     }
     .status-table {
-        width:auto!important;float:right;margin-top:15px;
+        width:auto!important;float:right;margin-top:10px;
     }
         .status-table td {
             padding:5px;
@@ -28,6 +28,7 @@
     .es-table-outer {
         padding-left:20px;
         padding-right:20px;
+        padding-bottom:20px;
     }
 </style>
 <div class="es-block-menu">
@@ -40,7 +41,7 @@
         <tr>
             <td>
                 <h2>@Model.Title</h2>
-                <p><img src="/User/Avatar/@Model.UserID" class="es-user-icon" /><span class="es-user-name">@Model.User.Name (@Model.User.Username)</span></p>
+                <img src="/User/Avatar/@Model.UserID" class="es-user-icon" /><span class="es-user-name">@Model.User.Name (@Model.User.Username)</span>
             </td>
             <td>
                 <table class="status-table">
@@ -71,8 +72,8 @@
                 <h3>基本信息</h3>
                 <p>项目名称<br /><input type="text" class="textbox" placeholder="项目名称" value="@Model.Title" /></p>
                 <p>项目说明<br /><textarea class="textbox">@Model.Description</textarea></p>
-                <p>计划开始时间<br /><input type="text" class="textbox" placeholder="计划开始时间" value="@Model.Begin" /></p>
-                <p>计划完成时间<br /><input type="text" class="textbox" placeholder="计划完成时间" value="@Model.End" /></p>
+                <p>计划开始时间<br /><input name="Begin" type="text" class="textbox" placeholder="计划开始时间" value="@Model.Begin" /></p>
+                <p>计划完成时间<br /><input name="End" type="text" class="textbox" placeholder="计划完成时间" value="@Model.End" /></p>
                 <p>
                     优先级
                     <br />
@@ -122,7 +123,7 @@
                     <br />
                     <select class="select"></select>
                 </p>
-                <p>签订日期<br /><input type="text" class="textbox" placeholder="签订日期" /></p>
+                <p>签订日期<br /><input type="text" name="SignTime" class="textbox" placeholder="签订日期" /></p>
                 <p>
                     所在地区
                     <br />
@@ -140,15 +141,20 @@
                 <td>
                     <h3>财务信息</h3>
                     <p>项目金额<br /><input type="text" class="textbox" placeholder="项目金额" value="@Model.Charge" /></p>
+                    <p>税金<br /><strong>￥@Model.Award</strong></p>
+                    <p>销售佣金<br /><strong>￥@Model.SellingCommisson</strong></p>
+                    <p>项目部奖金<br /><strong>￥@Model.Award</strong></p>
+                    <p>项目利润<br /><strong>￥@Model.Profit</strong></p>
+                    <p>项目毛利率%<br /><strong></strong></p>
                 </td>
             }
             <td>
                 <h3>发票信息</h3>
                 <p>发票金额<br /><input type="text" class="textbox" placeholder="发票金额" value="@Model.InvoicePrice" /></p>
-                <p>开票日期<br /><input type="text" class="textbox" placeholder="开票日期" value="@Model.InvoiceTime" /></p>
+                <p>开票日期<br /><input type="text" name="InvoiceTime" class="textbox" placeholder="开票日期" value="@Model.InvoiceTime" /></p>
                 <p>发票号<br /><input type="text" class="textbox" placeholder="发票号" value="@Model.InvoiceSN" /></p>
                 <p>备注<br /><textarea class="textbox" placeholder="备注">@Model.Hint</textarea></p>
-                <p>收款日期<br /><input type="text" class="textbox" placeholder="收款日期" value="@Model.ChargeTime" /></p>
+                <p>收款日期<br /><input type="text" name="ChargeTime" class="textbox" placeholder="收款日期" value="@Model.ChargeTime" /></p>
                 <p>
                     交易类型
                     <br/>
@@ -168,9 +174,18 @@
             <p style="text-align:center"><a href="javascript:;">保存全部信息</a></p>
         </div>
         <script>
-            $(".es-block input[type='text']").attr("disabled", "disabled");
-            $(".es-block input[type='select']").attr("disabled", "disabled");
-            $(".es-block textarea").attr("disabled", "disabled");
+            $("input[name='Begin']").datetimepicker();
+            $("input[name='End']").datetimepicker();
+            $("input[name='InvoiceTime']").datetimepicker();
+            $("input[name='SignTime']").datetimepicker();
+        </script>
+    }
+    else
+    {
+        <script>
+                $(".es-block input[type='text']").attr("disabled", "disabled");
+                $(".es-block input[type='select']").attr("disabled", "disabled");
+                $(".es-block textarea").attr("disabled", "disabled");
         </script>
     }
 </div>
