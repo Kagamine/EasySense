@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="es-header-user">
-                <img src="/User/GetAvatar/@ViewBag.CurrentUser.ID" class="es-header-user-icon" /><span class="es-header-user-name">@ViewBag.CurrentUser.Name</span>@Url.LinkWithSID("注销", "Logout", "Shared", null, new { @class = "label red es-header-logout" })
+                <img src="/User/Avatar/@ViewBag.CurrentUser.ID" class="es-header-user-icon" /><span class="es-header-user-name">@ViewBag.CurrentUser.Name</span>@Url.LinkWithSID("注销", "Logout", "Shared", null, new { @class = "label red es-header-logout" })
             </div>
         </div>
         <div class="es-nav-item es-header-search">
