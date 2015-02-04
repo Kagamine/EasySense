@@ -52,12 +52,37 @@
                         <td>进度</td>
                     </tr>
                     <tr>
-                        <td><span class="label blue">当前</span></td>
-                        <td><span class="label orange">存在问题</span></td>
-                        <td>2014-7-17</td>
+                        <td>
+                            @if (Model.Status == ProjectStatus.Current)
+                            {
+                                <span class="label blue">当前</span>
+                            }
+                            else if (Model.Status == ProjectStatus.Completed)
+                            {
+                                <span class="label green">完成</span>
+                            }
+                            else if (Model.Status == ProjectStatus.Bidding)
+                            {
+                                <span class="label blue">竞标</span>
+                            }
+                            else
+                            {
+                                <span class="label red">废弃</span>
+                            }
+                        </td>
+                        <td>
+                            @if (Model.Status != ProjectStatus.Completed && DateTime.Now > Model.End)
+                            {
+                                <span class="label red">存在问题</span>
+                            }
+                            else
+                            {
+                                <span class="label blue">正常</span>
+                            }
+                        </td>
+                        <td>@Model.End.ToString("yyyy-MM-dd")</td>
                         <td>
                             <div style="width:80px;border:1px solid #fff;height:20px;text-align:center;border-radius:20px;"><span style="position:relative;z-index:1">50%</span><div style="width:50%;background-color:green;position:relative;top:-20px;left:0;height: 18px;border-radius:18px;"></div></div>
-                            
                         </td>
                     </tr>
                 </table>
@@ -136,23 +161,29 @@
                             <option value="@c.ID">@c.Title</option>
                         }
                     </select>
+                    <br />
+                    <a href="/Category" target="_blank">添加项目类别</a>
                 </p>
                 <p>
                     产品名称
                     <br />
                     <select class="select"></select>
+                    <br />
+                    <a href="/Product" target="_blank">添加产品</a>
                 </p>
                 <p>签订日期<br /><input type="text" name="SignTime" class="textbox" placeholder="签订日期" /></p>
                 <p>
                     所在地区
                     <br />
                     <select class="select">
-                        <option>未指定类别</option>
+                        <option>未指定地区</option>
                         @foreach (ZoneModel z in ViewBag.Zones)
                         {
                             <option value="@z.ID">@z.Title</option>
                         }
                     </select>
+                    <br />
+                    <a href="/Zone" target="_blank">添加地区</a>
                 </p>
             </td>
             @if (ViewBag.CurrentUser.Role >= UserRole.Finance)

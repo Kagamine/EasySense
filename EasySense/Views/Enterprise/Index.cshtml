@@ -13,10 +13,10 @@
         <table style="width:600px">
             <tr>
                 <td>企业名称</td>
-                <td><input type="text" class="textbox" placeholder="企业名称" /></td>
+                <td><input id="txtTitle" type="text" class="textbox" placeholder="企业名称" /></td>
                 <td>企业等级</td>
                 <td>
-                    <select class="select span-width">
+                    <select id="lstLevel" class="select span-width">
                         <option value="0">A</option>
                         <option value="1">B</option>
                         <option value="2">C</option>
@@ -26,42 +26,46 @@
             </tr>
             <tr>
                 <td>企业地址</td>
-                <td colspan="3"><input type="text" class="textbox full-width" placeholder="企业通信地址" /></td>
+                <td colspan="3"><input id="txtAddress" type="text" class="textbox full-width" placeholder="企业通信地址" /></td>
             </tr>
             <tr>
                 <td>邮政编码</td>
-                <td><input type="text" class="textbox" placeholder="邮政编码" /></td>
+                <td><input id="txtZip" type="text" class="textbox" placeholder="邮政编码" /></td>
                 <td>企业网址</td>
-                <td><input type="text" class="textbox full-width" placeholder="http://" /></td>
+                <td><input id="txtWebsite" type="text" class="textbox full-width" placeholder="http://" /></td>
             </tr>
             <tr>
                 <td>电话</td>
-                <td><input type="text" class="textbox" placeholder="电话号码" /></td>
+                <td><input id="txtPhone" type="text" class="textbox" placeholder="电话号码" /></td>
                 <td>传真</td>
-                <td><input type="text" class="textbox full-width" placeholder="传真" /></td>
+                <td><input id="txtFax" type="text" class="textbox full-width" placeholder="传真" /></td>
             </tr>
             <tr>
                 <td>企业性质</td>
-                <td><input type="text" class="textbox" placeholder="企业性质" /></td>
+                <td><input id="txtProperty" type="text" class="textbox" placeholder="企业性质" /></td>
                 <td>企业类型</td>
-                <td><input type="text" class="textbox full-width" placeholder="企业类型" /></td>
+                <td><input id="txtType" type="text" class="textbox full-width" placeholder="企业类型" /></td>
             </tr>
             <tr>
                 <td>企业规模</td>
-                <td><input type="text" class="textbox" placeholder="企业规模" /></td>
+                <td><input id="txtScale" type="text" class="textbox" placeholder="企业规模" /></td>
                 <td>销售额</td>
-                <td><input type="text" class="textbox full-width" placeholder="销售额" /></td>
+                <td><input id="txtSalesVolume" type="text" class="textbox full-width" placeholder="销售额" /></td>
+            </tr>
+            <tr>
+                <td>品牌</td>
+                <td><input id="txtBrand" type="text" class="textbox" placeholder="品牌" /></td>
             </tr>
             <tr>
                 <td>备注</td>
             </tr>
             <tr>
                 <td colspan="4">
-                    <textarea class="textbox full-width" placeholder="请在此处填写备注"></textarea>
+                    <textarea id="txtHint" class="textbox full-width" placeholder="请在此处填写备注"></textarea>
                 </td>
             </tr>
         </table>
-        <p style="text-align:center"><a href="#">完成添加</a></p>
+        <p style="text-align:center"><a href="javascript:void(0);" id="btnAddEnterprise">完成添加</a></p>
     </div>
     <a href="#" class="right es-block-menu-search-btn" id="btnEnterpriseSearch">搜索</a>
     <input type="text" class="right textbox es-block-menu-search" id="txtEnterpriseSearch"  placeholder="客户名称或首字母" />
@@ -70,71 +74,57 @@
 <div>
     <div class="es-enterprise left orange">
         <div class="es-enterprise-content" id="aenterprise">
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
         </div>
     </div>
     <div class="es-enterprise right pink">
         <div class="es-enterprise-content" id="benterprise">
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
         </div>
     </div>
     <div style="clear:both"></div>
     <div class="es-enterprise left blue">
         <div class="es-enterprise-content" id="centerprise">
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
         </div>
     </div>
     <div class="es-enterprise right green">
         <div class="es-enterprise-content" id="denterprise">
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
-            <div class="es-enterprise-item"><a href="#" class="title">Q-齐齐哈尔微尘物联</a> <a href="#">删除</a> <a href="#">编辑</a></div>
         </div>
     </div>
 </div>
+<script>
+    $("#btnAddEnterprise").click(function () {
+        ShowLoading();
+        $.post("/Enterprise/Create", {
+            Title: $("#txtTitle").val(),
+            Level: $("#lstLevel").val(),
+            Address: $("#txtAddress").val(),
+            Zip: $("#txtZip").val(),
+            Website: $("#txtWebsite").val(),
+            Phone: $("#txtPhone").val(),
+            Fax: $("#txtFax").val(),
+            Property: $("#txtProperty").val(),
+            Type: $("#txtType").val(),
+            Scale: $("#txtScale").val(),
+            SalesVolume: $("#txtSalesVolume").val(),
+            Brand: $("#txtBrand").val(),
+            Hint: $("#txtHint").val(),
+            sid: "@ViewBag.SID"
+        }, function (id) {
+            var html = '<div class="es-enterprise-item"><a href="/Enterprise/Show/'+id+'" class="title">?-'+$("#txtTitle").val()+'</a> <a href="javascript:Delete('+id+')">删除</a> <a href="/Enterprise/Edit/'+id+'">编辑</a></div>';
+            var level = $("#lstLevel").val();
+            if(level == 0)
+                $("#aenterprise").prepend(html);
+            else if(level ==1)
+                $("#benterprise").prepend(html);
+            else if(level ==2)
+                $("#centerprise").prepend(html);
+            else
+                $("#denterprise").prepend(html);
+            if ($(e.target).parents('[data-toggle="' + CurrentNotification + '"]').length > 0) return;
+            if ($(e.target).parents('#' + CurrentNotification).length > 0) return;
+            $("#" + CurrentNotification).slideUp(200);
+            $("a[data-toggle='" + CurrentNotification + "']").removeClass("es-block-menu-active");
+            CurrentNotification = null;
+            HideLoading();
+        });
+    });
+</script>

@@ -48,30 +48,33 @@ $(document).ready(function () {
         });
     });
 
-    $("#btnEnterpriseSearch").click(function () {
+    function LoadEnterprise() {
+        if ($("#aenterprise").length <= 0) return;
+        ShowLoading();
+        $("#aenterprise").html("");
+        $("#benterprise").html("");
+        $("#centerprise").html("");
+        $("#denterprise").html("");
         $.getJSON("/Enterprise/Search", { Text: $("#txtEnterpriseSearch").val() }, function (data) {
-            var astr = "";
-            var bstr = "";
-            var cstr = "";
-            var dstr = "";
-            $.each(data, function (value) {
-                if (value.Level == "A") {
-                    astr+="<div class='es-enterprise-item'><a href='/Enterprise/Show?id="+value.ID+"' class='title'>"+value.Title+"</a> <a href='/Enterprise/Delete?id="+value.ID+"'>删除</a> <a href='/Enterprise/Edit?id="+value.ID+"'>编辑</a></div>";
-                }
-                if (value.Level == "B") {
-                    bstr += "<div class='es-enterprise-item'><a href='/Enterprise/Show?id=" + value.ID + "' class='title'>" + value.Title + "</a> <a href='/Enterprise/Delete?id=" + value.ID + "'>删除</a> <a href='/Enterprise/Edit?id=" + value.ID + "'>编辑</a></div>";
-                }
-                if (value.Level == "C") {
-                    cstr += "<div class='es-enterprise-item'><a href='/Enterprise/Show?id=" + value.ID + "' class='title'>" + value.Title + "</a> <a href='/Enterprise/Delete?id=" + value.ID + "'>删除</a> <a href='/Enterprise/Edit?id=" + value.ID + "'>编辑</a></div>";
-                }
-                if (value.Level == "D") {
-                    dstr += "<div class='es-enterprise-item'><a href='/Enterprise/Show?id=" + value.ID + "' class='title'>" + value.Title + "</a> <a href='/Enterprise/Delete?id=" + value.ID + "'>删除</a> <a href='/Enterprise/Edit?id=" + value.ID + "'>编辑</a></div>";
-                }
-            });
-            $("#aenterprise").html(astr);
-            $("#benterprise").html(bstr);
-            $("#centerprise").html(cstr);
-            $("#denterprise").html(dstr);
+            for (var i = 0; i < data.length; i++) {
+                var html = '<div class="es-enterprise-item"><a href="/Enterprise/Show/' + data[i].ID + '" class="title">' + data[i].Title + '</a> <a href="javascript:Delete(' + data[i].ID + ')">删除</a> <a href="/Enterprise/Edit/' + data[i].ID + '">编辑</a></div>';
+                var level = data[i].Level;
+                if (level == "A")
+                    $("#aenterprise").prepend(html);
+                else if (level == "B")
+                    $("#benterprise").prepend(html);
+                else if (level == "C")
+                    $("#centerprise").prepend(html);
+                else if (level == "D")
+                    $("#denterprise").prepend(html);
+            }
+            HideLoading();
         });
+    }
+
+    LoadEnterprise();
+
+    $("#btnEnterpriseSearch").click(function () {
+        LoadEnterprise();
     });
 });

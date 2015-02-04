@@ -453,12 +453,12 @@ th[data-col] {
         margin-right: 5px;
     }
 
-.es-menu-extend a, .es-menu-extend a:visited, .es-menu-extend a:active {
+a, a:visited, a:active {
     color: #1d76c7;
     text-decoration:none;
 }
 
-.es-menu-extend a:hover {
+a:hover {
     color:#3a93e2;
 }
 
@@ -621,4 +621,11 @@ th[data-col] {
     width: 18px;
     height: 18px;
     float: left;
+}
+
+.es-icon-large {
+    width:180px;
+    height:180px;
+    border: 5px solid rgba(255,255,255,0.2);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }

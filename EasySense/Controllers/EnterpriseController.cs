@@ -29,5 +29,28 @@ namespace EasySense.Controllers
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        [OutputCache(Duration = 86400)]
+        public ActionResult Icon(int id)
+        {
+            var enterprise = DB.Enterprises.Find(id);
+            if (enterprise.Icon == null)
+                return File(System.IO.File.ReadAllBytes(Server.MapPath("~/Images/Avatar.png")), "image/png");
+            return File(enterprise.Icon, "image/png");
+        }
+
+        public ActionResult Show(int id)
+        {
+            var enterprise = DB.Enterprises.Find(id);
+            return View(enterprise);
+        }
+
+        public ActionResult Create(EnterpriseModel Model)
+        {
+            Model.Key = Helpers.Pinyin.Convert(Model.Title);
+            DB.Enterprises.Add(Model);
+            DB.SaveChanges();
+            return Content(Model.ID.ToString());
+        }
     }
 }

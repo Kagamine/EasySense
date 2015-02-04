@@ -47,5 +47,28 @@ namespace EasySense.Controllers
             DB.SaveChanges();
             return Content("项目信息修改成功！");
         }
+
+        [HttpGet]
+        public ActionResult Search(int Page, string Title, ProjectStatus? Status, DateTime? Begin, DateTime? End)
+        {
+            IEnumerable<ProjectModel> projects = (from p in DB.Projects
+                                                  where p.Title.Contains(Title)
+                                                  select p);
+            if (Status.HasValue)
+                projects = projects.Where(x => x.Status == Status.Value);
+            if (Begin.HasValue)
+                projects = projects.Where(x => x.Begin <= Begin.Value);
+            if (End.HasValue)
+                projects = projects.Where(x => x.End <= End.Value);
+            if (CurrentUser.Role == UserRole.Employee)
+                projects = projects.Where(x => x.UserID == CurrentUser.ID);
+            else if (CurrentUser.Role == UserRole.Master)
+                projects = projects.Where(x => x.User.Department.UserID == CurrentUser.ID);
+            projects = projects.OrderByDescending(x => x.ID).Skip(20 * Page).Take(20).ToList();
+            var ret = new List<ProjectListViewModel>();
+            foreach (var p in projects)
+                ret.Add((ProjectListViewModel)p);
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
     }
 }
