@@ -198,7 +198,7 @@
             $("input[name='InvoiceTime']").datetimepicker();
             $("input[name='SignTime']").datetimepicker();
             $("#EnterpriseName").blur(function () {
-                if ($("#EnterpriseID").val() == null)
+                if ($("#EnterpriseID").val() == null || $("#EnterpriseID").val() == "")
                 {
                     $("#CustomerName").attr("disabled", "disabled");
                     $("#CustomerName").val("");
