@@ -2,7 +2,11 @@
 @{
     ViewBag.Title = "项目管理";
 }
-
+<style>
+    tr {
+        cursor: pointer;
+    }
+</style>
 <div class="es-block-menu">
     @if (ViewBag.CurrentUser.Role != UserRole.Finance)
     {
@@ -13,9 +17,9 @@
     }
     <a href="#" data-toggle="ProjectsFilter">过滤器</a>
     <div id="ProjectsFilter" class="es-menu-extend">
-        <p>项目名称：<input type="text" class="textbox" placeholder="项目名称" />&nbsp;&nbsp; 项目状态：<select class="select" style="width: 130px"><option value="">全部</option><option value="0">当前</option><option value="1">完成</option><option value="2">竞标</option><option value="3">废弃</option></select></p>
-        <p>签订时间：从 <input type="text" class="textbox" value="@DateTime.Now" /> 到 <input type="text" class="textbox" value="@DateTime.Now" /></p>
-        <p><a href="#">检索</a></p>
+        <p>项目名称：<input id="txtTitle" type="text" class="textbox" placeholder="项目名称" />&nbsp;&nbsp; 项目状态：<select id="lstStatus" class="select" style="width: 130px"><option value="">全部</option><option value="0">当前</option><option value="1">完成</option><option value="2">竞标</option><option value="3">废弃</option></select></p>
+        <p>签订时间：从 <input id="txtBegin" type="text" class="textbox" value="" /> 到 <input id="txtEnd" type="text" class="textbox" value="" /></p>
+        <p><a href="javascript:page=0;$('#lstProjects').html('');Load();">检索</a></p>
     </div>
 </div>
 <div class="es-table-outer">
@@ -37,20 +41,10 @@
             </tr>
         </thead>
         <tbody id="lstProjects">
-            <tr>
-                <td>1</td>
-                <td>Yuuko</td>
-                <td>EasySense</td>
-                <td>5,000</td>
-                <td>2015年1月1日</td>
-                <td>软件服务外包</td>
-                <td>某某</td>
-                <td>EasySense</td>
-                <td>某某</td>
-                <td>进行中</td>
-                <td>2015年1月1日</td>
-                <td>2015年1月1日</td>
-            </tr>
         </tbody>
     </table>
 </div>
+<script>
+    $("#txtBegin").datetimepicker();
+    $("#txtEnd").datetimepicker();
+</script>

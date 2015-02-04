@@ -49,7 +49,7 @@ namespace EasySense.Controllers
         }
 
         [HttpGet]
-        public ActionResult Search(int Page, string Title, ProjectStatus? Status, DateTime? Begin, DateTime? End)
+        public ActionResult Search(int Page, string Title, ProjectStatus? Status, DateTime? Begin, DateTime? End, string OrderBy, string Order)
         {
             IEnumerable<ProjectModel> projects = (from p in DB.Projects
                                                   where p.Title.Contains(Title)
@@ -64,7 +64,68 @@ namespace EasySense.Controllers
                 projects = projects.Where(x => x.UserID == CurrentUser.ID);
             else if (CurrentUser.Role == UserRole.Master)
                 projects = projects.Where(x => x.User.Department.UserID == CurrentUser.ID);
-            projects = projects.OrderByDescending(x => x.ID).Skip(20 * Page).Take(20).ToList();
+            if (string.IsNullOrEmpty(OrderBy))
+            {
+                projects = projects.OrderByDescending(x => x.ID);
+            }
+            else
+            {
+                if (Order == "asc")
+                {
+                    if (OrderBy == "ID")
+                        projects = projects.OrderBy(x => x.ID);
+                    else if (OrderBy == "UserID")
+                        projects = projects.OrderBy(x => x.UserID);
+                    else if (OrderBy == "Title")
+                        projects = projects.OrderBy(x => x.Title);
+                    else if (OrderBy == "Charge")
+                        projects = projects.OrderBy(x => x.Charge);
+                    else if (OrderBy == "SignTime")
+                        projects = projects.OrderBy(x => x.SignTime);
+                    else if (OrderBy == "ProductID")
+                        projects = projects.OrderBy(x => x.ProductID);
+                    else if (OrderBy == "EnterpriseID")
+                        projects = projects.OrderBy(x => x.EnterpriseID);
+                    else if (OrderBy == "Enterprise.Brand")
+                        projects = projects.OrderBy(x => x.EnterpriseID);
+                    else if (OrderBy == "CustomerID")
+                        projects = projects.OrderBy(x => x.CustomerID);
+                    else if (OrderBy == "Status")
+                        projects = projects.OrderBy(x => x.Status);
+                    else if (OrderBy == "InvoiceTime")
+                        projects = projects.OrderBy(x => x.InvoiceTime);
+                    else
+                        projects = projects.OrderBy(x => x.ChargeTime);
+                }
+                else
+                {
+                    if (OrderBy == "ID")
+                        projects = projects.OrderByDescending(x => x.ID);
+                    else if (OrderBy == "UserID")
+                        projects = projects.OrderByDescending(x => x.UserID);
+                    else if (OrderBy == "Title")
+                        projects = projects.OrderByDescending(x => x.Title);
+                    else if (OrderBy == "Charge")
+                        projects = projects.OrderByDescending(x => x.Charge);
+                    else if (OrderBy == "SignTime")
+                        projects = projects.OrderByDescending(x => x.SignTime);
+                    else if (OrderBy == "ProductID")
+                        projects = projects.OrderByDescending(x => x.ProductID);
+                    else if (OrderBy == "EnterpriseID")
+                        projects = projects.OrderByDescending(x => x.EnterpriseID);
+                    else if (OrderBy == "Enterprise.Brand")
+                        projects = projects.OrderByDescending(x => x.EnterpriseID);
+                    else if (OrderBy == "CustomerID")
+                        projects = projects.OrderByDescending(x => x.CustomerID);
+                    else if (OrderBy == "Status")
+                        projects = projects.OrderByDescending(x => x.Status);
+                    else if (OrderBy == "InvoiceTime")
+                        projects = projects.OrderByDescending(x => x.InvoiceTime);
+                    else
+                        projects = projects.OrderByDescending(x => x.ChargeTime);
+                }
+            }
+            projects = projects.Skip(20 * Page).Take(20).ToList();
             var ret = new List<ProjectListViewModel>();
             foreach (var p in projects)
                 ret.Add((ProjectListViewModel)p);

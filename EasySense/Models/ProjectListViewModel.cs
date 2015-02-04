@@ -17,7 +17,8 @@ namespace EasySense.Models
 
         public string SignTime { get; set; }
 
-        public string Type { get; set; }
+        public string Product { get; set; }
+        public string Enterprise { get; set; }
 
         public string Customer { get; set; }
 
@@ -55,8 +56,9 @@ namespace EasySense.Models
                 Owner = Project.User.Name,
                 Title = Project.Title,
                 Charge = Project.Charge == null ? "未付款" : Project.Charge.Value.ToString("{0.00}"),
-                SignTime = Project.SignTime==null?"未签订" : Project.SignTime.Value.ToString("yyyy-MM-dd"),
-                Type = Project.ProductID == null ? "未指定" : Project.Product.Category.Title,
+                SignTime = Project.SignTime == null ? "未签订" : Project.SignTime.Value.ToString("yyyy-MM-dd"),
+                Product = Project.ProductID == null ? "未指定" : Project.Product.Category.Title,
+                Enterprise = Project.EnterpriseID == null ? "未指定" : Project.Enterprise.Title,
                 Customer = Project.CustomerID == null ? "未指定" : Project.Customer.Name,
                 Brand = Project.EnterpriseID == null ? "未知" : Project.Enterprise.Brand,
                 Status = status,

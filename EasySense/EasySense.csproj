@@ -342,6 +342,7 @@
     <Compile Include="Models\EnterpriseModel.cs" />
     <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\NotificationViewModel.cs" />
+    <Compile Include="Models\ProjectListViewModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />

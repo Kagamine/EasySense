@@ -4,6 +4,7 @@ var order = "asc";
 var orderby = null;
 
 $("[data-col]").click(function () {
+    page = 0;
     $("img[src='/Images/asc.png']").remove();
     $("img[src='/Images/desc.png']").remove();
     if (order == "asc") order = "desc";
@@ -11,7 +12,42 @@ $("[data-col]").click(function () {
     if (orderby == null || orderby != $(this).attr("data-col"))
         orderby = $(this).attr("data-col");
     $(this).append('<img src="/Images/' + order + '.png" />');
+
+    if ($("#lstProjects").length > 0)
+        $("#lstProjects").html("");
+
+    Load();
 });
+
+function Load()
+{
+    if (lock) return;
+    lock = true;    
+    LoadProjects();
+}
+
+function LoadProjects()
+{
+    if ($("#lstProjects").length <= 0) return;
+    ShowLoading();
+    $.getJSON("/Project/Search", {
+        Page: page,
+        Order: order,
+        OrderBy: orderby,
+        Title: $("#txtTitle").val(),
+        Status: $("#lstStatus").val(),
+        Begin: $("#txtBegin").val(),
+        End: $("#txtEnd").val()
+    }, function (data) {
+        for (var i = 0; i < data.length; i++)
+        {
+            $("#lstProjects").append('<tr onclick="window.location=\'\/Project\/Show\/' + data[i].ID + '\'"><td>' + data[i].ID + '</td><td>' + data[i].Owner + '</td><td>' + data[i].Title + '</td><td>' + data[i].Charge + '</td><td>' + data[i].SignTime + '</td><td>' + data[i].Product + '</td><td>' + data[i].Enterprise + '</td><td>' + data[i].Brand + '</td><td>' + data[i].Customer + '</td><td>' + data[i].Status + '</td><td>' + data[i].InvoiceTime + '</td><td>' + data[i].ChargeTime + '</td></tr>');
+        }
+        page++;
+        lock = false;
+        HideLoading();
+    });
+}
 
 $(document).ready(function () {
     $("#btnAllSearch").click(function () {
@@ -77,4 +113,13 @@ $(document).ready(function () {
     $("#btnEnterpriseSearch").click(function () {
         LoadEnterprise();
     });
+
+    Load();
+});
+
+$(window).scroll(function () {
+    totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
+    if ($(document).height() <= totalheight) {
+        Load();
+    }
 });
