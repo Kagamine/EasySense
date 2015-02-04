@@ -207,7 +207,7 @@
                 else
                     $("#CustomerName").removeAttr("disabled");
             });
-            $("#EnterpriseName").change(function () {
+            $("#EnterpriseName").keyup(function () {
                 $("#CustomerName").attr("disabled", "disabled");
                 $("#CustomerName").val("");
                 $("#CustomerID").val(null);
@@ -220,7 +220,7 @@
                     }
                     if (data.length == 0)
                     {
-                        $("#lstEnterprises").html("没有找到匹配的企业<hr />");
+                        $("#lstEnterprises").html("<small>没有找到匹配的企业</small><hr />");
                     }
                     $("[data-content]").unbind().click(function () {
                         $("[data-toggle='" + CurrentNotification + "']").val($(this).attr("data-content"));
