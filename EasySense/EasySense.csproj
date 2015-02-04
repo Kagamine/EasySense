@@ -300,7 +300,9 @@
     <Content Include="Scripts\ckeditor\styles.js" />
     <Content Include="Scripts\easysense.basic.js" />
     <Content Include="Scripts\easysense.extend.js" />
+    <Content Include="Scripts\jquery.datetimepicker.js" />
     <Content Include="Scripts\jquery.js" />
+    <Content Include="Styles\datetimepicker.css" />
     <Content Include="Styles\es_login.css" />
     <Content Include="Styles\es_main.css" />
     <Content Include="Web.config" />

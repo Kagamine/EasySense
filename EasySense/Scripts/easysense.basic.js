@@ -31,6 +31,11 @@ $(document).ready(function(){
 	    $("a[data-toggle='" + CurrentNotification + "']").removeClass("es-block-menu-active");
 		CurrentNotification = $(this).attr("data-toggle");
 	});
+	$("[data-content]").click(function () {
+	    $("[data-toggle='" + CurrentNotification + "']").val($(this).attr("data-content"));
+	    $("#" + CurrentNotification).slideUp(200);
+	    CurrentNotification = null;
+	});
 });
 
 $(document).on('click', function (e) {

@@ -94,8 +94,27 @@
                     </select>
                 </p>
                 <h3>客户信息</h3>
-                <p>客户名称<br /><input type="text" class="textbox" placeholder="客户名称" value="@(Model.EnterpriseID == null?"" : Model.Enterprise.Title)" /></p>
-                <p>客户联系人<br /><input type="text" class="textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" disabled /></p>
+                <input id="EnterpriseID" type="hidden" name="EnterpriseID" value="@Model.EnterpriseID" />
+                <p>客户名称<br /><input id="EnterpriseName" data-toggle="EnterpriseSelect" type="text" class="textbox" placeholder="客户名称或客户首字母" value="@(Model.EnterpriseID == null?"" : Model.Enterprise.Title)" /></p>
+                    <div class="es-menu-extend" id="EnterpriseSelect">
+                        <div id="lstEnterprises">
+                            @if (ViewBag.Enterprises.Count == 0)
+                            {
+                                <small>您还没有添加任何客户</small>
+                                <hr />
+                            }
+                            else
+                            {
+                                foreach (EnterpriseListViewModel e in ViewBag.Enterprises)
+                                {
+                                    <img src="/Enterprise/Icon/@e.ID" class="es-icon-small" /><a href="javascript:$('#EnterpriseID').val(@e.ID);" data-content="@e.Title">@e.Title</a><hr />
+                                }
+                            }
+                        </div>
+                        <a href="/Enterprise" target="_blank">添加新客户</a>
+                    </div>
+                <input type="hidden" name="CustomerID" value="@Model.CustomerID" />
+                <p>客户联系人<br /><input id="CustomerName" type="text" class="textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" disabled /></p>
             </td>
             <td>
                 <h3>扩展信息</h3>
@@ -178,6 +197,38 @@
             $("input[name='End']").datetimepicker();
             $("input[name='InvoiceTime']").datetimepicker();
             $("input[name='SignTime']").datetimepicker();
+            $("#EnterpriseName").blur(function () {
+                if ($("#EnterpriseID").val() == null)
+                {
+                    $("#CustomerName").attr("disabled", "disabled");
+                    $("#CustomerName").val("");
+                    $("#CustomerID").val(null);
+                }
+                else
+                    $("#CustomerName").removeAttr("disabled");
+            });
+            $("#EnterpriseName").change(function () {
+                $("#CustomerName").attr("disabled", "disabled");
+                $("#CustomerName").val("");
+                $("#CustomerID").val(null);
+                if ($("#EnterpriseName").val() == "") return;
+                $("#lstEnterprises").html("<img src='/Images/loading_small.gif' class='es-icon-small'>加载中...<hr />");
+                $.getJSON("/Enterprise/Search", { Text: $("#EnterpriseName").val() }, function (data) {
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        $("#lstEnterprises").append('<img src="/Enterprise/Icon/' + data[i].ID + '" class="es-icon-small" /><a href="javascript:$(\'#EnterpriseID\').val(' + data[i].ID + ');" data-content="' + data[i].Title + '">' + data[i].Title + '</a><hr />');
+                    }
+                    if (data.length == 0)
+                    {
+                        $("#lstEnterprises").html("没有找到匹配的企业<hr />");
+                    }
+                    $("[data-content]").unbind().click(function () {
+                        $("[data-toggle='" + CurrentNotification + "']").val($(this).attr("data-content"));
+                        $("#" + CurrentNotification).slideUp(200);
+                        CurrentNotification = null;
+                    });
+                });
+            });
         </script>
     }
     else

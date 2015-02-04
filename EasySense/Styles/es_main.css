@@ -453,6 +453,15 @@ th[data-col] {
         margin-right: 5px;
     }
 
+.es-menu-extend a, .es-menu-extend a:visited, .es-menu-extend a:active {
+    color: #1d76c7;
+    text-decoration:none;
+}
+
+.es-menu-extend a:hover {
+    color:#3a93e2;
+}
+
 .es-block-menu {
     margin-top:2px;
     margin-bottom: 20px;
@@ -606,4 +615,10 @@ th[data-col] {
 .es-user-name {
     float: left;
     line-height: 38px;
+}
+
+.es-icon-small {
+    width: 18px;
+    height: 18px;
+    float: left;
 }

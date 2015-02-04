@@ -27,10 +27,17 @@ namespace EasySense.Controllers
             ViewBag.Categories = (from c in DB.Categories
                                   orderby c.ID descending
                                   select c).ToList();
+            var enterprises = (from e in DB.Enterprises
+                               orderby e.ID descending
+                               select e).Take(5).ToList();
+            ViewBag.Enterprises = new List<EnterpriseListViewModel>();
+            foreach (var e in enterprises)
+                ViewBag.Enterprises.Add((EnterpriseListViewModel)e);
             return View(project);
         }
 
         [UserOwnedProject]
+        [HttpPost]
         public ActionResult Edit(int id, ProjectModel Model)
         {
             var project = DB.Projects.Find(id);
