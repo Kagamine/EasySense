@@ -305,6 +305,7 @@
     <Content Include="Styles\datetimepicker.css" />
     <Content Include="Styles\es_login.css" />
     <Content Include="Styles\es_main.css" />
+    <Content Include="Styles\fullcalendar.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
