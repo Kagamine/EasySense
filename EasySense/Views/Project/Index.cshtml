@@ -3,8 +3,11 @@
     ViewBag.Title = "项目管理";
 }
 <style>
-    tr {
+    .es-table-outer tr {
         cursor: pointer;
+    }
+    table {
+        line-height: 36px;
     }
 </style>
 <div class="es-block-menu">
@@ -12,14 +15,49 @@
     {
         <a href="#" data-toggle="AddProject">添加项目</a>
         <div id="AddProject" class="es-menu-extend">
-
+            <table style="width:600px">
+                <tr>
+                    <td>项目名称</td>
+                    <td><input id="txtNewTitle" type="text" class="textbox" placeholder="项目名称" /></td>
+                    <td>项目状态</td>
+                    <td>
+                        <select id="lstNewStatus" class="select span-width">
+                            <option value="0">当前</option>
+                            <option value="1">完成</option>
+                            <option value="2">竞标</option>
+                            <option value="3">废弃</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>说明</td>
+                    <td colspan="3"><input id="txtDescription" type="text" class="textbox full-width" placeholder="项目说明" /></td>
+                </tr>
+                <tr>
+                    <td>计划开始时间</td>
+                    <td><input id="txtPlanBegin" type="text" class="textbox" placeholder="计划开始时间" /></td>
+                    <td>计划结束时间</td>
+                    <td><input id="txtPlanEnd" type="text" class="textbox full-width" placeholder="计划结束时间" /></td>
+                </tr>
+                <tr>
+                    <td>优先级</td>
+                    <td>
+                        <select id="lstPriority" class="select span-width">
+                            <option value="0">正常</option>
+                            <option value="1">中等</option>
+                            <option value="2">高</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <p style="text-align:center"><a href="javascript:void(0);" id="btnAddProject">下一步</a></p>
         </div>
     }
     <a href="#" data-toggle="ProjectsFilter">过滤器</a>
     <div id="ProjectsFilter" class="es-menu-extend">
         <p>项目名称：<input id="txtTitle" type="text" class="textbox" placeholder="项目名称" />&nbsp;&nbsp; 项目状态：<select id="lstStatus" class="select" style="width: 130px"><option value="">全部</option><option value="0">当前</option><option value="1">完成</option><option value="2">竞标</option><option value="3">废弃</option></select></p>
         <p>签订时间：从 <input id="txtBegin" type="text" class="textbox" value="" /> 到 <input id="txtEnd" type="text" class="textbox" value="" /></p>
-        <p><a href="javascript:page=0;$('#lstProjects').html('');Load();">检索</a></p>
+        <p><a href="javascript:page=0;$('#lstProjects').html('');Load();CloseToggle();">检索</a></p>
     </div>
 </div>
 <div class="es-table-outer">
@@ -47,4 +85,21 @@
 <script>
     $("#txtBegin").datetimepicker();
     $("#txtEnd").datetimepicker();
+    $("#txtPlanBegin").datetimepicker();
+    $("#txtPlanEnd").datetimepicker();
+    $("#btnAddProject").click(function () {
+        ShowLoading();
+        $.post("/Project/Create",
+            {
+                Title: $("#txtNewTitle").val(),
+                Status: $("#lstNewStatus").val(),
+                Description: $("#txtDescription").val(),
+                Begin: $("#txtPlanBegin").val(),
+                End: $("#txtPlanEnd").val(),
+                Priority: $("#lstPriority").val(),
+                sid: "@ViewBag.SID"
+            }, function (id) {
+                window.location = "/Project/Show/" + id;
+            });
+    });
 </script>

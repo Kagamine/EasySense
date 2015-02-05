@@ -6,29 +6,38 @@
     table {
         width: 100%;
     }
+
     td {
         vertical-align: top;
     }
+
     .es-block {
         font-size: 12px;
         line-height: 24px;
     }
+
     h2 {
         color: #fff;
     }
+
     h3 {
         color: rgb(76, 80, 88);
     }
+
     .status-table {
-        width:auto!important;float:right;margin-top:10px;
+        width: auto !important;
+        float: right;
+        margin-top: 10px;
     }
+
         .status-table td {
-            padding:5px;
+            padding: 5px;
         }
+
     .es-table-outer {
-        padding-left:20px;
-        padding-right:20px;
-        padding-bottom:20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
     }
 </style>
 <div class="es-block-menu">
@@ -91,36 +100,39 @@
     </table>
 </div>
 <div class="es-block">
-    <table>
-        <tr>
-            <td>
-                <h3>基本信息</h3>
-                <p>项目名称<br /><input type="text" class="textbox" placeholder="项目名称" value="@Model.Title" /></p>
-                <p>项目说明<br /><textarea class="textbox">@Model.Description</textarea></p>
-                <p>计划开始时间<br /><input name="Begin" type="text" class="textbox" placeholder="计划开始时间" value="@Model.Begin" /></p>
-                <p>计划完成时间<br /><input name="End" type="text" class="textbox" placeholder="计划完成时间" value="@Model.End" /></p>
-                <p>
-                    优先级
-                    <br />
-                    <select class="select">
-                        <option value="0" @(Model.Priority == ProjectPriority.Normal ? " selected" : "")>正常</option>
-                        <option value="1" @(Model.Priority == ProjectPriority.Medium ? " selected" : "")>中等</option>
-                        <option value="2" @(Model.Priority == ProjectPriority.High ? " selected" : "")>高</option>
-                    </select>
-                </p>
-                <p>
-                    项目状态
-                    <br />
-                    <select class="select">
-                        <option value="0" @(Model.Status == ProjectStatus.Current ? " selected" : "")>当前</option>
-                        <option value="1" @(Model.Status == ProjectStatus.Completed ? " selected" : "")>完成</option>
-                        <option value="2" @(Model.Status == ProjectStatus.Bidding ? " selected" : "")>竞标</option>
-                        <option value="3" @(Model.Status == ProjectStatus.Dumped ? " selected" : "")>废弃</option>
-                    </select>
-                </p>
-                <h3>客户信息</h3>
-                <input id="EnterpriseID" type="hidden" name="EnterpriseID" value="@Model.EnterpriseID" />
-                <p>客户名称<br /><input id="EnterpriseName" data-toggle="EnterpriseSelect" type="text" class="textbox" placeholder="客户名称或客户首字母" value="@(Model.EnterpriseID == null?"" : Model.Enterprise.Title)" /></p>
+    @using (Html.BeginForm("Edit", "Project",new { id = Model.ID }, FormMethod.Post, new { id = "frmEditProject" }))
+    {
+        @Html.AntiForgerySID()
+        <table>
+            <tr>
+                <td>
+                    <h3>基本信息</h3>
+                    <p>项目名称<br /><input type="text" class="textbox" placeholder="项目名称" value="@Model.Title" /></p>
+                    <p>项目说明<br /><textarea class="textbox">@Model.Description</textarea></p>
+                    <p>计划开始时间<br /><input name="Begin" type="text" class="textbox" placeholder="计划开始时间" value="@Model.Begin" /></p>
+                    <p>计划完成时间<br /><input name="End" type="text" class="textbox" placeholder="计划完成时间" value="@Model.End" /></p>
+                    <p>
+                        优先级
+                        <br />
+                        <select class="select">
+                            <option value="0" @(Model.Priority == ProjectPriority.Normal ? " selected" : "")>正常</option>
+                            <option value="1" @(Model.Priority == ProjectPriority.Medium ? " selected" : "")>中等</option>
+                            <option value="2" @(Model.Priority == ProjectPriority.High ? " selected" : "")>高</option>
+                        </select>
+                    </p>
+                    <p>
+                        项目状态
+                        <br />
+                        <select class="select">
+                            <option value="0" @(Model.Status == ProjectStatus.Current ? " selected" : "")>当前</option>
+                            <option value="1" @(Model.Status == ProjectStatus.Completed ? " selected" : "")>完成</option>
+                            <option value="2" @(Model.Status == ProjectStatus.Bidding ? " selected" : "")>竞标</option>
+                            <option value="3" @(Model.Status == ProjectStatus.Dumped ? " selected" : "")>废弃</option>
+                        </select>
+                    </p>
+                    <h3>客户信息</h3>
+                    <input id="EnterpriseID" type="hidden" name="EnterpriseID" value="@Model.EnterpriseID" />
+                    <p>客户名称<br /><input id="EnterpriseName" data-toggle="EnterpriseSelect" type="text" class="textbox" placeholder="客户名称或客户首字母" value="@(Model.EnterpriseID == null?"" : Model.Enterprise.Title)" /></p>
                     <div class="es-menu-extend" id="EnterpriseSelect">
                         <div id="lstEnterprises">
                             @if (ViewBag.Enterprises.Count == 0)
@@ -138,90 +150,91 @@
                         </div>
                         <a href="/Enterprise" target="_blank">添加新客户</a>
                     </div>
-                <input type="hidden" name="CustomerID" value="@Model.CustomerID" />
-                <p>客户联系人<br /><input id="CustomerName" type="text" class="textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" disabled /></p>
-            </td>
-            <td>
-                <h3>扩展信息</h3>
-                <p>
-                    订单状态
-                    <br />
-                    <select class="select">
-                        <option value="true"@(Model.Ordering?" selected" :"")>有订单</option>
-                        <option value="true" @(!Model.Ordering ? " selected" : "")>无订单</option>
-                    </select>
-                </p>
-                <p>
-                    项目类别
-                    <br />
-                    <select class="select">
-                        <option>未指定类别</option>
-                        @foreach (CategoryModel c in ViewBag.Categories)
-                        {
-                            <option value="@c.ID">@c.Title</option>
-                        }
-                    </select>
-                    <br />
-                    <a href="/Category" target="_blank">添加项目类别</a>
-                </p>
-                <p>
-                    产品名称
-                    <br />
-                    <select class="select"></select>
-                    <br />
-                    <a href="/Product" target="_blank">添加产品</a>
-                </p>
-                <p>签订日期<br /><input type="text" name="SignTime" class="textbox" placeholder="签订日期" /></p>
-                <p>
-                    所在地区
-                    <br />
-                    <select class="select">
-                        <option>未指定地区</option>
-                        @foreach (ZoneModel z in ViewBag.Zones)
-                        {
-                            <option value="@z.ID">@z.Title</option>
-                        }
-                    </select>
-                    <br />
-                    <a href="/Zone" target="_blank">添加地区</a>
-                </p>
-            </td>
-            @if (ViewBag.CurrentUser.Role >= UserRole.Finance)
-            {
-                <td>
-                    <h3>财务信息</h3>
-                    <p>项目金额<br /><input type="text" class="textbox" placeholder="项目金额" value="@Model.Charge" /></p>
-                    <p>税金<br /><strong>￥@Model.Award</strong></p>
-                    <p>销售佣金<br /><strong>￥@Model.SellingCommisson</strong></p>
-                    <p>项目部奖金<br /><strong>￥@Model.Award</strong></p>
-                    <p>项目利润<br /><strong>￥@Model.Profit</strong></p>
-                    <p>项目毛利率%<br /><strong></strong></p>
+                    <input type="hidden" name="CustomerID" value="@Model.CustomerID" />
+                    <p>客户联系人<br /><input id="CustomerName" type="text" class="textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" disabled /></p>
                 </td>
-            }
-            <td>
-                <h3>发票信息</h3>
-                <p>发票金额<br /><input type="text" class="textbox" placeholder="发票金额" value="@Model.InvoicePrice" /></p>
-                <p>开票日期<br /><input type="text" name="InvoiceTime" class="textbox" placeholder="开票日期" value="@Model.InvoiceTime" /></p>
-                <p>发票号<br /><input type="text" class="textbox" placeholder="发票号" value="@Model.InvoiceSN" /></p>
-                <p>备注<br /><textarea class="textbox" placeholder="备注">@Model.Hint</textarea></p>
-                <p>收款日期<br /><input type="text" name="ChargeTime" class="textbox" placeholder="收款日期" value="@Model.ChargeTime" /></p>
-                <p>
-                    交易类型
-                    <br/>
-                    <select class="select">
-                        <option value="0"@(Model.PayMethod == PayMethod.Unpaid?" selected" :"")>未确定</option>
-                        <option value="1"@(Model.PayMethod == PayMethod.Cash ? " selected" : "")>现金</option>
-                        <option value="2"@(Model.PayMethod == PayMethod.Transfer ? " selected" : "")>转账</option>
-                    </select>
-                </p>
-                <p>实收金额<br /><input type="text" class="textbox" placeholder="实收金额" value="@Model.ActualPayments" /></p>
-            </td>
-        </tr>
-    </table>
+                <td>
+                    <h3>扩展信息</h3>
+                    <p>
+                        订单状态
+                        <br />
+                        <select class="select">
+                            <option value="true" @(Model.Ordering ? " selected" : "")>有订单</option>
+                            <option value="true" @(!Model.Ordering ? " selected" : "")>无订单</option>
+                        </select>
+                    </p>
+                    <p>
+                        项目类别
+                        <br />
+                        <select class="select">
+                            <option>未指定类别</option>
+                            @foreach (CategoryModel c in ViewBag.Categories)
+                            {
+                                <option value="@c.ID">@c.Title</option>
+                            }
+                        </select>
+                        <br />
+                        <a href="/Category" target="_blank">添加项目类别</a>
+                    </p>
+                    <p>
+                        产品名称
+                        <br />
+                        <select class="select"></select>
+                        <br />
+                        <a href="/Product" target="_blank">添加产品</a>
+                    </p>
+                    <p>签订日期<br /><input type="text" name="SignTime" class="textbox" placeholder="签订日期" value="@Model.SignTime" /></p>
+                    <p>
+                        所在地区
+                        <br />
+                        <select class="select">
+                            <option>未指定地区</option>
+                            @foreach (ZoneModel z in ViewBag.Zones)
+                            {
+                                <option value="@z.ID">@z.Title</option>
+                            }
+                        </select>
+                        <br />
+                        <a href="/Zone" target="_blank">添加地区</a>
+                    </p>
+                </td>
+                @if (ViewBag.CurrentUser.Role >= UserRole.Finance)
+                {
+                    <td>
+                        <h3>财务信息</h3>
+                        <p>项目金额<br /><input type="text" class="textbox" placeholder="项目金额" value="@Model.Charge" /></p>
+                        <p>税金<br /><strong>￥@Model.Award</strong></p>
+                        <p>销售佣金<br /><strong>￥@Model.SellingCommisson</strong></p>
+                        <p>项目部奖金<br /><strong>￥@Model.Award</strong></p>
+                        <p>项目利润<br /><strong>￥@Model.Profit</strong></p>
+                        <p>项目毛利率%<br /><strong></strong></p>
+                    </td>
+                }
+                <td>
+                    <h3>发票信息</h3>
+                    <p>发票金额<br /><input type="text" class="textbox" placeholder="发票金额" value="@Model.InvoicePrice" /></p>
+                    <p>开票日期<br /><input type="text" name="InvoiceTime" class="textbox" placeholder="开票日期" value="@Model.InvoiceTime" /></p>
+                    <p>发票号<br /><input type="text" class="textbox" placeholder="发票号" value="@Model.InvoiceSN" /></p>
+                    <p>备注<br /><textarea class="textbox" placeholder="备注">@Model.Hint</textarea></p>
+                    <p>收款日期<br /><input type="text" name="ChargeTime" class="textbox" placeholder="收款日期" value="@Model.ChargeTime" /></p>
+                    <p>
+                        交易类型
+                        <br />
+                        <select class="select">
+                            <option value="0" @(Model.PayMethod == PayMethod.Unpaid ? " selected" : "")>未确定</option>
+                            <option value="1" @(Model.PayMethod == PayMethod.Cash ? " selected" : "")>现金</option>
+                            <option value="2" @(Model.PayMethod == PayMethod.Transfer ? " selected" : "")>转账</option>
+                        </select>
+                    </p>
+                    <p>实收金额<br /><input type="text" class="textbox" placeholder="实收金额" value="@Model.ActualPayments" /></p>
+                </td>
+            </tr>
+        </table>
+    }
     @if (ViewBag.CurrentUser.Role != UserRole.Finance)
     {
         <div class="es-block-menu">
-            <p style="text-align:center"><a href="javascript:;">保存全部信息</a></p>
+            <p style="text-align:center"><a href="javascript:ShowLoading();$('#frmEditProject').submit();">保存全部信息</a></p>
         </div>
         <script>
             $("input[name='Begin']").datetimepicker();
@@ -229,8 +242,7 @@
             $("input[name='InvoiceTime']").datetimepicker();
             $("input[name='SignTime']").datetimepicker();
             $("#EnterpriseName").blur(function () {
-                if ($("#EnterpriseID").val() == null || $("#EnterpriseID").val() == "")
-                {
+                if ($("#EnterpriseID").val() == null || $("#EnterpriseID").val() == "") {
                     $("#CustomerName").attr("disabled", "disabled");
                     $("#CustomerName").val("");
                     $("#CustomerID").val(null);
@@ -245,12 +257,10 @@
                 if ($("#EnterpriseName").val() == "") return;
                 $("#lstEnterprises").html("<img src='/Images/loading_small.gif' class='es-icon-small'>加载中...<hr />");
                 $.getJSON("/Enterprise/Search", { Text: $("#EnterpriseName").val() }, function (data) {
-                    for (var i = 0; i < data.length; i++)
-                    {
+                    for (var i = 0; i < data.length; i++) {
                         $("#lstEnterprises").append('<img src="/Enterprise/Icon/' + data[i].ID + '" class="es-icon-small" /><a href="javascript:$(\'#EnterpriseID\').val(' + data[i].ID + ');" data-content="' + data[i].Title + '">' + data[i].Title + '</a><hr />');
                     }
-                    if (data.length == 0)
-                    {
+                    if (data.length == 0) {
                         $("#lstEnterprises").html("<small>没有找到匹配的企业</small><hr />");
                     }
                     $("[data-content]").unbind().click(function () {
@@ -265,9 +275,9 @@
     else
     {
         <script>
-                $(".es-block input[type='text']").attr("disabled", "disabled");
-                $(".es-block input[type='select']").attr("disabled", "disabled");
-                $(".es-block textarea").attr("disabled", "disabled");
+            $(".es-block input[type='text']").attr("disabled", "disabled");
+            $(".es-block input[type='select']").attr("disabled", "disabled");
+            $(".es-block textarea").attr("disabled", "disabled");
         </script>
     }
 </div>

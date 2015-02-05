@@ -15,7 +15,6 @@ $("[data-col]").click(function () {
 
     if ($("#lstProjects").length > 0)
         $("#lstProjects").html("");
-
     Load();
 });
 

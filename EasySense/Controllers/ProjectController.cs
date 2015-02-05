@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using EasySense.Models;
 using EasySense.Schema;
+using System.Data.Entity.Validation;
 
 namespace EasySense.Controllers
 {
@@ -38,14 +39,30 @@ namespace EasySense.Controllers
 
         [UserOwnedProject]
         [HttpPost]
+        [ValidateSID]
         public ActionResult Edit(int id, ProjectModel Model)
         {
             var project = DB.Projects.Find(id);
-            //TODO: 把表单提交的信息存入数据库，注意只有Finance级和Root级可以修改财务信息，如果不是这个级别的直接忽略相关字段，前台只要name属性和Model里的属性对应上就从Model参数里读
-
+            project.ZoneID = Model.ZoneID;
+            project.ActualPayments = Model.ActualPayments;
+            project.Begin = Model.Begin;
+            project.End = Model.End;
+            project.EnterpriseID = Model.EnterpriseID;
+            project.Hint = Model.Hint;
+            project.Description = Model.Description;
+            project.InvoicePrice = Model.InvoicePrice;
+            project.InvoiceSN = Model.InvoiceSN;
+            project.Ordering = Model.Ordering;
+            project.Priority = Model.Priority;
+            project.Charge = Model.Charge;
+            project.ChargeTime = Model.ChargeTime;
+            project.SignTime = Model.SignTime;
+            project.InvoicePrice = Model.InvoicePrice;
+            project.CustomerID = Model.CustomerID;
+            project.Title = Model.Title;
             project.Log = string.Format("[{0}] {1}({2}) 修改了项目\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Name, CurrentUser.Username);
             DB.SaveChanges();
-            return Content("项目信息修改成功！");
+            return RedirectToAction("Show", "Project", new { id = id });
         }
 
         [HttpGet]
@@ -66,7 +83,7 @@ namespace EasySense.Controllers
                 projects = projects.Where(x => x.User.Department.UserID == CurrentUser.ID);
             if (string.IsNullOrEmpty(OrderBy))
             {
-                projects = projects.OrderByDescending(x => x.ID);
+                projects = projects.OrderByDescending(x => x.Status).ThenByDescending(x=>x.Priority);
             }
             else
             {
@@ -130,6 +147,21 @@ namespace EasySense.Controllers
             foreach (var p in projects)
                 ret.Add((ProjectListViewModel)p);
             return Json(ret, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [ValidateSID]
+        public ActionResult Create(ProjectModel Model)
+        {
+            Model.Log = DateTime.Now + " 被创建.\r\n";
+            Model.Hint = "无内容";
+            Model.UserID = CurrentUser.ID;
+            Model.Ordering = false;
+            Model.Percent = 0;
+            Model.PayMethod = PayMethod.Unpaid;
+            DB.Projects.Add(Model);
+            DB.SaveChanges();
+            return Content(Model.ID.ToString());
         }
     }
 }

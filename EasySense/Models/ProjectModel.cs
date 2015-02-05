@@ -75,7 +75,6 @@ namespace EasySense.Models
         [Index]
         public bool Ordering { get; set; }
 
-        [Index]
         public DateTime? SignTime { get; set; }
 
         [ForeignKey("Product")]
@@ -124,17 +123,14 @@ namespace EasySense.Models
         //Invoice begin
         public decimal? InvoicePrice { get; set; }
 
-        [Index]
         public DateTime? InvoiceTime { get; set; }
 
         [StringLength(256)]
-        [Index(IsUnique = true)]
         public string InvoiceSN { get; set; }
 
         [Required]
         public string Hint { get; set; }
 
-        [Index]
         public DateTime? ChargeTime { get; set; }
 
         public decimal? ActualPayments { get; set; }
