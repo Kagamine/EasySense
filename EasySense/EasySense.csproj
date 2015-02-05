@@ -300,6 +300,8 @@
     <Content Include="Scripts\ckeditor\styles.js" />
     <Content Include="Scripts\easysense.basic.js" />
     <Content Include="Scripts\easysense.extend.js" />
+    <Content Include="Scripts\fullcalendar.min.js" />
+    <Content Include="Scripts\jquery-ui-1.10.2.custom.min.js" />
     <Content Include="Scripts\jquery.datetimepicker.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Styles\datetimepicker.css" />
@@ -382,6 +384,7 @@
     <Content Include="Views\Project\Index.cshtml" />
     <Content Include="Views\Project\Show.cshtml" />
     <Content Include="Views\Enterprise\Show.cshtml" />
+    <Content Include="Views\Alarm\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -391,7 +394,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Alarm\" />
     <Folder Include="Views\File\" />
     <Folder Include="Views\Report\" />
     <Folder Include="Views\Statistics\" />
