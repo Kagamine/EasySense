@@ -227,9 +227,10 @@ h1, h2, h3, h4, h5, h6 {
 .label {
     font-size: 14px;
     line-height: 14px;
-    border-radius: 10px;
+    border-radius: 20px;
     background-color: #888;
     padding: 3px 10px;
+    color: #fff!important;
 }
 
     .label.red {
@@ -624,8 +625,35 @@ a:hover {
 }
 
 .es-icon-large {
-    width:180px;
-    height:180px;
-    border: 5px solid rgba(255,255,255,0.2);
+    width:150px;
+    height:150px;
+    border: 10px solid rgba(255,255,255,0.2);
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 100%;
+}
+
+.es-customer-container {
+    -webkit-column-width:260px;
+    -moz-column-width:260px;
+    -o-colum-width:260px;
+}
+
+.es-customer {
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+    background-color:rgba(255,255,255,0.95);
+    border-left: 5px solid #ff6a00;
+    padding: 10px; 
+    position:relative;
+    display:inline-block;
+    font-size: 12px;
+    transition: box-shadow 0.2s linear;
+    margin-top: 20px;
+}
+
+    .es-customer table {
+        width: 100%;
+    }
+
+.es-customer:hover {
+    box-shadow:0 0 10px orange;
 }

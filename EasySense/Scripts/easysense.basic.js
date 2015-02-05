@@ -42,9 +42,9 @@ $(document).on('click', function (e) {
     if (CurrentNotification == null) return;
     if ($(e.target).attr("data-toggle") == CurrentNotification) return;
     if ($(e.target).attr("id") == CurrentNotification) return;
-    if ($(e.target).parents('[data-toggle="'+CurrentNotification+'"]').length > 0) return;
+    if ($(e.target).parents('[data-toggle="' + CurrentNotification + '"]').length > 0) return;
     if ($(e.target).parents('#' + CurrentNotification).length > 0) return;
-    if ($(e.target).parents('.xdsoft_timepicker')) return;
+    if ($(".xdsoft_timepicker").length > 0 && $(e.target).parents('.xdsoft_timepicker')) return;
     $("#" + CurrentNotification).slideUp(200);
     $("a[data-toggle='"+CurrentNotification+"']").removeClass("es-block-menu-active");
     CurrentNotification = null;

@@ -40,6 +40,10 @@ namespace EasySense.Models
         [Required]
         public string Fax { get; set; }
 
+        [StringLength(128)]
+        [Required]
+        public string Address { get; set; }
+
         [StringLength(16)]
         [Required]
         public string Zip { get; set; }
