@@ -19,7 +19,14 @@ namespace EasySense.Models
 
         public static implicit operator AlarmGridViewModel(AlarmModel Alarm)
         {
-
+            return new AlarmGridViewModel
+            {
+                title = Alarm.Title,
+                begin = Alarm.Begin,
+                end = Alarm.End,
+                allDay = false,
+                url = "/Alarm/Edit/" + Alarm.ID
+            };
         }
     }
 }
