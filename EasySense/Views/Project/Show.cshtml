@@ -1,6 +1,6 @@
 ﻿@model ProjectModel
 @{
-    ViewBag.Title = Model.Title + "编辑项目";
+    ViewBag.Title = Model.Title + " - 编辑项目";
 }
 <style>
     table {
@@ -124,10 +124,10 @@
                         项目状态
                         <br />
                         <select class="select" name="Status">
-                            <option value="0" @(Model.Status == ProjectStatus.Current ? " selected" : "")>当前</option>
-                            <option value="1" @(Model.Status == ProjectStatus.Completed ? " selected" : "")>完成</option>
-                            <option value="2" @(Model.Status == ProjectStatus.Bidding ? " selected" : "")>竞标</option>
-                            <option value="3" @(Model.Status == ProjectStatus.Dumped ? " selected" : "")>废弃</option>
+                            <option value="Current" @(Model.Status == ProjectStatus.Current ? " selected" : "")>当前</option>
+                            <option value="Completed" @(Model.Status == ProjectStatus.Completed ? " selected" : "")>完成</option>
+                            <option value="Bidding" @(Model.Status == ProjectStatus.Bidding ? " selected" : "")>竞标</option>
+                            <option value="Dumped" @(Model.Status == ProjectStatus.Dumped ? " selected" : "")>废弃</option>
                         </select>
                     </p>
                     <h3>客户信息</h3>
@@ -223,9 +223,9 @@
                         交易类型
                         <br />
                         <select class="select" name="PayMethod">
-                            <option value="0" @(Model.PayMethod == PayMethod.Unpaid ? " selected" : "")>未确定</option>
-                            <option value="1" @(Model.PayMethod == PayMethod.Cash ? " selected" : "")>现金</option>
-                            <option value="2" @(Model.PayMethod == PayMethod.Transfer ? " selected" : "")>转账</option>
+                            <option value="Unpaid" @(Model.PayMethod == PayMethod.Unpaid ? " selected" : "")>未确定</option>
+                            <option value="Cash" @(Model.PayMethod == PayMethod.Cash ? " selected" : "")>现金</option>
+                            <option value="Transfer" @(Model.PayMethod == PayMethod.Transfer ? " selected" : "")>转账</option>
                         </select>
                     </p>
                     <p>实收金额<br /><input name="ActualPayments" type="text" class="textbox" placeholder="实收金额" value="@Model.ActualPayments" /></p>

@@ -119,8 +119,6 @@
                 $("#centerprise").prepend(html);
             else
                 $("#denterprise").prepend(html);
-            if ($(e.target).parents('[data-toggle="' + CurrentNotification + '"]').length > 0) return;
-            if ($(e.target).parents('#' + CurrentNotification).length > 0) return;
             $("#" + CurrentNotification).slideUp(200);
             $("a[data-toggle='" + CurrentNotification + "']").removeClass("es-block-menu-active");
             CurrentNotification = null;

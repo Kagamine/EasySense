@@ -124,10 +124,10 @@ namespace EasySense.Helpers
             return ToDateTime(TimeStamp.ToString());
         }
 
-        public static int ToTimeStamp(System.DateTime Time)
+        public static string ToTimeStamp(System.DateTime Time)
         {
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
-            return (int)(Time - startTime).TotalSeconds;
+            return (Time - startTime).TotalSeconds.ToString();
         }
     }
 }

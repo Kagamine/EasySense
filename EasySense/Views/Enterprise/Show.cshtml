@@ -6,6 +6,7 @@
     .es-table-outer {
         padding: 20px;
     }
+
         .es-table-outer td {
             vertical-align: top;
         }
@@ -17,63 +18,67 @@
     }
 
     .es-menu-extend table {
-        line-height: 36px!important;
+        line-height: 36px !important;
     }
 </style>
 <div class="es-block-menu">
     <a href="#" data-toggle="EditEnterprise">编辑</a>
     <div class="es-menu-extend" id="EditEnterprise">
-        <table style="width:600px">
-            <tr>
-                <td>企业名称</td>
-                <td><input name="Title" value="@Model.Title" type="text" class="textbox" placeholder="企业名称" /></td>
-                <td>企业类型</td>
-                <td><input name="Type" value="@Model.Type" type="text" class="textbox full-width" placeholder="企业类型" /></td>
-            </tr>
-            <tr>
-                <td>企业等级</td>
-                <td>
-                    <select name="Level" class="select">
-                        <option value="0"@(Model.Level == EnterpriseLevel.A ? " selected" : "")>A</option>
-                        <option value="1"@(Model.Level == EnterpriseLevel.A ? " selected" : "")>B</option>
-                        <option value="2@(Model.Level == EnterpriseLevel.A ? " selected" : "")">C</option>
-                        <option value="3"@(Model.Level == EnterpriseLevel.A ? " selected" : "")>D</option>
-                    </select>
-                </td>
-                <td>品牌</td>
-                <td><input name="Brand" value="@Model.Brand" type="text" class="textbox full-width" placeholder="销售额" /></td>
-            </tr>
-            <tr>
-                <td>规模</td>
-                <td><input name="Scale" value="@Model.Scale" type="text" class="textbox" placeholder="企业名称" /></td>
-                <td>销售额</td>
-                <td><input name="SalesVolume" value="@Model.SalesVolume" type="text" class="textbox full-width" placeholder="销售额" /></td>
-            </tr>
-            <tr>
-                <td>联系电话</td>
-                <td><input name="Phone" value="@Model.Phone" type="text" class="textbox" placeholder="联系电话" /></td>
-                <td>传真</td>
-                <td><input name="Fax" value="@Model.Fax" type="text" class="textbox full-width" placeholder="传真" /></td>
-            </tr>
-            <tr>
-                <td>通信地址</td>
-                <td><input name="Address" type="text" value="@Model.Address" class="textbox" placeholder="通信地址" /></td>
-                <td>邮政编码</td>
-                <td><input name="Zip" value="@Model.Zip" type="text" class="textbox full-width" placeholder="邮政编码" /></td>
-            </tr>
-            <tr>
-                <td>企业网址</td>
-                <td colspan="3"><input name="Website" value="@Model.Website" type="text" class="textbox full-width" placeholder="http://" /></td>
-            </tr>
-            <tr>
-                <td>备注</td>
-                <td colspan="3"><input name="Hint" type="text" value="@Model.Hint" class="textbox full-width" placeholder="备注" /></td>
-            </tr>
-            <tr>
-                <td>企业徽标</td>
-                <td colspan="3"><input type="file" name="Icon" /> (.png/.gif/.bmp/.jpg)</td>
-            </tr>
-        </table>
+        @using (Html.BeginForm("Edit", "Enterprise", new { id = Model.ID }, FormMethod.Post, new { id = "frmEditEnterprise", enctype= "multipart/form-data" }))
+        {
+            @Html.AntiForgerySID()
+            <table style="width:600px">
+                <tr>
+                    <td>企业名称</td>
+                    <td><input name="Title" value="@Model.Title" type="text" class="textbox" placeholder="企业名称" /></td>
+                    <td>企业类型</td>
+                    <td><input name="Type" value="@Model.Type" type="text" class="textbox full-width" placeholder="企业类型" /></td>
+                </tr>
+                <tr>
+                    <td>企业等级</td>
+                    <td>
+                        <select name="Level" class="select">
+                            <option value="A" @(Model.Level == EnterpriseLevel.A ? " selected" : "")>A</option>
+                            <option value="B" @(Model.Level == EnterpriseLevel.B ? " selected" : "")>B</option>
+                            <option value="C@(Model.Level == EnterpriseLevel.C ? " selected" : "")">C</option>
+                            <option value="D" @(Model.Level == EnterpriseLevel.D ? " selected" : "")>D</option>
+                        </select>
+                    </td>
+                    <td>品牌</td>
+                    <td><input name="Brand" value="@Model.Brand" type="text" class="textbox full-width" placeholder="销售额" /></td>
+                </tr>
+                <tr>
+                    <td>规模</td>
+                    <td><input name="Scale" value="@Model.Scale" type="text" class="textbox" placeholder="企业名称" /></td>
+                    <td>销售额</td>
+                    <td><input name="SalesVolume" value="@Model.SalesVolume" type="text" class="textbox full-width" placeholder="销售额" /></td>
+                </tr>
+                <tr>
+                    <td>联系电话</td>
+                    <td><input name="Phone" value="@Model.Phone" type="text" class="textbox" placeholder="联系电话" /></td>
+                    <td>传真</td>
+                    <td><input name="Fax" value="@Model.Fax" type="text" class="textbox full-width" placeholder="传真" /></td>
+                </tr>
+                <tr>
+                    <td>通信地址</td>
+                    <td><input name="Address" type="text" value="@Model.Address" class="textbox" placeholder="通信地址" /></td>
+                    <td>邮政编码</td>
+                    <td><input name="Zip" value="@Model.Zip" type="text" class="textbox full-width" placeholder="邮政编码" /></td>
+                </tr>
+                <tr>
+                    <td>企业网址</td>
+                    <td colspan="3"><input name="Website" value="@Model.Website" type="text" class="textbox full-width" placeholder="http://" /></td>
+                </tr>
+                <tr>
+                    <td>备注</td>
+                    <td colspan="3"><input name="Hint" type="text" value="@Model.Hint" class="textbox full-width" placeholder="备注" /></td>
+                </tr>
+                <tr>
+                    <td>企业徽标</td>
+                    <td colspan="3"><input type="file" name="Icon" /> (.png/.gif/.bmp/.jpg)</td>
+                </tr>
+            </table>
+        }
         <p style="text-align:center"><a href="javascript:void(0);" id="btnSaveEnterprise">保存修改</a></p>
     </div>
     <a href="#" data-toggle="AddCustomer">添加联系人</a>
@@ -85,8 +90,8 @@
                 <td>性别</td>
                 <td>
                     <select class="select" id="lstSex">
-                        <option value="0">男</option>
-                        <option value="1">女</option>
+                        <option value="Male">男</option>
+                        <option value="Female">女</option>
                     </select>
                 </td>
             </tr>
@@ -148,10 +153,10 @@
             <td>
                 <h3>@Model.Title</h3>
                 <p>
-                    地址: @Model.Address / 邮编: @Model.Zip 
-                    <br /> 
-                    电话: @Model.Phone / 传真: @Model.Fax / 网址: @Model.Website 
-                    <br /> 
+                    地址: @Model.Address / 邮编: @Model.Zip
+                    <br />
+                    电话: @Model.Phone / 传真: @Model.Fax / 网址: @Model.Website
+                    <br />
                     企业性质: @Model.Property / 企业类型: @Model.Type / 企业规模: @Model.Scale / 销售额: @Model.SalesVolume
                 </p>
                 <p>备注: @Model.Hint</p>
@@ -160,10 +165,10 @@
     </table>
 </div>
 
-<div class="es-customer-container">
+<div class="es-customer-container" id="lstCustomers">
     @foreach (var c in Model.Customers)
     {
-        <div class="es-customer">
+        <div class="es-customer" onclick="EditCustomer(@c.ID)">
             <h3>@c.Name @(c.Sex == Sex.Male ? "♂" : "♀")</h3>
             <table>
                 <tr>
@@ -188,11 +193,11 @@
             <p>备注: @c.Hint</p>
             <p>相关项目: </p>
             @foreach (var p in c.Projects)
-                {
+            {
                 <p><a target="_blank" href="/Project/Show/@p.ID">@p.Title</a></p>
             }
             @if (c.Projects.Count == 0)
-                {
+            {
                 <p>无</p>
             }
         </div>
@@ -201,4 +206,37 @@
 
 <script>
     $("#txtBirthday").datetimepicker();
+    $("#btnSaveEnterprise").click(function () {
+        ShowLoading();
+        $("#frmEditEnterprise").submit();
+    });
+    $("#btnAddCustomer").click(function () {
+        ShowLoading();
+        $.post("/Enterprise/CreateCustomer/@Model.ID", {
+            Name: $("#txtName").val(),
+            Sex: $("#lstSex").val(),
+            Position: $("#txtPosition").val(),
+            Tel: $("#txtTel").val(),
+            Phone: $("#txtPhone").val(),
+            Fax: $("#txtFax").val(),
+            Email: $("#txtEmail").val(),
+            QQ: $("#txtQQ").val(),
+            WeChat: $("#txtWechat").val(),
+            Birthday: $("#txtBirthday").val(),
+            Hint: $("#txtHint").val(),
+            sid: "@ViewBag.SID"
+        }, function (id) {
+            var html = '<div class="es-customer" onclick="EditCustomer(' + id + ')">';
+            html += '<h3>' + $("#txtName").val() + ' ' + ($("#lstSex").val() == "Male" ? "♂" : "♀") + '</h3>';
+            html += '<table><tr><td>职位: ' + $("#txtPosition").val() + '</td><td>电话: ' + $("#txtTel").val() + '</td></tr>';
+            html += '<tr><td>手机: ' + $("#txtPhone").val() + '</td><td>传真: ' + $("#txtFax").val() + '</td></tr>';
+            html += '<tr><td>微信: ' + $("#txtWechat").val() + '</td><td>QQ: ' + $("#txtQQ").val() + '</td></tr>';
+            html += '<tr><td colspan="2">邮箱: ' + $("#txtEmail").val() + '</td></tr>';
+            html += '<tr><td colspan="2">生日: ' + $("#txtBirthday").val() + '</td></tr></table>';
+            html += '<p>备注: ' + $("#txtHint").val() + '</p><p>相关项目: 无</p>';
+            $('#lstCustomers').prepend(html);
+            CloseToggle();
+            HideLoading();
+        })
+    });
 </script>

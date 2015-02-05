@@ -396,6 +396,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Temp\" />
     <Folder Include="Views\File\" />
     <Folder Include="Views\Report\" />
     <Folder Include="Views\Statistics\" />

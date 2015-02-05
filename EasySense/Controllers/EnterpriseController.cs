@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EasySense.Models;
+using EasySense.Schema;
 
 namespace EasySense.Controllers
 {
@@ -45,10 +46,66 @@ namespace EasySense.Controllers
             return View(enterprise);
         }
 
+        [HttpGet]
+        [ValidateSID]
         public ActionResult Create(EnterpriseModel Model)
         {
             Model.Key = Helpers.Pinyin.Convert(Model.Title);
             DB.Enterprises.Add(Model);
+            DB.SaveChanges();
+            return Content(Model.ID.ToString());
+        }
+
+        public ActionResult Edit(
+            int id, 
+            string Title, 
+            EnterpriseLevel Level,
+            string Type,
+            string Brand,
+            string Scale,
+            string SalesVolume,
+            string Phone,
+            string Fax,
+            string Address,
+            string Zip,
+            string Website,
+            string Hint
+            )
+        {
+            var enterprise = DB.Enterprises.Find(id);
+            enterprise.Title = Title;
+            enterprise.Key = Helpers.Pinyin.Convert(Title);
+            enterprise.Level = Level;
+            enterprise.Type = Type;
+            enterprise.Brand = Brand;
+            enterprise.Scale = Scale;
+            enterprise.SalesVolume = SalesVolume;
+            enterprise.Phone = Phone;
+            enterprise.Fax = Fax;
+            enterprise.Address = Address;
+            enterprise.Zip = Zip;
+            enterprise.Website = Website;
+            enterprise.Hint = Hint;
+            var file = Request.Files[0];
+            if (file.ContentLength > 0)
+            {
+                var timestamp = Helpers.String.ToTimeStamp(DateTime.Now);
+                var filename = timestamp + ".zip";
+                var dir = Server.MapPath("~") + @"\Temp\";
+                file.SaveAs(dir+filename);
+                enterprise.Icon = System.IO.File.ReadAllBytes(dir+filename);
+                System.IO.File.Delete(dir + filename);
+            }
+            DB.SaveChanges();
+            return RedirectToAction("Show", "Enterprise", new { id = id });
+        }
+
+        [ValidateSID]
+        [HttpPost]
+        public ActionResult CreateCustomer(int id, CustomerModel Model)
+        {
+            Model.EnterpriseID = id;
+            DB.Customers.Add(Model);
             DB.SaveChanges();
             return Content(Model.ID.ToString());
         }

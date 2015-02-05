@@ -2,12 +2,54 @@
 @{
     ViewBag.Title = "提醒事项";
 }
+<style>
+    .es-menu-extend table {
+        line-height: 36px !important;
+    }
 
+    td:first-child {
+        width:80px;
+    }
+</style>
 <script src="~/Scripts/jquery-ui-1.10.2.custom.min.js"></script>
 <script src="~/Scripts/fullcalendar.min.js"></script>
 
 <div class="es-block-menu">
-    <a href="#">添加事项</a>
+    <a href="#" data-toggle="AddAlarm">添加事项</a>
+    <div class="es-menu-extend" id="AddAlarm">
+        <table>
+            <tr>
+                <td>标题</td>
+                <td><input type="text" class="textbox" name="Title" /></td>
+            </tr>
+            <tr>
+                <td>开始时间</td>
+                <td><input type="text" name="Begin" class="textbox" /></td>
+            </tr>
+            <tr>
+                <td>结束时间</td>
+                <td><input type="text" name="End" class="textbox" /></td>
+            </tr>
+            <tr>
+                <td>提醒</td>
+                <td>
+                    <select class="select" name="Remind">
+                        <option>不提醒</option>
+                        <option value="10">10分钟</option>
+                        <option value="30">30分钟</option>
+                        <option value="60">60分钟</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>内容</td>
+                <td>
+                    <textarea class="textbox" name="Hint"></textarea>
+                </td>
+            </tr>
+        </table>
+        <p style="text-align:center"><a href="javascript:void(0);" id="btnAddAlarm">添加提醒</a></p>
+    </div>
 </div>
 
 <div class="es-block">
@@ -15,7 +57,16 @@
 </div>
 
 <script>
-    $.getJSON("/Alarm/Load", {}, function (events) {
+    var alm;
+    $("input[name='Begin']").datetimepicker();
+    $("input[name='End']").datetimepicker();
+    $.getJSON("/Alarm/Load", {}, function (alarms) {
+        for (var i = 0; i < alarms.length; i++)
+        {
+            alarms[i].start = new Date(parseInt(alarms[i].start + "000"));
+            alarms[i].end = new Date(parseInt(alarms[i].end + "000"));
+        }
+        alm = alarms;
         $('#calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
@@ -27,7 +78,7 @@
             disableDragging: true,
             timeFormat: 'H:mm',
             axisFormat: 'H:mm',
-            events: events
+            events: alarms
         });
     });
 </script>

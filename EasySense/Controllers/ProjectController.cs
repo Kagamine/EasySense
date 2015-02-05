@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using EasySense.Models;
 using EasySense.Schema;
-using System.Data.Entity.Validation;
 
 namespace EasySense.Controllers
 {
@@ -60,6 +59,8 @@ namespace EasySense.Controllers
             project.InvoicePrice = Model.InvoicePrice;
             project.CustomerID = Model.CustomerID;
             project.Title = Model.Title;
+            project.Status = Model.Status;
+            project.PayMethod = Model.PayMethod;
             project.Log = string.Format("[{0}] {1}({2}) 修改了项目\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Name, CurrentUser.Username);
             DB.SaveChanges();
             return RedirectToAction("Show", "Project", new { id = id });

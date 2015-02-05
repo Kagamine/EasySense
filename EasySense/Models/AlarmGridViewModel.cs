@@ -9,9 +9,9 @@ namespace EasySense.Models
     {
         public string title { get; set; }
 
-        public DateTime begin { get; set; }
+        public string start { get; set; }
 
-        public DateTime end { get; set; }
+        public string end { get; set; }
 
         public bool allDay { get; set; }
 
@@ -22,8 +22,8 @@ namespace EasySense.Models
             return new AlarmGridViewModel
             {
                 title = Alarm.Title,
-                begin = Alarm.Begin,
-                end = Alarm.End,
+                start = Helpers.Time.ToTimeStamp(Alarm.Begin),
+                end = Helpers.Time.ToTimeStamp(Alarm.End),
                 allDay = false,
                 url = "/Alarm/Edit/" + Alarm.ID
             };
