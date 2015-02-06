@@ -1,0 +1,16 @@
+﻿@model ProjectModel
+@{
+    ViewBag.Title = Model.Title + " - 操作记录";
+}
+
+<div class="es-block-menu">
+    <a href="/Project/Show/@Model.ID">项目信息</a>
+    <a href="/Project/Bill/@Model.ID">支出</a>
+    <a href="/Project/Log/@Model.ID" class="es-block-menu-active">操作记录</a>
+    @Url.LinkWithSID("删除项目", "Delete", "Project", new { id = Model.ID });
+</div>
+
+<div class="es-block">
+    <h2>操作记录</h2>
+    @MvcHtmlString.Create(Model.Log.Replace("\n","<br />"))
+</div>
