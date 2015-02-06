@@ -306,8 +306,8 @@
             $("#Wechat").val(customer.WeChat);
             $("#Birthday").val(customer.Birthday);
             $("#Hint").val(customer.Hint);
-            $(".es-dialog").addClass("show");
             $("#btnDeleteCustomer").attr("href", "/Enterprise/DeleteCustomer/" + id + "?sid=@ViewBag.SID");
+            $(".es-dialog").addClass("show");
             HideLoading();
         });
     }

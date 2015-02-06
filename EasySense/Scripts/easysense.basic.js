@@ -55,6 +55,7 @@ $(document).on('click', function (e) {
     if ($(e.target).hasClass("es-dialog")) return;
     if ($(e.target).parents(".es-dialog").length > 0) return;
     if ($(e.target).parents(".es-customer").length > 0) return;
+    if ($(e.target).parents(".fc-event-inner").length > 0) return;
     $(".es-dialog").removeClass("show");
 });
 

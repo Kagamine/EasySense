@@ -25,7 +25,7 @@ namespace EasySense.Models
                 start = Helpers.Time.ToTimeStamp(Alarm.Begin),
                 end = Helpers.Time.ToTimeStamp(Alarm.End),
                 allDay = false,
-                url = "javascript:EditAlarm("+Alarm.ID+")"
+                url = "javascript:EditAlarm('"+Alarm.ID+"')"
             };
         }
     }

@@ -40,7 +40,7 @@ namespace EasySense.Controllers
             return RedirectToAction("Index", "Alarm");
         }
 
-        [HttpPost]
+        [HttpGet]
         [ValidateSID]
         [AccessToAlarm]
         public ActionResult Delete(Guid id)
@@ -61,8 +61,17 @@ namespace EasySense.Controllers
             alarm.End = Model.End;
             alarm.Hint = Model.Hint;
             alarm.Remind = Model.Remind;
+            alarm.Title = Model.Title;
             DB.SaveChanges();
             return RedirectToAction("Index", "Alarm");
+        }
+
+        [HttpGet]
+        [AccessToAlarm]
+        public ActionResult Detail(Guid id)
+        {
+            var alarm = DB.Alarms.Find(id);
+            return Json((AlarmViewModel)alarm, JsonRequestBehavior.AllowGet);
         }
     }
 }

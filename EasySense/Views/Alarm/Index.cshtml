@@ -3,7 +3,7 @@
     ViewBag.Title = "提醒事项";
 }
 <style>
-    .es-menu-extend table {
+    .es-menu-extend table, .es-dialog table {
         line-height: 36px !important;
     }
 
@@ -15,6 +15,46 @@
 <script src="~/Scripts/fullcalendar.min.js"></script>
 
 <div class="es-block-menu">
+    <div class="es-dialog" style="width: 320px; left: 500px">
+        <h2>编辑提醒</h2>
+        @using (Html.BeginForm("Edit", "Alarm", null, FormMethod.Post, new { id = "frmEditAlarm" }))
+        {
+            @Html.AntiForgerySID()
+            <input id="CurrentID" type="hidden" name="id" />
+            <table>
+                <tr>
+                    <td>标题</td>
+                    <td><input id="txtTitle" type="text" class="textbox" name="Title" /></td>
+                </tr>
+                <tr>
+                    <td>开始时间</td>
+                    <td><input id="txtBegin" type="text" name="Begin" class="textbox" /></td>
+                </tr>
+                <tr>
+                    <td>结束时间</td>
+                    <td><input id="txtEnd" type="text" name="End" class="textbox" /></td>
+                </tr>
+                <tr>
+                    <td>提醒</td>
+                    <td>
+                        <select class="select" name="Remind" id="lstRemind">
+                            <option>不提醒</option>
+                            <option value="10">10分钟</option>
+                            <option value="30">30分钟</option>
+                            <option value="60">60分钟</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>内容</td>
+                    <td>
+                        <textarea class="textbox" name="Hint" id="txtHint"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <p style="text-align:center"><a href="javascript:void(0);" id="btnEditAlarm">修改提醒</a> <a id="btnDeleteAlarm">删除提醒</a></p>
+        }
+    </div>
     <a href="#" data-toggle="AddAlarm">添加事项</a>
     <div class="es-menu-extend" id="AddAlarm">
         @using (Html.BeginForm("Create", "Alarm", null, FormMethod.Post, new { id = "frmCreateAlarm" }))
@@ -88,5 +128,26 @@
     $("#btnAddAlarm").click(function () {
         ShowLoading();
         $("#frmCreateAlarm").submit();
+    });
+
+    function EditAlarm(id)
+    {
+        ShowLoading();
+        $.getJSON("/Alarm/Detail/" + id, {}, function (alarm) {
+            $("#txtTitle").val(alarm.Title);
+            $("#txtBegin").val(alarm.Begin);
+            $("#txtEnd").val(alarm.End);
+            $("#lstRemind").val(alarm.Remind);
+            $("#lstHint").val(alarm.Hint);
+            $("#CurrentID").val(id);
+            $("#btnDeleteAlarm").attr("href", "/Alarm/Delete/" + id + "?sid=@ViewBag.SID");
+            $(".es-dialog").addClass("show");
+            HideLoading();
+        });
+    }
+
+    $("#btnEditAlarm").click(function () {
+        ShowLoading();
+        $("#frmEditAlarm").submit();
     });
 </script>
