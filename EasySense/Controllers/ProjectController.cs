@@ -174,5 +174,19 @@ namespace EasySense.Controllers
             DB.SaveChanges();
             return RedirectToAction("Index", "Project");
         }
+
+        [MinRole(UserRole.Finance)]
+        public ActionResult Bill(int id)
+        {
+            var project = DB.Projects.Find(id);
+            return View(project);
+        }
+
+        [AccessToProject]
+        public ActionResult Log(int id)
+        {
+            var project = DB.Projects.Find(id);
+            return View(project);
+        }
     }
 }
