@@ -64,5 +64,17 @@ namespace EasySense.Models
         public virtual EnterpriseModel Enterprise { get; set; }
 
         public virtual ICollection<ProjectModel> Projects { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var data = obj as CustomerModel;
+            if (data.ID == this.ID) return true;
+            else return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID;
+        }
     }
 }

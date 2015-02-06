@@ -78,5 +78,17 @@ namespace EasySense.Models
         public byte[] Icon { get; set; }
 
         public virtual ICollection<CustomerModel> Customers { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var data = obj as EnterpriseModel;
+            if (data.ID == this.ID) return true;
+            else return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID;
+        }
     }
 }

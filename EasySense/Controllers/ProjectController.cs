@@ -164,5 +164,15 @@ namespace EasySense.Controllers
             DB.SaveChanges();
             return Content(Model.ID.ToString());
         }
+
+        [HttpGet]
+        [ValidateSID]
+        public ActionResult Delete(int id)
+        {
+            var project = DB.Projects.Find(id);
+            DB.Projects.Remove(project);
+            DB.SaveChanges();
+            return RedirectToAction("Index", "Project");
+        }
     }
 }

@@ -50,6 +50,14 @@ $(document).on('click', function (e) {
     CurrentNotification = null;
 });
 
+$(document).on('click', function (e) {
+    if ($(".show").length <= 0) return;
+    if ($(e.target).hasClass("es-dialog")) return;
+    if ($(e.target).parents(".es-dialog").length > 0) return;
+    if ($(e.target).parents(".es-customer").length > 0) return;
+    $(".es-dialog").removeClass("show");
+});
+
 function CloseToggle()
 {
     $("#" + CurrentNotification).slideUp(200);

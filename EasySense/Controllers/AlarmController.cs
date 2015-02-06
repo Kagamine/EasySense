@@ -28,5 +28,41 @@ namespace EasySense.Controllers
                 ret.Add((AlarmGridViewModel)a);
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        [ValidateSID]
+        public ActionResult Create(AlarmModel Model)
+        {
+            Model.ID = Guid.NewGuid();
+            Model.UserID = CurrentUser.ID;
+            DB.Alarms.Add(Model);
+            DB.SaveChanges();
+            return RedirectToAction("Index", "Alarm");
+        }
+
+        [HttpPost]
+        [ValidateSID]
+        [AccessToAlarm]
+        public ActionResult Delete(Guid id)
+        {
+            var alarm = DB.Alarms.Find(id);
+            DB.Alarms.Remove(alarm);
+            DB.SaveChanges();
+            return RedirectToAction("Index", "Alarm");
+        }
+
+        [HttpPost]
+        [ValidateSID]
+        [AccessToAlarm]
+        public ActionResult Edit(Guid id, AlarmModel Model)
+        {
+            var alarm = DB.Alarms.Find(id);
+            alarm.Begin = Model.Begin;
+            alarm.End = Model.End;
+            alarm.Hint = Model.Hint;
+            alarm.Remind = Model.Remind;
+            DB.SaveChanges();
+            return RedirectToAction("Index", "Alarm");
+        }
     }
 }

@@ -17,14 +17,67 @@
         padding: 0;
     }
 
-    .es-menu-extend table {
+    .es-menu-extend table, .es-dialog table {
         line-height: 36px !important;
     }
 </style>
 <div class="es-block-menu">
+    <div class="es-dialog" style="width:600px;">
+        <h2>编辑联系人</h2>
+        @using (Html.BeginForm("EditCustomer", "Enterprise", null, FormMethod.Post, new { id = "frmEditCustomer" }))
+        {
+            @Html.AntiForgerySID()
+            <input type="hidden" id="CurrentID" name="id" />
+            <table style="width:100%">
+                <tr>
+                    <td>姓名</td>
+                    <td><input id="Name" name="Name" type="text" class="textbox" placeholder="姓名" /></td>
+                    <td>性别</td>
+                    <td>
+                        <select class="select" id="Sex" name="Sex">
+                            <option value="0">男</option>
+                            <option value="1">女</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>职位</td>
+                    <td><input id="Position" name="Position" type="text" class="textbox" placeholder="职位" /></td>
+                    <td>电话</td>
+                    <td><input id="Tel" name="Tel" type="text" class="textbox full-width" placeholder="电话" /></td>
+                </tr>
+                <tr>
+                    <td>手机号</td>
+                    <td><input id="Phone" name="Phone" type="text" class="textbox" placeholder="手机号" /></td>
+                    <td>邮箱</td>
+                    <td><input id="Email" name="Email" type="text" class="textbox full-width" placeholder="电话" /></td>
+                </tr>
+                <tr>
+                    <td>传真</td>
+                    <td><input id="Fax" name="Fax" type="text" class="textbox" placeholder="传真" /></td>
+                </tr>
+                <tr>
+                    <td>QQ</td>
+                    <td><input id="QQ" name="QQ" type="text" class="textbox" placeholder="QQ" /></td>
+                    <td>微信号</td>
+                    <td><input id="Wechat" name="WeChat" type="text" class="textbox full-width" placeholder="微信号" /></td>
+                </tr>
+                <tr>
+                    <td>出生日期</td>
+                    <td><input id="Birthday" name="Birthday" type="text" class="textbox" placeholder="出生日期" /></td>
+                    <td>备注</td>
+                    <td><input id="Hint" name="Hint" type="text" class="textbox full-width" placeholder="备注" /></td>
+                </tr>
+            </table>
+            <p style="text-align:center">
+                <a href="javascript:void(0);" id="btnSaveCustomer">保存修改</a> 
+                <a id="btnDeleteCustomer">删除该联系人</a>
+            </p>
+        }
+    </div>
     <a href="#" data-toggle="EditEnterprise">编辑</a>
     <div class="es-menu-extend" id="EditEnterprise">
-        @using (Html.BeginForm("Edit", "Enterprise", new { id = Model.ID }, FormMethod.Post, new { id = "frmEditEnterprise", enctype= "multipart/form-data" }))
+        @using (Html.BeginForm("Edit", "Enterprise", new { id = Model.ID }, FormMethod.Post, new { id = "frmEditEnterprise", enctype = "multipart/form-data" }))
         {
             @Html.AntiForgerySID()
             <table style="width:600px">
@@ -105,13 +158,11 @@
                 <td>手机号</td>
                 <td><input id="txtPhone" type="text" class="textbox" placeholder="手机号" /></td>
                 <td>邮箱</td>
-                <td><input id="txtPhone" type="text" class="textbox full-width" placeholder="电话" /></td>
+                <td><input id="txtMail" type="text" class="textbox full-width" placeholder="电话" /></td>
             </tr>
             <tr>
                 <td>传真</td>
                 <td><input id="txtFax" type="text" class="textbox" placeholder="传真" /></td>
-                <td>电子邮箱</td>
-                <td><input id="txtEmail" type="text" class="textbox full-width" placeholder="电子邮箱" /></td>
             </tr>
             <tr>
                 <td>QQ</td>
@@ -238,5 +289,31 @@
             CloseToggle();
             HideLoading();
         })
+    });
+    function EditCustomer(id)
+    {
+        ShowLoading();
+        $.getJSON("/Enterprise/Customer/" + id, {}, function (customer) {
+            $("#CurrentID").val(id);
+            $("#Name").val(customer.Name);
+            $("#Sex").val(customer.Sex);
+            $("#Position").val(customer.Position);
+            $("#Tel").val(customer.Tel);
+            $("#Phone").val(customer.Phone);
+            $("#Email").val(customer.Email);
+            $("#Fax").val(customer.Fax);
+            $("#QQ").val(customer.QQ);
+            $("#Wechat").val(customer.WeChat);
+            $("#Birthday").val(customer.Birthday);
+            $("#Hint").val(customer.Hint);
+            $(".es-dialog").addClass("show");
+            $("#btnDeleteCustomer").attr("href", "/Enterprise/DeleteCustomer/" + id + "?sid=@ViewBag.SID");
+            HideLoading();
+        });
+    }
+
+    $("#btnSaveCustomer").click(function () {
+        ShowLoading();
+        $("#frmEditCustomer").submit();
     });
 </script>

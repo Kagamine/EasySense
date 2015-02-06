@@ -44,6 +44,7 @@
     <a href="/Project/Edit/@Model.ID" class="es-block-menu-active">项目信息</a>
     <a href="/Project/Bill/@Model.ID">支出</a>
     <a href="/Project/Log/@Model.ID">操作记录</a>
+    @Url.LinkWithSID("删除项目", "Delete", "Project", new { id = Model.ID });
 </div>
 <div class="es-table-outer">
     <table>

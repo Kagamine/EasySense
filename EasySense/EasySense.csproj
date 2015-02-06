@@ -340,6 +340,7 @@
     <Compile Include="Models\BillModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\DepartmentModel.cs" />
     <Compile Include="Models\EasySenseContext.cs" />
     <Compile Include="Models\EnterpriseListViewModel.cs" />

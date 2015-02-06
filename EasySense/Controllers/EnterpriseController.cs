@@ -109,5 +109,54 @@ namespace EasySense.Controllers
             DB.SaveChanges();
             return Content(Model.ID.ToString());
         }
+
+        [ValidateSID]
+        [HttpGet]
+        public ActionResult DeleteCustomer(int id)
+        {
+            var customer = DB.Customers.Find(id);
+            var eid = customer.EnterpriseID;
+            DB.Customers.Remove(customer);
+            DB.SaveChanges();
+            return RedirectToAction("Show", "Enterprise", new { id = eid });
+        }
+
+        [ValidateSID]
+        [HttpPost]
+        public ActionResult EditCustomer(int id, CustomerModel Model)
+        {
+            var customer = DB.Customers.Find(id);
+            var eid = customer.EnterpriseID;
+            customer.Birthday = Model.Birthday;
+            customer.Email = Model.Email;
+            customer.Fax = Model.Fax;
+            customer.Hint = Model.Hint;
+            customer.Name = Model.Name;
+            customer.Phone = Model.Phone;
+            customer.Position = Model.Position;
+            customer.QQ = Model.QQ;
+            customer.Sex = Model.Sex;
+            customer.Tel = Model.Tel;
+            customer.WeChat = Model.WeChat;
+            DB.SaveChanges();
+            return RedirectToAction("Show", "Enterprise", new { id = eid });
+        }
+
+        [HttpGet]
+        public ActionResult Customer(int id)
+        {
+            var customer = DB.Customers.Find(id);
+            return Json((CustomerViewModel)customer, JsonRequestBehavior.AllowGet);
+        }
+
+        [ValidateSID]
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var enterprise = DB.Enterprises.Find(id);
+            DB.Enterprises.Remove(enterprise);
+            DB.SaveChanges();
+            return RedirectToAction("Index", "Enterprise");
+        }
     }
 }

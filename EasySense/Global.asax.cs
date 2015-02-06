@@ -19,5 +19,9 @@ namespace EasySense
         {
             Session["sid"] = Helpers.String.RandomString(64);
         }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+        }
     }
 }
