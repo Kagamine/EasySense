@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasySense.Models
 {
+    [Table("Statistics")]
     public class StatisticsModel
     {
         public Guid ID { get; set; }
@@ -19,6 +20,18 @@ namespace EasySense.Models
 
         public string Hint { get; set; }
 
-        public 
+        public DateTime? Begin { get; set; }
+        
+        public DateTime? End { get; set; }
+
+        [ForeignKey("User")]
+        public int? UserID { get; set; }
+
+        public virtual UserModel User { get; set; }
+
+        public ProjectStatus? Status { get; set; }
+
+        [Index]
+        public DateTime Time { get; set; }
     }
 }
