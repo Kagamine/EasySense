@@ -1,0 +1,27 @@
+﻿@model ProjectModel
+@{
+    ViewBag.Title = "支出记录";
+}
+
+<div class="es-block-menu">
+    <a href="/Project/Show/@Model.ID">项目信息</a>
+    <a href="/Project/Bill/@Model.ID">支出</a>
+    <a href="#" data-toggle="ExportMenu">导出支出</a>
+    <div class="es-menu-extend" id="ExportMenu">
+        <table>
+            <tr>
+                <td style="width:180px">
+                    <p style="text-align:center"><img style="width:120px;height:120px;" src="~/Images/excel.png" /></p>
+                    <p style="text-align:center"><a href="#">导出到Excel</a></p>
+                </td>
+                <td style="width:180px">
+                    <p style="text-align:center"><img style="width:120px;height:120px;" src="~/Images/pdf.png" /></p>
+                    <p style="text-align:center"><a href="#">导出到PDF</a></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <a href="/Project/Log/@Model.ID" class="es-block-menu-active">操作记录</a>
+    @Url.LinkWithSID("删除项目", "Delete", "Project", new { id = Model.ID });
+</div>

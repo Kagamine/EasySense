@@ -390,6 +390,7 @@
     <Content Include="Views\Enterprise\Show.cshtml" />
     <Content Include="Views\Alarm\Index.cshtml" />
     <Content Include="Views\Project\Log.cshtml" />
+    <Content Include="Views\Project\Bill.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
