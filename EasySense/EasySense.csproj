@@ -392,6 +392,7 @@
     <Content Include="Views\Alarm\Index.cshtml" />
     <Content Include="Views\Project\Log.cshtml" />
     <Content Include="Views\Project\Bill.cshtml" />
+    <Content Include="Views\File\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -402,7 +403,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
-    <Folder Include="Views\File\" />
     <Folder Include="Views\Report\" />
     <Folder Include="Views\Statistics\" />
     <Folder Include="Views\User\" />

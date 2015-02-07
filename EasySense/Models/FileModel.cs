@@ -7,6 +7,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasySense.Models
 {
+    public enum FileCategory
+    {
+        Training,
+        Institution,
+        Plan,
+        Document
+    }
+
     [Table("Files")]
     public class FileModel
     {
@@ -35,5 +43,27 @@ namespace EasySense.Models
         public int UserID { get; set; }
 
         public virtual UserModel User { get; set; }
+
+        public FileCategory FileCategory { get; set; }
+
+        [NotMapped]
+        public string FileCategoryAsString
+        {
+            get
+            {
+                switch (FileCategory)
+                {
+                    case FileCategory.Training:
+                        return "销售培训";
+                    case FileCategory.Institution:
+                        return "销售制度";
+                    case FileCategory.Plan:
+                        return "销售计划";
+                    case FileCategory.Document:
+                        return "销售文档";
+                    default: return "";
+                }
+            }
+        }
     }
 }

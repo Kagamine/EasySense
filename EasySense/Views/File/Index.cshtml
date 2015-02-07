@@ -1,0 +1,70 @@
+﻿@model IEnumerable<FileModel>
+@{
+    ViewBag.Title = "文件资料";
+}
+
+<div class="es-block-menu">
+    @if (ViewBag.CurrentUser.Role == UserRole.Root)
+    {
+        <a href="#" data-toggle="FileUpload">上传文件</a>
+        <div id="FileUpload">
+            @using (Html.BeginForm("Upload", "File", null, FormMethod.Post, new { id = "frmUploadFile", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgerySID()
+                <p>文件上传：<input type="file" /></p>
+                <p>
+                    文件分类：
+                    <select class="select" name="FileCategory">
+                        <option value="Training">销售培训</option>
+                        <option value="Institution">销售制度</option>
+                        <option value="Plan">销售计划</option>
+                        <option value="Document">销售文档</option>
+                    </select>
+                </p>
+                <p><a href="javascript:;" id="btnUploadFile">上传文件</a></p>
+            }
+        </div>
+    }
+    <a href="/File/">全部文件</a>
+    <a href="/File/Index/Training">销售培训</a>
+    <a href="/File/Index/Institution">销售制度</a>
+    <a href="/File/Index/Plan">销售计划</a>
+    <a href="/File/Index/Document">销售文档</a>
+</div>
+<div class="es-table-outer">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>文件名</th>
+                <th>文件类型</th>
+                <th>分类</th>
+                <th>上传日期</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var f in Model)
+            {
+                <tr>
+                    <td>@f.Filename</td>
+                    <td>@f.Extension</td>
+                    <td>@f.FileCategoryAsString</td>
+                    <td>@f.Time</td>
+                    <td>
+                        <a target="_blank" href="/File/Download/@f.ID">下载</a>
+                        @if (ViewBag.CurrentUser.Role == UserRole.Root)
+                        {
+                            @Url.LinkWithSID("删除", "Delete", "File", new { id = f.ID });
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $("#btnUploadFile").click(function () {
+        ShowLoading();
+        $("#frmUploadFile").submit();
+    });
+</script>
