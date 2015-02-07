@@ -179,6 +179,10 @@ namespace EasySense.Controllers
         public ActionResult Bill(int id)
         {
             var project = DB.Projects.Find(id);
+            var bills = new List<BillViewModel>();
+            foreach (var b in project.Bills)
+                bills.Add((BillViewModel)b);
+            ViewBag.Bills = bills;
             return View(project);
         }
 
@@ -187,6 +191,37 @@ namespace EasySense.Controllers
         {
             var project = DB.Projects.Find(id);
             return View(project);
+        }
+
+        [MinRole(UserRole.Finance)]
+        public ActionResult AddBill(int id, BillModel Model)
+        {
+            Model.ProjectID = id;
+            Model.Time = DateTime.Now;
+            DB.Bills.Add(Model);
+            DB.SaveChanges();
+            return Content(Model.ID.ToString());
+        }
+
+        [MinRole(UserRole.Finance)]
+        public ActionResult EditBill(Guid id, BillModel Model)
+        {
+            var bill = DB.Bills.Find(id);
+            bill.Hint = Model.Hint;
+            bill.Type = Model.Type;
+            bill.Plan = Model.Plan;
+            bill.Actual = Model.Actual;
+            DB.SaveChanges();
+            return RedirectToAction("Bill", "Project", new { id = bill.ProjectID });
+        }
+
+        [MinRole(UserRole.Finance)]
+        public ActionResult DeleteBill(Guid id)
+        {
+            var bill = DB.Bills.Find(id);
+            DB.Bills.Remove(bill);
+            DB.SaveChanges();
+            return Content("OK");
         }
     }
 }

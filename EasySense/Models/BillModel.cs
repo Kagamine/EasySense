@@ -26,5 +26,29 @@ namespace EasySense.Models
         public string Hint { get; set; }
 
         public int Type { get; set; }
+
+        public static string[] BillTypes =
+        {
+            "平面印刷费",
+            "数码印刷费",
+            "光盘印刷费",
+            "展览喷绘费",
+            "快递费",
+            "差旅费",
+            "招待费",
+            "咨询费",
+            "速记费",
+            "配音费",
+            "场地费",
+            "摄影费",
+            "摄像费",
+            "设计费",
+            "技术费",
+            "材料费",
+            "代垫费",
+            "常规",
+            "外贸",
+            "其他"
+        };
     }
 }

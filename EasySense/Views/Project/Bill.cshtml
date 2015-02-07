@@ -3,6 +3,18 @@
     ViewBag.Title = "支出记录";
 }
 
+<style>
+    .textbox, .select {
+        width:80px;
+    }
+    td a, td a:visited, td a:active {
+        color: #fff!important;
+    }
+        td a:hover {
+            color:#eee!important;
+        }
+</style>
+
 <div class="es-block-menu">
     <a href="/Project/Show/@Model.ID">项目信息</a>
     <a href="/Project/Bill/@Model.ID">支出</a>
@@ -21,7 +33,61 @@
             </tr>
         </table>
     </div>
-
     <a href="/Project/Log/@Model.ID" class="es-block-menu-active">操作记录</a>
     @Url.LinkWithSID("删除项目", "Delete", "Project", new { id = Model.ID });
+</div>
+<div class="es-table-outer">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>项目</th>
+                <th>项目金额</th>
+                <th>费用类型</th>
+                <th>说明</th>
+                <th>计划经费</th>
+                <th>实际经费</th>
+                <th>支出日期</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="lstBills">
+            @foreach (BillViewModel b in ViewBag.Bills)
+            {
+                <tr id="@b.ID">
+                    <td><a href="/Project/Show/@Model.ID">P@(Model.ID) @Model.Title</a></td>
+                    <td>￥@(Model.Charge.HasValue ? Model.Charge.Value.ToString("0.00") : "N/A")</td>
+                    <td>@b.Type</td>
+                    <td>@b.Hint</td>
+                    <td>￥@b.Plan.ToString("0.00")</td>
+                    <td>￥@b.Actual.ToString("0.00")</td>
+                    <td>@b.Time</td>
+                    <td>
+                        <a href="javascript:EditBill('@b.ID')">编辑</a>
+                        <a href="javascript:DeleteBill('@b.ID')">删除</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tbody>
+            <tr>
+                <td><a href="/Project/Show/@Model.ID">P@(Model.ID) @Model.Title</a></td>
+                <td>￥@(Model.Charge.HasValue ? Model.Charge.Value.ToString("0.00") : "N/A")</td>
+                <td>
+                    <select id="lstTypes" class="select">
+                        @for (int i = 0; i < BillModel.BillTypes.Count(); i++)
+                        {
+                            <option value="@i">@(BillModel.BillTypes[i])</option>
+                        }
+                    </select>
+                </td>
+                <td><input type="text" class="textbox" id="txtHint" placeholder="说明" /></td>
+                <td>￥<input type="text" class="textbox" id="txtPlan" placeholder="计划金额" /></td>
+                <td>￥<input type="text" class="textbox" id="txtActual" placeholder="实际金额" /></td>
+                <td>@DateTime.Now.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <a href="javascript:;" id="btnAddBill">添加支出</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
