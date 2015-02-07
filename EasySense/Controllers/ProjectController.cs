@@ -194,9 +194,12 @@ namespace EasySense.Controllers
         }
 
         [MinRole(UserRole.Finance)]
+        [HttpPost]
+        [ValidateSID]
         public ActionResult AddBill(int id, BillModel Model)
         {
             Model.ProjectID = id;
+            Model.ID = Guid.NewGuid();
             Model.Time = DateTime.Now;
             DB.Bills.Add(Model);
             DB.SaveChanges();
@@ -204,6 +207,8 @@ namespace EasySense.Controllers
         }
 
         [MinRole(UserRole.Finance)]
+        [ValidateSID]
+        [HttpPost]
         public ActionResult EditBill(Guid id, BillModel Model)
         {
             var bill = DB.Bills.Find(id);
@@ -216,12 +221,22 @@ namespace EasySense.Controllers
         }
 
         [MinRole(UserRole.Finance)]
+        [ValidateSID]
+        [HttpPost]
         public ActionResult DeleteBill(Guid id)
         {
             var bill = DB.Bills.Find(id);
             DB.Bills.Remove(bill);
             DB.SaveChanges();
             return Content("OK");
+        }
+
+        [MinRole(UserRole.Finance)]
+        [HttpGet]
+        public ActionResult GetBill(Guid id)
+        {
+            var bill = DB.Bills.Find(id);
+            return Json((BillViewModel)bill, JsonRequestBehavior.AllowGet);
         }
     }
 }

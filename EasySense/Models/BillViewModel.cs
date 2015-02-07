@@ -28,7 +28,7 @@ namespace EasySense.Models
                 ID = Bill.ID,
                 Hint = Bill.Hint,
                 Actual = Bill.Actual,
-                Time = Bill.Time.ToString("yyyy-MM-dd HH:mm"),
+                Time = Bill.Time.ToString("yyyy-MM-dd"),
                 Plan = Bill.Plan,
                 TypeAsInt = Bill.Type,
                 Type = BillModel.BillTypes[Bill.Type]
