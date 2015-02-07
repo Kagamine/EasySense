@@ -8,6 +8,7 @@ using EasySense.Models;
 
 namespace EasySense.Controllers
 {
+    [Authorize]
     public class EmployeeController : BaseController
     {
         // GET: Employee
