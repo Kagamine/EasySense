@@ -106,6 +106,11 @@
             <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()== "Report" ? " active" :"")"><a href="/Report">工作计划</a></div>
             <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()== "File" ? " active" :"")"><a href="/File">文件资料</a></div>
             <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()=="Statistics"?" active" :"")"><a href="/Statistics">我的报表</a></div>
+            @if (ViewBag.CurrentUser.Role == UserRole.Root)
+            {
+                <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()== "Employee" ? " active" :"")"><a href="/Employee">员工管理</a></div>
+                <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()== "System" ? " active" :"")"><a href="/System">系统设置</a></div>
+            }
             <div class="es-menu-item@(ViewContext.RouteData.Values["controller"].ToString()=="User"?" active" :"")"><a href="/User">个人设置</a></div>
         </div>
         <div class="es-right">

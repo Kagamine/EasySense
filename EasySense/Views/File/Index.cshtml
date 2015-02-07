@@ -3,15 +3,21 @@
     ViewBag.Title = "文件资料";
 }
 
+<style>
+    td a,td a:hover,td a:active,td a:visited {
+        color:#fff
+    }
+</style>
+
 <div class="es-block-menu">
     @if (ViewBag.CurrentUser.Role == UserRole.Root)
     {
         <a href="#" data-toggle="FileUpload">上传文件</a>
-        <div id="FileUpload">
+        <div id="FileUpload" class="es-menu-extend">
             @using (Html.BeginForm("Upload", "File", null, FormMethod.Post, new { id = "frmUploadFile", enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgerySID()
-                <p>文件上传：<input type="file" /></p>
+                <p>文件上传：<input type="file" name="file" /></p>
                 <p>
                     文件分类：
                     <select class="select" name="FileCategory">

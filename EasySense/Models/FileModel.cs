@@ -34,8 +34,6 @@ namespace EasySense.Models
         [Required]
         public string Extension { get; set; }
 
-        public bool Public { get; set; }
-
         [Index]
         public DateTime Time { get; set; }
 
@@ -44,6 +42,7 @@ namespace EasySense.Models
 
         public virtual UserModel User { get; set; }
 
+        [Index]
         public FileCategory FileCategory { get; set; }
 
         [NotMapped]

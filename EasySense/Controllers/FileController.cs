@@ -22,7 +22,7 @@ namespace EasySense.Controllers
         }
 
         [MinRole(UserRole.Root)]
-        public ActionResult Upload(FileCategory FileCategory, bool Public)
+        public ActionResult Upload(FileCategory FileCategory)
         {
             var tmp = new FileModel();
             var file = Request.Files[0];
@@ -34,7 +34,6 @@ namespace EasySense.Controllers
                 tmp.Extension = System.IO.Path.GetExtension(file.FileName);
                 tmp.ContentType = file.ContentType;
                 tmp.UserID = CurrentUser.ID;
-                tmp.Public = Public;
                 var timestamp = Helpers.String.ToTimeStamp(DateTime.Now);
                 var filename = timestamp + tmp.Extension;
                 var dir = Server.MapPath("~") + @"\Temp\";
@@ -51,7 +50,7 @@ namespace EasySense.Controllers
         public ActionResult Download(Guid id)
         {
             var file = DB.Files.Find(id);
-            return File(file.FileBlob, file.ContentType);
+            return File(file.FileBlob, file.ContentType, file.Filename + file.Extension);
         }
 
         [HttpGet]

@@ -315,6 +315,7 @@
     <Compile Include="Controllers\AlarmController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CKEditorController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\EnterpriseController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -322,6 +323,7 @@
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -403,8 +405,10 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
+    <Folder Include="Views\Employee\" />
     <Folder Include="Views\Report\" />
     <Folder Include="Views\Statistics\" />
+    <Folder Include="Views\System\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
   <PropertyGroup>

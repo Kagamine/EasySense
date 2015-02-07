@@ -20,7 +20,7 @@ namespace EasySense.Schema
                                 select u).Single();
                     if (user.Role >= UserRole.Root) return true;
                     var FileID = Guid.Parse(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"].ToString());
-                    if ((from f in db.Files where f.ID == FileID && f.Public select f).Count() > 0)
+                    if ((from f in db.Files where f.ID == FileID select f).Count() > 0)
                         return true;
                 }
             }

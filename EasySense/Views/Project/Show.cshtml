@@ -149,7 +149,6 @@
                                 }
                             }
                         </div>
-                        <a href="/Enterprise" target="_blank">添加新客户</a>
                     </div>
                     <input type="hidden" name="CustomerID" value="@Model.CustomerID" />
                     <p>客户联系人<br /><input id="CustomerName" type="text" class="textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" disabled /></p>
@@ -175,7 +174,6 @@
                             }
                         </select>
                         <br />
-                        <a href="/Category" target="_blank">添加项目类别</a>
                     </p>
                     <p>
                         产品名称
@@ -198,7 +196,6 @@
                             }
                         </select>
                         <br />
-                        <a href="/Zone" target="_blank">添加地区</a>
                     </p>
                 </td>
                 @if (ViewBag.CurrentUser.Role >= UserRole.Finance)
