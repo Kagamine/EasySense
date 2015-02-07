@@ -20,6 +20,7 @@ namespace EasySense.Models
         public DbSet<ReportModel> Reports { get; set; }
         public DbSet<AlarmModel> Alarms { get; set; }
         public DbSet<BillModel> Bills { get; set; }
+        public DbSet<StatisticsModel> Statistics { get; set; }
 
         public EasySenseContext() : base("mssqldb") { }
 
