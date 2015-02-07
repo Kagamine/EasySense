@@ -16,12 +16,12 @@
 </style>
 
 <div class="es-block-menu">
-    <div class="es-block">
+    <div class="es-dialog" style="left: 500px; width:300px">
         <h2>编辑支出</h2>
         <p>
             费用类型
             <br />
-            <select id="Types" class="select">
+            <select id="Type" class="select">
                 @for (int i = 0; i < BillModel.BillTypes.Count(); i++)
                 {
                     <option value="@i">@(BillModel.BillTypes[i])</option>
@@ -41,7 +41,7 @@
         <p>
             实际经费
             <br />
-            ￥<input type="text" class="textbox" id="Plan" />
+            ￥<input type="text" class="textbox" id="Actual" />
         </p>
         <p><a href="javascript:;" id="btnSaveBill">保存修改</a></p>
     </div>
@@ -124,7 +124,7 @@
 <script>
     $("#btnAddBill").click(function () {
         ShowLoading();
-        var type = $("option[value='"+$("#lstTypes").val()+"']").html();
+        var type = $("table option[value='"+$("#lstTypes").val()+"']").html();
         $.post("/Project/AddBill/@Model.ID", {
             Type: $("#lstTypes").val(),
             Hint: $("#txtHint").val(),
@@ -145,4 +145,38 @@
             HideLoading();
         });
     }
+
+    var CurrentID;
+
+    function EditBill(id)
+    {
+        ShowLoading();
+        $.getJSON("/Project/GetBill/" + id, {}, function (data) {
+            CurrentID = data.ID;
+            $("#Type").val(data.TypeAsInt);
+            $("#Hint").val(data.Hint);
+            $("#Plan").val(data.Plan);
+            $("#Actual").val(data.Actual);
+            $(".es-dialog").addClass("show");
+            HideLoading();
+        });
+    }
+
+    $("#btnSaveBill").click(function () {
+        ShowLoading();
+        $.post("/Project/EditBill/" + CurrentID, {
+            Type: $("#Type").val(),
+            Hint: $("#Hint").val(),
+            Plan: $("#Plan").val(),
+            Actual: $("#Actual").val(),
+            sid: '@ViewBag.SID'
+        }, function () {
+            $($("#" + CurrentID).children("td")[2]).html($(".es-dialog option[value='" + $("#Type").val() + "']").html());
+            $($("#" + CurrentID).children("td")[3]).html($("#Hint").val());
+            $($("#" + CurrentID).children("td")[4]).html($("#Plan").val());
+            $($("#" + CurrentID).children("td")[5]).html($("#Actual").val());
+            $(".es-dialog").removeClass("show");
+            HideLoading();
+        });
+    });
 </script>
