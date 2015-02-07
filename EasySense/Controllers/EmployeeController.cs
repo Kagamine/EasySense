@@ -29,6 +29,7 @@ namespace EasySense.Controllers
             var user = DB.Users.Find(id);
             user.Name = Model.Name;
             user.Role = Model.Role;
+            user.Email = Model.Email;
             if (!string.IsNullOrEmpty(Model.Password))
                 user.Password = Helpers.Security.SHA256(Model.Password);
             user.Key = Helpers.Pinyin.Convert(Model.Name);
@@ -36,7 +37,7 @@ namespace EasySense.Controllers
             return RedirectToAction("Index", "Employee");
         }
 
-        [HttpPost]
+        [HttpGet]
         [ValidateSID]
         [MinRole(UserRole.Root)]
         public ActionResult Delete(int id)
@@ -45,6 +46,14 @@ namespace EasySense.Controllers
             DB.Users.Remove(user);
             DB.SaveChanges();
             return RedirectToAction("Index", "Employee");
+        }
+
+        [HttpGet]
+        [MinRole(UserRole.Root)]
+        public ActionResult Detail(int id)
+        {
+            var user = DB.Users.Find(id);
+            return Json((EmployeeViewModel)user, JsonRequestBehavior.AllowGet);
         }
     }
 }
