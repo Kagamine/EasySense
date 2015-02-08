@@ -33,5 +33,27 @@ namespace EasySense.Models
 
         [Index]
         public DateTime Time { get; set; }
+
+        [NotMapped]
+        public string PushToDisplay
+        {
+            get
+            {
+                if (PushTo == null)
+                    return "所有人";
+                else if (PushTo == UserRole.Finance)
+                    return "财务专员";
+                else
+                    return "部门主任";
+            }
+        }
+
+        public byte[] ExcelBlob { get; set; }
+
+        public byte[] PDFBlob { get; set; }
+
+        public byte[] GraphicsBlob { get; set; }
+
+        public string HtmlPreview { get; set; }
     }
 }

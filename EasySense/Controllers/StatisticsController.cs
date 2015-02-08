@@ -14,7 +14,16 @@ namespace EasySense.Controllers
         // GET: Statistics
         public ActionResult Index()
         {
-            return View();
+            IEnumerable<StatisticsModel> statistics = DB.Statistics;
+            if (CurrentUser.Role == UserRole.Finance)
+                statistics = statistics.Where(x => x.PushTo == UserRole.Finance || x.PushTo == null);
+            else if (CurrentUser.Role == UserRole.Finance)
+                statistics = statistics.Where(x => x.PushTo == UserRole.Master || x.PushTo == null);
+            else if (CurrentUser.Role == UserRole.Employee)
+                statistics = statistics.Where(x => x.PushTo == null);
+            statistics = statistics.OrderByDescending(x => x.Time).ToList();
+            ViewBag.Users = DB.Users.ToList();
+            return View(statistics);
         }
 
         [HttpPost]
@@ -45,7 +54,7 @@ namespace EasySense.Controllers
             return RedirectToAction("Show", "Statistics", new { id = Model.ID });
         }
 
-        [HttpGet]
+        [HttpPost]
         [ValidateSID]
         [MinRole(UserRole.Root)]
         public ActionResult Delete(Guid id)
@@ -53,7 +62,14 @@ namespace EasySense.Controllers
             var statistics = DB.Statistics.Find(id);
             DB.Statistics.Remove(statistics);
             DB.SaveChanges();
-            return RedirectToAction("Index", "Statistics");
+            return Content("OK");
+        }
+
+        [AccessToStatistics]
+        public ActionResult Show(Guid id)
+        {
+            var statistics = DB.Statistics.Find(id);
+            return View(statistics);
         }
     }
 }

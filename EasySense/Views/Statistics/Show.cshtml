@@ -1,0 +1,25 @@
+﻿@model StatisticsModel
+@{
+    ViewBag.Title = "查看报表";
+}
+
+<div class="es-block-menu">
+    <a href="#" data-toggle="ExportMenu">导出报表</a>
+    <div class="es-menu-extend" id="ExportMenu">
+        <table>
+            <tr>
+                <td style="width:180px">
+                    <p style="text-align:center"><img style="width:120px;height:120px;" src="~/Images/excel.png" /></p>
+                    <p style="text-align:center"><a href="#">导出到Excel</a></p>
+                </td>
+                <td style="width:180px">
+                    <p style="text-align:center"><img style="width:120px;height:120px;" src="~/Images/pdf.png" /></p>
+                    <p style="text-align:center"><a href="#">导出到PDF</a></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="es-table-outer">
+    @Model.HtmlPreview
+</div>
