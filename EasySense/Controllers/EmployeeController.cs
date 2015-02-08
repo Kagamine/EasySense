@@ -56,5 +56,17 @@ namespace EasySense.Controllers
             var user = DB.Users.Find(id);
             return Json((EmployeeViewModel)user, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        [ValidateSID]
+        [MinRole(UserRole.Root)]
+        public ActionResult Create(UserModel Model)
+        {
+            Model.Key = Helpers.Pinyin.Convert(Model.Name);
+            Model.InsertTime = DateTime.Now;
+            DB.Users.Add(Model);
+            DB.SaveChanges();
+            return RedirectToAction("Index", "Employee");
+        }
     }
 }

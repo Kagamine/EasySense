@@ -3,12 +3,21 @@
     ViewBag.Title = "员工管理";
 }
 <style>
-    .es-menu-extend table {
+    .es-block-menu table {
         line-height: 36px;
+    }
+
+    td a, td a:hover, td a:active, td a:visited {
+        color: #fff;
     }
 </style>
 <div class="es-block-menu">
-    <div class="es-dialog">
+    <div class="es-dialog" style="left: 400px">
+        <h2>编辑员工</h2>
+        @using (Html.BeginForm("Edit", "Employee", null, FormMethod.Post, new { id = "frmEditEmployee" }))
+        {
+        @Html.AntiForgerySID()
+        <input type="hidden" id="CurrentID" name="id" />
         <table>
             <tr>
                 <td>用户名</td>
@@ -18,66 +27,76 @@
             </tr>
             <tr>
                 <td>密码</td>
-                <td><input type="password" id="txtPassword" name="Password" class="textbox" placeholder="用户名" /></td>
+                <td><input type="password" id="txtPassword" name="Password" class="textbox" placeholder="不修改请留空" /></td>
                 <td>角色</td>
                 <td>
                     <select name="Role" class="select" id="lstRole">
-                        <option value="Employee">员工</option>
-                        <option value="Master">部门主任</option>
-                        <option value="Finance">财务专员</option>
-                        <option value="Root">系统管理员</option>
+                        <option value="0">员工</option>
+                        <option value="1">部门主任</option>
+                        <option value="2">财务专员</option>
+                        <option value="3">系统管理员</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>所属部门</td>
                 <td>
-                    <select class="select" name="DepartmentID">
+                    <select id="lstDepartment" class="select" name="DepartmentID">
                         <option>未指定</option>
                         @foreach (DepartmentModel d in ViewBag.Departments)
-                        {
+                            {
                             <option value="@d.ID">@d.Title</option>
-                        }
+                            }
                     </select>
                 </td>
+                <td>电子邮箱</td>
+                <td><input type="text" class="textbox" name="Email" id="txtEmail" /></td>
             </tr>
         </table>
+        }
+        <p style="text-align: center"><a href="#" id="btnSaveEmployee">保存员工信息</a></p>
     </div>
-    <a href="#" data-toggle="CreateEmployee">添加员工</a>
+    <a href="javascript:;" data-toggle="CreateEmployee">添加员工</a>
     <div id="CreateEmployee" class="es-menu-extend">
-        <table>
-            <tr>
-                <td>用户名</td>
-                <td><input type="text" name="Username" class="textbox" placeholder="用户名" /></td>
-                <td>真实姓名</td>
-                <td><input type="text" name="Name" class="textbox" placeholder="真实姓名" /></td>
-            </tr>
-            <tr>
-                <td>密码</td>
-                <td><input type="password" name="Password" class="textbox" placeholder="用户名" /></td>
-                <td>角色</td>
-                <td>
-                    <select name="Role" class="select">
-                        <option value="Employee">员工</option>
-                        <option value="Master">部门主任</option>
-                        <option value="Finance">财务专员</option>
-                        <option value="Root">系统管理员</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>所属部门</td>
-                <td>
-                    <select class="select" name="DepartmentID">
-                        <option>未指定</option>
-                        @foreach (DepartmentModel d in ViewBag.Departments)
-                        {
-                            <option value="@d.ID">@d.Title</option>
-                        }
-                    </select>
-                </td>
-            </tr>
-        </table>
+        @using (Html.BeginForm("Create", "Employee", null, FormMethod.Post, new { id = "frmCreateEmployee" }))
+        {
+            @Html.AntiForgerySID()
+            <table>
+                <tr>
+                    <td>用户名</td>
+                    <td><input type="text" name="Username" class="textbox" placeholder="用户名" /></td>
+                    <td>真实姓名</td>
+                    <td><input type="text" name="Name" class="textbox" placeholder="真实姓名" /></td>
+                </tr>
+                <tr>
+                    <td>密码</td>
+                    <td><input type="password" name="Password" class="textbox" placeholder="密码" /></td>
+                    <td>角色</td>
+                    <td>
+                        <select name="Role" class="select">
+                            <option value="Employee">员工</option>
+                            <option value="Master">部门主任</option>
+                            <option value="Finance">财务专员</option>
+                            <option value="Root">系统管理员</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>所属部门</td>
+                    <td>
+                        <select class="select" name="DepartmentID">
+                            <option>未指定</option>
+                            @foreach (DepartmentModel d in ViewBag.Departments)
+                            {
+                                <option value="@d.ID">@d.Title</option>
+                            }
+                        </select>
+                    </td>
+                    <td>电子邮箱</td>
+                    <td><input type="text" class="textbox" name="Email" id="txtEmail" placeholder="电子邮箱" /></td>
+                </tr>
+            </table>
+        }
         <p style="text-align: center"><a href="javascript:;" id="btnAddEmployee">添加员工</a></p>
     </div>
 </div>
@@ -117,12 +136,36 @@
 </div>
 
 <script>
-    function DeleteUser(id)
-    {
+    function DeleteUser(id) {
         ShowLoading();
-        $.post("/Employee/Delete/" + id, {}, function () {
+        $.post("/Employee/Delete/" + id, { sid: '@ViewBag.SID' }, function () {
             $("#user_" + id).slideUp(200);
             HideLoading();
         });
     }
+
+    function EditUser(id) {
+        ShowLoading();
+        $.getJSON("/Employee/Detail/" + id, {}, function (user) {
+            $("#CurrentID").val(id);
+            $("#lbUsername").html(user.Username);
+            $("#txtName").val(user.Name);
+            $("#txtPassword").val("");
+            $("#lstRole").val(user.Role);
+            $("#lstDepartmentID").val(user.DepartmentID);
+            $("#txtEmail").val(user.Email);
+            $(".es-dialog").addClass("show");
+            HideLoading();
+        });
+    }
+
+    $("#btnSaveEmployee").click(function () {
+        ShowLoading();
+        $("#frmEditEmployee").submit();
+    });
+
+    $("#btnAddEmployee").click(function () {
+        ShowLoading();
+        $("#frmCreateEmployee").submit();
+    });
 </script>
