@@ -150,10 +150,10 @@
                             }
                         </div>
                     </div>
-                    <input type="hidden" name="CustomerID" value="@Model.CustomerID" />
+                    <input type="hidden" name="CustomerID" id="CustomerID" value="@Model.CustomerID" />
                     <p>客户联系人<br /><input id="CustomerName" data-toggle="CustomerSelect" type="text" class="textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" disabled /></p>
                     <div class="es-menu-extend" id="CustomerSelect">
-
+                        <small>搜索联系人</small>
                     </div>
                 </td>
                 <td>
