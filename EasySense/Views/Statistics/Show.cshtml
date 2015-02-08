@@ -10,16 +10,17 @@
             <tr>
                 <td style="width:180px">
                     <p style="text-align:center"><img style="width:120px;height:120px;" src="~/Images/excel.png" /></p>
-                    <p style="text-align:center"><a href="#">导出到Excel</a></p>
+                    <p style="text-align:center"><a href="/Statistics/ExportExcel/@Model.ID">导出到Excel</a></p>
                 </td>
                 <td style="width:180px">
                     <p style="text-align:center"><img style="width:120px;height:120px;" src="~/Images/pdf.png" /></p>
-                    <p style="text-align:center"><a href="#">导出到PDF</a></p>
+                    <p style="text-align:center"><a href="/Statistics/ExportPDF/@Model.ID">导出到PDF</a></p>
                 </td>
             </tr>
         </table>
     </div>
 </div>
 <div class="es-table-outer">
-    @Model.HtmlPreview
+    <h2 style="color:#fff">报表预览</h2>
+    @MvcHtmlString.Create(Model.HtmlPreview)
 </div>

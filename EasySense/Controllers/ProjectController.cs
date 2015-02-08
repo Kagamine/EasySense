@@ -278,5 +278,17 @@ namespace EasySense.Controllers
         {
             return File(Helpers.Export.ToPDF(BuildHtmlTable(id)), "application/pdf", Helpers.Time.ToTimeStamp(DateTime.Now) + ".pdf");
         }
+
+        [HttpGet]
+        public ActionResult GetProducts(int id)
+        {
+            var products = (from p in DB.Products
+                            where p.CategoryID == id
+                            select p).ToList();
+            var ret = new List<ProductViewModel>();
+            foreach (var p in products)
+                ret.Add((ProductViewModel)p);
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
     }
 }

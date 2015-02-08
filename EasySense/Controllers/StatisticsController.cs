@@ -34,7 +34,6 @@ namespace EasySense.Controllers
             Model.ID = Guid.NewGuid();
             Model.Time = DateTime.Now;
             DB.Statistics.Add(Model);
-            DB.SaveChanges();
             IEnumerable<ProjectModel> Projects = DB.Projects;
             if (Model.Begin != null)
                 Projects = Projects.Where(x => x.SignTime >= Model.Begin.Value);
@@ -44,6 +43,81 @@ namespace EasySense.Controllers
                 Projects = Projects.Where(x => x.Status == Model.Status.Value);
             if (Model.UserID != null)
                 Projects = Projects.Where(x => x.UserID == Model.UserID.Value);
+            Projects = Projects.Where(x => x.UserID != null && x.ProductID != null && x.SignTime != null);
+            var ProductIDs = (from p in Projects
+                            group p by p.ProductID into g
+                            select g.Key).ToList();
+            var Products = (from p in DB.Products
+                            where ProductIDs.Contains(p.ID)
+                            select p).ToList();
+            var UserIDs = (from p in Projects
+                           where p.UserID != null
+                           group p by p.UserID into g
+                           select g.Key).ToList();
+            var Users = (from u in DB.Users
+                         where UserIDs.Contains(u.ID)
+                         select u).ToList();
+            Projects = Projects.ToList();
+            var DynamicCol = 0;
+            var html = "<table style='border: 1px solid #000'><tr><td colspan='{TOTALCOL}' style='text-align: center; font-weight: bold; border: 1px solid #000'>" +Model.Title+"</td></tr>";
+            html += "<tr><td colspan='2' style='border: 1px solid #000'></td><td colspan='{DYNAMICCOL}' style='border: 1px solid #000'>所有者</td></tr>";
+            html += "<tr><td colspan='2' style='border: 1px solid #000'></td>";
+            foreach (var u in Users)
+            {
+                html += "<td colspan='{USER" + u.ID + "}' style='border: 1px solid #000'>" + u.Name+"</td>";
+            }
+            html += "</tr>";
+            html += "<tr><td style='border: 1px solid #000'>项目类别</td><td style='border: 1px solid #000'>产品类型</td>";
+            foreach (var u in Users)
+            {
+                var day = (from p in Projects
+                           where p.UserID == u.ID
+                           group p by new { Year = p.SignTime.Value.Year, Month = p.SignTime.Value.Month } into g
+                           select g.Key).ToList();
+                DynamicCol += day.Count;
+                html = html.Replace("{USER" + u.ID + "}", day.Count.ToString());
+                foreach (var d in day)
+                    html += "<td style='border: 1px solid #000'>" + d.Year + "年" + d.Month + "月</td>";
+            }
+            html += "</tr>";
+            foreach (var p in Products)
+            {
+                html += "<tr><td style='border: 1px solid #000'>" + p.Category.Title + "</td><td style='border: 1px solid #000'>" + p.Title + "</td>";
+                foreach (var u in Users)
+                {
+                    var day = (from pr in Projects
+                               where pr.UserID == u.ID
+                               group pr by new { Year = pr.SignTime.Value.Year, Month = pr.SignTime.Value.Month } into g
+                               select g.Key).ToList();
+                    foreach (var d in day)
+                    {
+                        var begin = new DateTime(d.Year, d.Month, 1);
+                        var end = begin.AddMonths(1);
+                        var price = (from pr in Projects
+                                     where pr.UserID == u.ID
+                                     && pr.ProductID == p.ID
+                                     && pr.SignTime >= begin
+                                     && pr.SignTime < end
+                                     && pr.Charge != null
+                                     select pr).Sum(x => x.Charge.Value);
+                        html += "<td style='border: 1px solid #000'>￥" + price.ToString("0.00") + "<td>";
+                    }
+                }
+                html += "</tr>";
+            }
+            html = html.Replace("{TOTALCOL}", (DynamicCol + 2).ToString()).Replace("{DYNAMICCOL}", DynamicCol.ToString())+"</table>";
+            Model.HtmlPreview = html;
+            try
+            {
+                Model.ExcelBlob = Helpers.Export.ToExcel(html);
+            }
+            catch { }
+            try
+            {
+                Model.PDFBlob = Helpers.Export.ToPDF(html);
+            }
+            catch { }
+            DB.SaveChanges();
             return RedirectToAction("Show", "Statistics", new { id = Model.ID });
         }
 
@@ -79,6 +153,20 @@ namespace EasySense.Controllers
         {
             var statistics = DB.Statistics.Find(id);
             return View(statistics);
+        }
+
+        [AccessToStatistics]
+        public ActionResult ExportExcel(Guid id)
+        {
+            var statistics = DB.Statistics.Find(id);
+            return File(statistics.ExcelBlob, "application/vnd.ms-excel", Helpers.Time.ToTimeStamp(DateTime.Now) + ".xls");
+        }
+
+        [AccessToStatistics]
+        public ActionResult ExportPDF(Guid id)
+        {
+            var statistics = DB.Statistics.Find(id);
+            return File(statistics.PDFBlob, "application/vnd.ms-excel", Helpers.Time.ToTimeStamp(DateTime.Now) + ".pdf");
         }
     }
 }

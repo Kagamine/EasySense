@@ -55,7 +55,7 @@ namespace EasySense.Models
                 ID = Project.ID,
                 Owner = Project.User.Name,
                 Title = Project.Title,
-                Charge = Project.Charge == null ? "未付款" : Project.Charge.Value.ToString("{0.00}"),
+                Charge = Project.Charge == null ? "未付款" : Project.Charge.Value.ToString("0.00"),
                 SignTime = Project.SignTime == null ? "未签订" : Project.SignTime.Value.ToString("yyyy-MM-dd"),
                 Product = Project.ProductID == null ? "未指定" : Project.Product.Category.Title,
                 Enterprise = Project.EnterpriseID == null ? "未指定" : Project.Enterprise.Title,

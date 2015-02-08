@@ -166,11 +166,11 @@
                     <p>
                         项目类别
                         <br />
-                        <select class="select" name="CategoryID">
+                        <select class="select" name="CategoryID" id="lstCategoryID">
                             <option>未指定类别</option>
                             @foreach (CategoryModel c in ViewBag.Categories)
                             {
-                                <option value="@c.ID">@c.Title</option>
+                                <option value="@c.ID" @(Model.ProductID.HasValue && c.ID == Model.ProductID ? " selected" : "")>@c.Title</option>
                             }
                         </select>
                         <br />
@@ -178,11 +178,9 @@
                     <p>
                         产品名称
                         <br />
-                        <select class="select" name="ProductID">
+                        <select class="select" name="ProductID" id="lstProductID">
                             <option>未指定产品</option>
                         </select>
-                        <br />
-                        <a href="/Product" target="_blank">添加产品</a>
                     </p>
                     <p>签订日期<br /><input type="text" name="SignTime" class="textbox" placeholder="签订日期" value="@Model.SignTime" /></p>
                     <p>
@@ -269,6 +267,26 @@
                         CurrentNotification = null;
                     });
                 });
+            });
+
+            var ProductID = @(Model.ProductID.HasValue?Model.ProductID.ToString() :"null");
+
+            function RefreshProductList()
+            {
+                var cid = $("#lstCategoryID").val();
+                $.getJSON("/Project/GetProducts/" + cid, {}, function (products) {
+                    $("#lstProductID").html("");
+                    for (var i = 0; i < products.length; i++) {
+                        $("#lstProductID").append('<option value=\"' + products[i].ID + '\">' + products[i].Title + '</option>');
+                    }
+                })
+            }
+
+            RefreshProductList();
+            $("#lstProductID").val(ProductID);
+
+            $("#lstCategoryID").change(function () {
+                RefreshProductList();
             });
         </script>
     }

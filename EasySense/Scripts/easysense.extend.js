@@ -40,7 +40,7 @@ function LoadProjects()
     }, function (data) {
         for (var i = 0; i < data.length; i++)
         {
-            $("#lstProjects").append('<tr onclick="window.location=\'\/Project\/Show\/' + data[i].ID + '\'"><td>' + data[i].ID + '</td><td>' + data[i].Owner + '</td><td>' + data[i].Title + '</td><td>' + data[i].Charge + '</td><td>' + data[i].SignTime + '</td><td>' + data[i].Product + '</td><td>' + data[i].Enterprise + '</td><td>' + data[i].Brand + '</td><td>' + data[i].Customer + '</td><td>' + data[i].Status + '</td><td>' + data[i].InvoiceTime + '</td><td>' + data[i].ChargeTime + '</td></tr>');
+            $("#lstProjects").append('<tr onclick="window.location=\'\/Project\/Show\/' + data[i].ID + '\'"><td>' + data[i].ID + '</td><td>' + data[i].Owner + '</td><td>' + data[i].Title + '</td><td>￥' + data[i].Charge + '</td><td>' + data[i].SignTime + '</td><td>' + data[i].Product + '</td><td>' + data[i].Enterprise + '</td><td>' + data[i].Brand + '</td><td>' + data[i].Customer + '</td><td>' + data[i].Status + '</td><td>' + data[i].InvoiceTime + '</td><td>' + data[i].ChargeTime + '</td></tr>');
         }
         page++;
         lock = false;
