@@ -105,9 +105,12 @@
     <Content Include="Images\birthday.png" />
     <Content Include="Images\button_bg.png" />
     <Content Include="Images\desc.png" />
+    <Content Include="Images\excel.png" />
     <Content Include="Images\Finance.png" />
     <Content Include="Images\loading.gif" />
-    <Content Include="Images\logo.svg" />
+    <Content Include="Images\loading_small.gif" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\pdf.png" />
     <Content Include="Images\project.png" />
     <Content Include="Images\Schedule.png" />
     <Content Include="Images\search.png" />
@@ -376,7 +379,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <None Include="Properties\PublishProfiles\EasySense.pubxml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Login.cshtml" />
@@ -400,6 +402,8 @@
     <Content Include="Views\File\Index.cshtml" />
     <Content Include="Views\Statistics\Index.cshtml" />
     <Content Include="Views\Statistics\Show.cshtml" />
+    <Content Include="Views\Employee\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\es.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -410,7 +414,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
-    <Folder Include="Views\Employee\" />
     <Folder Include="Views\Report\" />
     <Folder Include="Views\System\" />
     <Folder Include="Views\User\" />

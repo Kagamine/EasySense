@@ -18,6 +18,7 @@ namespace EasySense.Controllers
             var employee = (from u in DB.Users
                             orderby u.ID descending
                             select u).ToList();
+            ViewBag.Departments = DB.Departments.OrderByDescending(x => x.ID).ToList();
             return View(employee);
         }
 

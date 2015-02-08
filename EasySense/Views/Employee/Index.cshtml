@@ -1,0 +1,128 @@
+﻿@model IEnumerable<UserModel>
+@{
+    ViewBag.Title = "员工管理";
+}
+<style>
+    .es-menu-extend table {
+        line-height: 36px;
+    }
+</style>
+<div class="es-block-menu">
+    <div class="es-dialog">
+        <table>
+            <tr>
+                <td>用户名</td>
+                <td id="lbUsername"></td>
+                <td>真实姓名</td>
+                <td><input type="text" id="txtName" name="Name" class="textbox" placeholder="真实姓名" /></td>
+            </tr>
+            <tr>
+                <td>密码</td>
+                <td><input type="password" id="txtPassword" name="Password" class="textbox" placeholder="用户名" /></td>
+                <td>角色</td>
+                <td>
+                    <select name="Role" class="select" id="lstRole">
+                        <option value="Employee">员工</option>
+                        <option value="Master">部门主任</option>
+                        <option value="Finance">财务专员</option>
+                        <option value="Root">系统管理员</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>所属部门</td>
+                <td>
+                    <select class="select" name="DepartmentID">
+                        <option>未指定</option>
+                        @foreach (DepartmentModel d in ViewBag.Departments)
+                        {
+                            <option value="@d.ID">@d.Title</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <a href="#" data-toggle="CreateEmployee">添加员工</a>
+    <div id="CreateEmployee" class="es-menu-extend">
+        <table>
+            <tr>
+                <td>用户名</td>
+                <td><input type="text" name="Username" class="textbox" placeholder="用户名" /></td>
+                <td>真实姓名</td>
+                <td><input type="text" name="Name" class="textbox" placeholder="真实姓名" /></td>
+            </tr>
+            <tr>
+                <td>密码</td>
+                <td><input type="password" name="Password" class="textbox" placeholder="用户名" /></td>
+                <td>角色</td>
+                <td>
+                    <select name="Role" class="select">
+                        <option value="Employee">员工</option>
+                        <option value="Master">部门主任</option>
+                        <option value="Finance">财务专员</option>
+                        <option value="Root">系统管理员</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>所属部门</td>
+                <td>
+                    <select class="select" name="DepartmentID">
+                        <option>未指定</option>
+                        @foreach (DepartmentModel d in ViewBag.Departments)
+                        {
+                            <option value="@d.ID">@d.Title</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <p style="text-align: center"><a href="javascript:;" id="btnAddEmployee">添加员工</a></p>
+    </div>
+</div>
+<div class="es-table-outer">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>员工ID</th>
+                <th>用户名</th>
+                <th>真实姓名</th>
+                <th>角色</th>
+                <th>电子邮箱</th>
+                <th>部门</th>
+                <th>项目数</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var u in Model)
+            {
+                <tr id="user_@u.ID">
+                    <td>@u.ID</td>
+                    <td>@u.Username</td>
+                    <td>@u.Name</td>
+                    <td>@u.Role.ToString()</td>
+                    <td>@u.Email</td>
+                    <td>@(u.DepartmentID == null ? "未指定" : u.Department.Title)</td>
+                    <td>@u.Projects.Count</td>
+                    <td>
+                        <a href="javascript:EditUser(@u.ID)">编辑</a>
+                        <a href="javascript:DeleteUser(@u.ID)">删除</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function DeleteUser(id)
+    {
+        ShowLoading();
+        $.post("/Employee/Delete/" + id, {}, function () {
+            $("#user_" + id).slideUp(200);
+            HideLoading();
+        });
+    }
+</script>

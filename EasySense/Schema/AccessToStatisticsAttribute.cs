@@ -20,7 +20,7 @@ namespace EasySense.Schema
                                 select u).Single();
                     if (user.Role >= UserRole.Root) return true;
                     var StatisticsID = Guid.Parse(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"].ToString());
-                    var statistics = db.Statistics.Find(id);
+                    var statistics = db.Statistics.Find(StatisticsID);
                     if (statistics.PushTo == null)
                         return true;
                     if (statistics.PushTo == UserRole.Finance && user.Role == UserRole.Finance)

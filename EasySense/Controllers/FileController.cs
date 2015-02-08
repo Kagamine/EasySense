@@ -37,6 +37,8 @@ namespace EasySense.Controllers
                 var timestamp = Helpers.String.ToTimeStamp(DateTime.Now);
                 var filename = timestamp + tmp.Extension;
                 var dir = Server.MapPath("~") + @"\Temp\";
+                if (!System.IO.Directory.Exists(dir))
+                    System.IO.Directory.CreateDirectory(dir);
                 file.SaveAs(dir + filename);
                 tmp.FileBlob = System.IO.File.ReadAllBytes(dir + filename);
                 System.IO.File.Delete(dir + filename);

@@ -46,7 +46,7 @@ namespace EasySense.Controllers
             return View(enterprise);
         }
 
-        [HttpGet]
+        [HttpPost]
         [ValidateSID]
         public ActionResult Create(EnterpriseModel Model)
         {

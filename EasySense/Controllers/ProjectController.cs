@@ -150,7 +150,7 @@ namespace EasySense.Controllers
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
+        [HttpPost]
         [ValidateSID]
         public ActionResult Create(ProjectModel Model)
         {
