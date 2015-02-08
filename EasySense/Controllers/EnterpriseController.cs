@@ -195,5 +195,14 @@ namespace EasySense.Controllers
             return File(Helpers.Export.ToPDF(BuildHtmlTable(id)), "application/pdf", Helpers.Time.ToTimeStamp(DateTime.Now) + ".pdf");
         }
 
+        [HttpGet]
+        public ActionResult Customers(int id, string Text)
+        {
+            var enterprise = DB.Enterprises.Find(id);
+            var ret = new List<CustomerViewModel>();
+            foreach (var c in enterprise.Customers.Where(x=>x.Name.Contains(Text)))
+                ret.Add((CustomerViewModel)c);
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
     }
 }

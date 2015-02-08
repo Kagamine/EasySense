@@ -151,7 +151,10 @@
                         </div>
                     </div>
                     <input type="hidden" name="CustomerID" value="@Model.CustomerID" />
-                    <p>客户联系人<br /><input id="CustomerName" type="text" class="textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" disabled /></p>
+                    <p>客户联系人<br /><input id="CustomerName" data-toggle="CustomerSelect" type="text" class="textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" disabled /></p>
+                    <div class="es-menu-extend" id="CustomerSelect">
+
+                    </div>
                 </td>
                 <td>
                     <h3>扩展信息</h3>
@@ -267,6 +270,11 @@
                         CurrentNotification = null;
                     });
                 });
+            });
+
+            $("#CustomerName").keyup(function(){
+                var enterprise_id = $("#EnterpriseID").val();
+
             });
 
             var ProductID = @(Model.ProductID.HasValue?Model.ProductID.ToString() :"null");
