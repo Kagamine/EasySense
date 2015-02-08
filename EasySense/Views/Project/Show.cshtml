@@ -274,7 +274,22 @@
 
             $("#CustomerName").keyup(function(){
                 var enterprise_id = $("#EnterpriseID").val();
-
+                $("#CustomerSelect").html("<img src='/Images/loading_small.gif' class='es-icon-small'>加载中...<hr />");
+                $.getJSON("/Enterprise/Customers/"+enterprise_id,{Text:$("#CustomerName").val()},function(c){
+                    $("#CustomerSelect").html("");
+                    for(var i =0 ;i<c.length;i++)
+                    {
+                        $("#CustomerSelect").append('<a href="javascript:$(\'#CustomerID\').val('+c[i].ID+');" data-content=\''+c[i].Name+'\'>'+c[i].Name+'</a>');
+                    }
+                    if (c.length == 0) {
+                        $("#lstEnterprises").html("<small>没有找到匹配的企业</small><hr />");
+                    }
+                    $("[data-content]").unbind().click(function () {
+                        $("[data-toggle='" + CurrentNotification + "']").val($(this).attr("data-content"));
+                        $("#" + CurrentNotification).slideUp(200);
+                        CurrentNotification = null;
+                    });
+                });
             });
 
             var ProductID = @(Model.ProductID.HasValue?Model.ProductID.ToString() :"null");
