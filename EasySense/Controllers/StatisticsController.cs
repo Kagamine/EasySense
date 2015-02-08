@@ -35,6 +35,15 @@ namespace EasySense.Controllers
             Model.Time = DateTime.Now;
             DB.Statistics.Add(Model);
             DB.SaveChanges();
+            IEnumerable<ProjectModel> Projects = DB.Projects;
+            if (Model.Begin != null)
+                Projects = Projects.Where(x => x.SignTime >= Model.Begin.Value);
+            if (Model.End != null)
+                Projects = Projects.Where(x => x.SignTime <= Model.End.Value);
+            if (Model.Status != null)
+                Projects = Projects.Where(x => x.Status == Model.Status.Value);
+            if (Model.UserID != null)
+                Projects = Projects.Where(x => x.UserID == Model.UserID.Value);
             return RedirectToAction("Show", "Statistics", new { id = Model.ID });
         }
 

@@ -158,5 +158,42 @@ namespace EasySense.Controllers
             DB.SaveChanges();
             return RedirectToAction("Index", "Enterprise");
         }
+
+        private string BuildHtmlTable(int id)
+        {
+            var enterprise = DB.Enterprises.Find(id);
+            var html = "<table style='border: 1px solid #000'><tr><td colspan=\"10\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>" + enterprise.Title + " 联系人</td></tr><tr><td style='border-bottom:1px solid #000'>姓名</td><td style='border-bottom:1px solid #000'>性别</td><td style='border-bottom:1px solid #000'>固定电话</td><td style='border-bottom:1px solid #000'>传真</td><td style='border-bottom:1px solid #000'>手机</td><td style='border-bottom:1px solid #000'>电子邮箱</td><td style='border-bottom:1px solid #000'>QQ</td><td style='border-bottom:1px solid #000'>微信</td><td style='border-bottom:1px solid #000'>生日</td><td style='border-bottom:1px solid #000'>备注</td></tr>";
+            foreach (var c in enterprise.Customers)
+            {
+                html += string.Format(
+                    "<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td><td>{8}</td><td>{9}</td></tr>",
+                    c.Name,
+                    c.Sex == Sex.Male?"男" :"女",
+                    c.Tel,
+                    c.Fax,
+                    c.Phone,
+                    c.Email,
+                    c.QQ,
+                    c.WeChat,
+                    c.Birthday.ToString("MM月dd日"),
+                    c.Hint
+                );
+            }
+            html += "</table>";
+            return html;
+        }
+
+        [HttpGet]
+        public ActionResult ExportExcel(int id)
+        {
+            return File(Helpers.Export.ToExcel(BuildHtmlTable(id)), "application/vnd.ms-excel", Helpers.Time.ToTimeStamp(DateTime.Now) + ".xls");
+        }
+
+        [HttpGet]
+        public ActionResult ExportPDF(int id)
+        {
+            return File(Helpers.Export.ToPDF(BuildHtmlTable(id)), "application/pdf", Helpers.Time.ToTimeStamp(DateTime.Now) + ".pdf");
+        }
+
     }
 }

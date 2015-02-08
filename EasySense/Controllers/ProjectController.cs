@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Text;
+using System.IO;
 using EasySense.Models;
 using EasySense.Schema;
+using EO.Pdf;
 
 namespace EasySense.Controllers
 {
@@ -237,6 +240,43 @@ namespace EasySense.Controllers
         {
             var bill = DB.Bills.Find(id);
             return Json((BillViewModel)bill, JsonRequestBehavior.AllowGet);
+        }
+
+        private string BuildHtmlTable(int id)
+        {
+            var project = DB.Projects.Find(id);
+            var bills = (from b in DB.Bills
+                         where b.ProjectID == id
+                         orderby b.Time descending
+                         select b).ToList();
+            var html = "<table style='border: 1px solid #000'><tr><td colspan=\"5\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>" +project.Title+ " 支出明细</td></tr><tr><td style='border-bottom:1px solid #000'>支出日期</td><td style='border-bottom:1px solid #000'>支出类型</td><td style='border-bottom:1px solid #000'>说明</td><td style='border-bottom:1px solid #000'>计划经费</td><td style='border-bottom:1px solid #000'>实际经费</td></tr>";
+            foreach (var b in bills)
+            {
+                html += string.Format(
+                    "<tr><td style='border-bottom:1px solid #000'>{0}</td style='border-bottom:1px solid #000'><td style='border-bottom:1px solid #000'>{1}</td><td style='border-bottom:1px solid #000'>{2}</td><td style='border-bottom:1px solid #000'>￥{3}</td><td style='border-bottom:1px solid #000'>￥{4}</td></tr>", 
+                    b.Time.ToString("yyyy-MM-dd"),
+                    ((BillViewModel)b).Type,
+                    b.Hint,
+                    b.Plan.ToString("0.00"),
+                    b.Actual.ToString("0.00")
+                );
+            }
+            html += "</table>";
+            return html;
+        }
+
+        [MinRole(UserRole.Finance)]
+        [HttpGet]
+        public ActionResult ExportExcel(int id)
+        {
+            return File(Helpers.Export.ToExcel(BuildHtmlTable(id)), "application/vnd.ms-excel", Helpers.Time.ToTimeStamp(DateTime.Now) + ".xls");
+        }
+
+        [MinRole(UserRole.Finance)]
+        [HttpGet]
+        public ActionResult ExportPDF(int id)
+        {
+            return File(Helpers.Export.ToPDF(BuildHtmlTable(id)), "application/pdf", Helpers.Time.ToTimeStamp(DateTime.Now) + ".pdf");
         }
     }
 }

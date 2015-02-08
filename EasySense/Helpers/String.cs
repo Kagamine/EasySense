@@ -81,5 +81,18 @@ namespace EasySense.Helpers
             byte[] sarr = System.Text.Encoding.Default.GetBytes(str);
             return sarr.Length;
         }
+
+        public static string Excel(string content)
+        {
+            var html = "<html xmlns:x=\"urn:schemas-microsoft-com:office:excel\">";
+            html += "<head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">";
+            html += "<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>";
+            html += "<x:Name>Report Data</x:Name><x:WorksheetOptions><x:Print><x:ValidPrinterInfo/>";
+            html += "</x:Print></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook>";
+            html += "</xml><![endif]-->";
+            html += content;
+            html += "</head>";
+            return html;
+        }
     }
 }
