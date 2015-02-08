@@ -1,0 +1,49 @@
+﻿@model UserModel
+@{
+    ViewBag.Title = "个人设置";
+}
+<style>
+    .es-table-outer {
+        padding: 20px;
+    }
+
+        .es-table-outer td {
+            vertical-align: top;
+        }
+    td h2 {
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    .es-block {
+        line-height: 36px;
+    }
+</style>
+<div class="es-table-outer">
+    <table>
+        <tr>
+            <td style="width: 200px;">
+                <img src="/User/Avatar/@Model.ID" class="es-icon-large" />
+            </td>
+            <td>
+                <h2 style="margin-top: 45px;">@Model.Name (@Model.Username)</h2>
+                <p>角色: @Model.Role / 项目数: @Model.Projects.Count / 上次登录: @Model.LastLoginTime.Value.ToString("yyyy-MM-dd HH:mm")</p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="es-block">
+    @using (Html.BeginForm("Edit", "User",null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <h2>编辑个人资料</h2>
+        <p>旧密码：<br /><input type="password" class="textbox" placeholder="不修改密码请留空" /> 不修改密码请留空</p>
+        <p>新密码：<br /><input type="password" class="textbox" name="Password" id="txtNewPassword" /> </p>
+        <p>密码确认：<br /><input type="password" class="textbox" id="txtConfirmPassword" /> </p>
+        <p>姓名：<br /><input type="text" class="textbox" value="@Model.Name" name="Name" /></p>
+        <p>头像：<br /><input type="file" name="file" /></p>
+        <p>电子邮箱：<br /><input type="text" class="textbox" value="@Model.Email" name="Email" /></p>
+        <p><input type="submit" value="保存信息" class="button button-def"  /></p>
+    }
+</div>

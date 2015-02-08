@@ -90,7 +90,7 @@ namespace EasySense.Controllers
             if (file.ContentLength > 0)
             {
                 var timestamp = Helpers.String.ToTimeStamp(DateTime.Now);
-                var filename = timestamp + ".zip";
+                var filename = timestamp + ".tmp";
                 var dir = Server.MapPath("~") + @"\Temp\";
                 file.SaveAs(dir+filename);
                 enterprise.Icon = System.IO.File.ReadAllBytes(dir+filename);
