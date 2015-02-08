@@ -71,3 +71,7 @@ $(document).keyup(function (e) {
     if (code == 27 || code == 96)
         CloseToggle();
 });
+
+$(".es-menu-item a").click(function () {
+    ShowLoading();
+});

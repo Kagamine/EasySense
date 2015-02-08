@@ -405,6 +405,7 @@
     <Content Include="Views\Employee\Index.cshtml" />
     <None Include="Properties\PublishProfiles\es.pubxml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\System\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -416,7 +417,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
     <Folder Include="Views\Report\" />
-    <Folder Include="Views\System\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

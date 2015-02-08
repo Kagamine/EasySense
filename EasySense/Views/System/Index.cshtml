@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ZoneModel>
+@{
+    ViewBag.Title = "地区管理 - 系统设置";
+}
+<style>
+    td a, td a:hover, td a:active, td a:visited {
+        color: #fff;
+    }
+</style>
+<div class="es-block-menu">
+    <div class="es-dialog" style="left: 600px">
+        @using (Html.BeginForm("RenameZone", "System", FormMethod.Post))
+        {
+            @Html.AntiForgerySID()
+            <h3>请输入新名称</h3>
+            <input type="hidden" id="CurrentID" name="id" />
+            <p><input name="Title" type="text" class="textbox" /></p>
+            <p><input type="submit" value="修改" class="button button-def" /></p>
+        }
+    </div>
+    <a href="/System" class="es-block-menu-active">地区管理</a>
+    <a href="#" data-toggle="AddZone">添加地区</a>
+    <div id="AddZone" class="es-menu-extend">
+        @using (Html.BeginForm("CreateZone", "System"))
+        {
+            @Html.AntiForgerySID()
+            <p>地区名称：<input type="text" class="textbox" name="Title" /></p>
+            <p><input type="submit" value="创建" class="button button-def" /></p>
+        }
+    </div>
+    <a href="/System/Category">项目类别管理</a>
+</div>
+
+<div class="es-table-outer">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>地区</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var z in Model)
+            {
+                <tr>
+                    <td>@z.ID</td>
+                    <td>@z.Title</td>
+                    <td>
+                        <a href="javascript: Rename(@z.ID)">重命名</a>
+                        @Url.LinkWithSID("删除", "DeleteZone", "System", new { id = z.ID })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function Rename(id)
+    {
+        $("#CurrentID").val(id);
+        $(".es-dialog").addClass("show");
+    }
+</script>

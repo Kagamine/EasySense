@@ -15,5 +15,17 @@ namespace EasySense.Models
         [StringLength(64)]
         [Index(IsUnique = true)]
         public string Title { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var data = obj as ZoneModel;
+            if (data.ID == this.ID) return true;
+            else return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID;
+        }
     }
 }
