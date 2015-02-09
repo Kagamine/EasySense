@@ -70,13 +70,13 @@ $(document).ready(function () {
                 str += "<p class='es-notification-subtitle'>名录(" + data.Customers.length + ")</p>";
                 if (data.Customers.length > 0) {
                     $.each(data.Customers, function (key, value) {
-                        str += "<p><a href='/Customer/Show/" + value.ID + "'>" + value.Name + "</a></p>";
+                        str += "<p><a href='/Enterprise/Show/" + value.EnterpriseID + "'>" + value.Name + " ("+value.Enterprise+")</a></p>";
                     });
                 }
                 str += "<p class='es-notification-subtitle'>员工(" + data.Users.length + ")</p>";
                 if (data.Users.length > 0) {
                     $.each(data.Users, function (key, value) {
-                        str += "<p><img src='/User/Avatar/1' /><a href='/User/Show/" + value.ID + "'>" + value.Name + "</a></p>";
+                        str += "<p><img src='/User/Avatar/1' /><a href='#" + value.ID + "'>" + value.Name + "</a></p>";
                     });
                 }
                 $("#SearchResult").html(str);

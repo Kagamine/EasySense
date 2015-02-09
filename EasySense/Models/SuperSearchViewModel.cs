@@ -63,6 +63,7 @@ namespace EasySense.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public string Enterprise { get; set; }
+        public int EnterpriseID { get; set; }
 
         public static implicit operator SuperSearchCustomerViewModel(CustomerModel Customer)
         {
@@ -71,6 +72,7 @@ namespace EasySense.Models
                 ID = Customer.ID,
                 Name = Customer.Name,
                 Enterprise = Customer.Enterprise.Title,
+                EnterpriseID = Customer.EnterpriseID
             };
         }
     }

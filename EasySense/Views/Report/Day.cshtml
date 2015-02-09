@@ -23,9 +23,9 @@
         <a href="/Report">工作报告管理</a>
     }
     <a href="/Report/Day/@ViewBag.ID" class="es-block-menu-active">日报</a>
-    <a href="/Report/Day/@ViewBag.ID">周报</a>
-    <a href="/Report/Day/@ViewBag.ID">月报</a>
-    <a href="/Report/Day/@ViewBag.ID">填写报告</a>
+    <a href="/Report/Week/@ViewBag.ID">周报</a>
+    <a href="/Report/Month/@ViewBag.ID">月报</a>
+    <a href="/Report/New/@ViewBag.ID">填写报告</a>
 </div>
 <div class="es-block">
     <p>
@@ -57,26 +57,6 @@
             </tr>
         </thead>
         <tbody id="lstReports">
-            <tr>
-                <td>星期一</td>
-                <td>1</td>
-                <td>
-                    <p><a href="#">待办事项</a></p>
-                    <div>123</div>
-                </td>
-                <td>2015-2-8</td>
-                <td><a href="#">编辑</a></td>
-            </tr>
-            <tr>
-                <td>星期一</td>
-                <td>1</td>
-                <td>
-                    <p><a href="#">待办事项</a></p>
-                    <div>123</div>
-                </td>
-                <td>2015-2-8</td>
-                <td><a href="#">编辑</a></td>
-            </tr>
         </tbody>
     </table>
 </div>
@@ -101,7 +81,7 @@
                             $("#lstReports").append("<tr><td>" + DayOfWeek(new Date(y, m, i)) + "</td><td>" + i + "</td><td></td><td></td><td></td></tr>");
                         }
                         else {
-                            $("#lstReports").append("<tr><td>" + DayOfWeek(new Date(y, m, i)) + "</td><td>" + i + "</td><td><p><a href='$(\"#todo-" + data[j].ID + "\").toggle()'></p><div id='todo-" + data[j].ID + "' class='es-report'>" + data[j].TodoList + "</div><p><a href='$(\"#question-" + data[j].ID + "\").toggle()'></p><div id='question-" + data[j].ID + "' class='es-report'>" + data[j].QuestionList + "</div><p><a href='$(\"#finished-" + data[j].ID + "\").toggle()'></p><div id='finished-" + data[j].ID + "' class='es-report'>" + data[j].FinishedList + "</div></td><td>" + data[j].Time + "</td><td><a href='/Report/Edit/" + data[j].ID + "'>编辑</a></td></tr>");
+                            $("#lstReports").append("<tr><td>" + DayOfWeek(new Date(y, m, i)) + "</td><td>" + i + "</td><td><p><a href='javascript:$(\"#todo-" + data[j].ID + "\").toggle()'>待办事项</a></p><div id='todo-" + data[j].ID + "' class='es-report'>" + data[j].TodoList + "</div><p><a href='javascript:$(\"#question-" + data[j].ID + "\").toggle()'>遇到问题</a></p><div id='question-" + data[j].ID + "' class='es-report'>" + data[j].QuestionList + "</div><p><a href='javascript:$(\"#finished-" + data[j].ID + "\").toggle()'>已办事项</a></p><div id='finished-" + data[j].ID + "' class='es-report'>" + data[j].FinishedList + "</div></td><td>" + data[j].Time + "</td><td><a href='/Report/Edit/" + data[j].ID + "'>编辑</a></td></tr>");
                             j++;
                         }
                     }

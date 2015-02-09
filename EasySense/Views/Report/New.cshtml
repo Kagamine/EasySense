@@ -3,5 +3,36 @@
     ViewBag.Title = "填写工作报告";
 }
 
-<h2>New</h2>
+<div class="es-block-menu">
+    @if (ViewBag.CurrentUser.Role == UserRole.Root)
+    {
+        <a href="/Report">工作报告管理</a>
+    }
+    <a href="/Report/Day/@ViewBag.ID">日报</a>
+    <a href="/Report/Week/@ViewBag.ID">周报</a>
+    <a href="/Report/Month/@ViewBag.ID">月报</a>
+    <a href="/Report/New/@ViewBag.ID" class="es-block-menu-active">填写报告</a>
+</div>
 
+<div class="es-block">
+    @using (Html.BeginForm("New", "Report", FormMethod.Post))
+    {
+        @Html.AntiForgerySID()
+        <h2>填写工作报告</h2>
+        <p><strong>工作报告类型</strong></p>
+        <p>
+            <select name="Type" class="select">
+                <option value="Day">日报 (@DateTime.Now.ToString("yyyy年MM月dd日"))</option>
+                <option value="Week">周报 (第 @ViewBag.ThisWeek 周)</option>
+                <option value="Month">月报 (@DateTime.Now.Month 月)</option>
+            </select>
+        </p>
+        <p><strong>待办事项</strong></p>
+        <p><textarea class="ckeditor" name="TodoList"></textarea></p>
+        <p><strong>问题列表</strong></p>
+        <p><textarea class="ckeditor" name="QuestionList"></textarea></p>
+        <p><strong>已完成列表</strong></p>
+        <p><textarea class="ckeditor" name="FinishedList"></textarea></p>
+        <p><input type="submit" class="button button-def" value="保存" /></p>
+    }
+</div>

@@ -137,7 +137,7 @@ namespace EasySense.Helpers
             int daysOutOneWeek = days - (7 - firstdayofweek);
             if (daysOutOneWeek <= 0)
             {
-                return 1;
+                return 0;
             }
             else
             {
@@ -146,7 +146,7 @@ namespace EasySense.Helpers
                 {
                     weeks++;
                 }
-                return weeks + 1;
+                return weeks;
             }
         }
 

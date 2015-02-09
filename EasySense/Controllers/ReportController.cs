@@ -32,6 +32,7 @@ namespace EasySense.Controllers
         public ActionResult Week(int id)
         {
             ViewBag.ID = CurrentUser.ID;
+            ViewBag.ThisWeek = Helpers.Time.WeekOfYear(DateTime.Now);
             return View();
         }
 
@@ -50,7 +51,7 @@ namespace EasySense.Controllers
             if (month.HasValue)
                 reports = reports.Where(x => x.Month == month.Value);
             if (week.HasValue)
-                reports = reports.Where(x => x.Week == week.Value);
+                reports = reports.Where(x => x.Week >= week.Value - 2 && x.Week <= week.Value + 2);
             reports = reports.Where(x => x.Type == Type);
             var ret = new List<ReportViewModel>();
             foreach (var r in reports.ToList())
@@ -60,12 +61,14 @@ namespace EasySense.Controllers
 
         public ActionResult New()
         {
+            ViewBag.ThisWeek = Helpers.Time.WeekOfYear(DateTime.Now);
             ViewBag.ID = CurrentUser.ID;
             return View();
         }
 
         [HttpPost]
         [ValidateSID]
+        [ValidateInput(false)]
         public ActionResult New(ReportModel Model)
         {
             Model.Year = DateTime.Now.Year;
@@ -92,6 +95,9 @@ namespace EasySense.Controllers
                        && r.Day == Model.Day
                        select r).Count();
             if (cnt > 0) return RedirectToAction("Message", "Shared", new { msg = "请勿重复创建报告。" });
+            Model.TodoList = Helpers.HtmlFilter.Instance.SanitizeHtml(Model.TodoList);
+            Model.QuestionList = Helpers.HtmlFilter.Instance.SanitizeHtml(Model.QuestionList);
+            Model.FinishedList = Helpers.HtmlFilter.Instance.SanitizeHtml(Model.FinishedList);
             DB.Reports.Add(Model);
             DB.SaveChanges();
             if (Model.Type == ReportType.Day)
@@ -113,14 +119,17 @@ namespace EasySense.Controllers
 
         [HttpPost]
         [ValidateSID]
+        [ValidateInput(false)]
         public ActionResult Edit(int id, string TodoList, string FinishedList, string QuestionList)
         {
             var report = DB.Reports.Find(id);
             if (report.UserID != CurrentUser.ID && CurrentUser.Role != UserRole.Root)
                 return RedirectToAction("AccessDenied", "Shared");
-            report.TodoList = TodoList;
-            report.FinishedList = FinishedList;
-            report.QuestionList = QuestionList;
+            ViewBag.ID = report.ID;
+            report.TodoList = Helpers.HtmlFilter.Instance.SanitizeHtml(TodoList);
+            report.FinishedList = Helpers.HtmlFilter.Instance.SanitizeHtml(FinishedList);
+            report.QuestionList = Helpers.HtmlFilter.Instance.SanitizeHtml(QuestionList);
+            DB.SaveChanges();
             if (report.Type == ReportType.Day)
                 return RedirectToAction("Day", "Report", new { id = report.UserID });
             else if (report.Type == ReportType.Month)

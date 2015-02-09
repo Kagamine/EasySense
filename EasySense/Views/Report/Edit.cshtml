@@ -1,0 +1,29 @@
+﻿@model ReportModel
+@{
+    ViewBag.Title = "编辑工作报告";
+}
+
+<div class="es-block-menu">
+    @if (ViewBag.CurrentUser.Role == UserRole.Root)
+    {
+        <a href="/Report">工作报告管理</a>
+    }
+    <a href="/Report/Day/@ViewBag.ID">日报</a>
+    <a href="/Report/Week/@ViewBag.ID">周报</a>
+    <a href="/Report/Month/@ViewBag.ID">月报</a>
+    <a href="/Report/New/@ViewBag.ID" class="es-block-menu-active">填写报告</a>
+</div>
+<div class="es-block">
+    @using (Html.BeginForm("Edit", "Report", new { id = Model.ID }, FormMethod.Post))
+    {
+        @Html.AntiForgerySID()
+        <h2>编辑工作报告</h2>
+        <p><strong>待办事项</strong></p>
+        <p><textarea class="ckeditor" name="TodoList">@Model.TodoList</textarea></p>
+        <p><strong>问题列表</strong></p>
+        <p><textarea class="ckeditor" name="QuestionList">@Model.QuestionList</textarea></p>
+        <p><strong>已完成列表</strong></p>
+        <p><textarea class="ckeditor" name="FinishedList">@Model.FinishedList</textarea></p>
+        <p><input type="submit" class="button button-def" value="保存" /></p>
+    }
+</div>
