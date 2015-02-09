@@ -18,10 +18,6 @@
 </style>
 
 <div class="es-block-menu">
-    @if (ViewBag.CurrentUser.Role == UserRole.Root)
-    {
-        <a href="/Report">工作报告管理</a>
-    }
     <a href="/Report/Day/@ViewBag.ID" class="es-block-menu-active">日报</a>
     <a href="/Report/Week/@ViewBag.ID">周报</a>
     <a href="/Report/Month/@ViewBag.ID">月报</a>

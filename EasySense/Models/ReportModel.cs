@@ -14,6 +14,7 @@ namespace EasySense.Models
         Month
     }
 
+    [Table("reports")]
     public class ReportModel
     {
         public int ID { get; set; }

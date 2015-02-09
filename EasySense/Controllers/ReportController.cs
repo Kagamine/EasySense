@@ -14,11 +14,7 @@ namespace EasySense.Controllers
         // GET: Report
         public ActionResult Index(int? id)
         {
-            ViewBag.ID = id.HasValue ? id.Value : CurrentUser.ID;
-            if (CurrentUser.Role < UserRole.Root)
-                return RedirectToAction("Day", "Report", new { id = CurrentUser.ID });
-            else
-                return View();
+            return RedirectToAction("Day", "Report", new { id = CurrentUser.ID });
         }
 
         [AccessToReport]
@@ -47,7 +43,7 @@ namespace EasySense.Controllers
         [AccessToReport]
         public ActionResult GetReports(int id, ReportType Type,int year, int? month, int? week)
         {
-            IEnumerable<ReportModel> reports = DB.Reports.Where(x => x.ID == id && x.Year == year);
+            IEnumerable<ReportModel> reports = DB.Reports.Where(x => x.UserID == id && x.Year == year);
             if (month.HasValue)
                 reports = reports.Where(x => x.Month == month.Value);
             if (week.HasValue)

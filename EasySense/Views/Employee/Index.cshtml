@@ -126,6 +126,7 @@
                     <td>@(u.DepartmentID == null ? "未指定" : u.Department.Title)</td>
                     <td>@u.Projects.Count</td>
                     <td>
+                        <a href="/Report/Day/@u.ID">查看工作报告</a>
                         <a href="javascript:EditUser(@u.ID)">编辑</a>
                         <a href="javascript:DeleteUser(@u.ID)">删除</a>
                     </td>
