@@ -3,5 +3,117 @@
     ViewBag.Title = "日报";
 }
 
-<h2>Day</h2>
+<style>
+    .table th, .table td {
+        color: #333
+    }
 
+    .table td {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .table tbody tr:hover {
+        background-color: #ddd;
+    }
+</style>
+
+<div class="es-block-menu">
+    @if (ViewBag.CurrentUser.Role == UserRole.Root)
+    {
+        <a href="/Report">工作报告管理</a>
+    }
+    <a href="/Report/Day/@ViewBag.ID" class="es-block-menu-active">日报</a>
+    <a href="/Report/Day/@ViewBag.ID">周报</a>
+    <a href="/Report/Day/@ViewBag.ID">月报</a>
+    <a href="/Report/Day/@ViewBag.ID">填写报告</a>
+</div>
+<div class="es-block">
+    <p>
+        年份：
+        <select id="lstYears" class="select">
+            @for (var i = 1970; i < DateTime.Now.Year;i++)
+            {
+                <option value="@i">@i</option>
+            }
+            <option value="@DateTime.Now.Year" selected>@DateTime.Now.Year</option>
+        </select>
+        月份：
+        <select id="lstMonths" class="select">
+            @for (var i = 1; i <= 12; i++)
+            {
+                <option value="@i" @(i == DateTime.Now.Month ? " selected" : "")>@i 月</option>
+            }
+        </select>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>星期</th>
+                <th>日期</th>
+                <th style="width:50%">内容</th>
+                <th>记录时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="lstReports">
+            <tr>
+                <td>星期一</td>
+                <td>1</td>
+                <td>
+                    <p><a href="#">待办事项</a></p>
+                    <div>123</div>
+                </td>
+                <td>2015-2-8</td>
+                <td><a href="#">编辑</a></td>
+            </tr>
+            <tr>
+                <td>星期一</td>
+                <td>1</td>
+                <td>
+                    <p><a href="#">待办事项</a></p>
+                    <div>123</div>
+                </td>
+                <td>2015-2-8</td>
+                <td><a href="#">编辑</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        function LoadReports() {
+            ShowLoading();
+            $("#lstReports").html('');
+            var y = $("#lstYears").val();
+            var m = $("#lstMonths").val();
+            var count = DayCountOfMonth(y, m);
+            $.getJSON("/Report/GetReports/@ViewBag.ID",
+                {
+                    Type: "Day",
+                    year: y,
+                    month: m
+                }, function (data) {
+                    var j = 0;
+                    for (var i = 1; i <= count; i++) {
+                        if (j >= data.length || i != data[j].Day) {
+                            $("#lstReports").append("<tr><td>" + DayOfWeek(new Date(y, m, i)) + "</td><td>" + i + "</td><td></td><td></td><td></td></tr>");
+                        }
+                        else {
+                            $("#lstReports").append("<tr><td>" + DayOfWeek(new Date(y, m, i)) + "</td><td>" + i + "</td><td><p><a href='$(\"#todo-" + data[j].ID + "\").toggle()'></p><div id='todo-" + data[j].ID + "' class='es-report'>" + data[j].TodoList + "</div><p><a href='$(\"#question-" + data[j].ID + "\").toggle()'></p><div id='question-" + data[j].ID + "' class='es-report'>" + data[j].QuestionList + "</div><p><a href='$(\"#finished-" + data[j].ID + "\").toggle()'></p><div id='finished-" + data[j].ID + "' class='es-report'>" + data[j].FinishedList + "</div></td><td>" + data[j].Time + "</td><td><a href='/Report/Edit/" + data[j].ID + "'>编辑</a></td></tr>");
+                            j++;
+                        }
+                    }
+                    HideLoading();
+                });
+        }
+        LoadReports();
+        $("#lstYears").change(function () {
+            LoadReports();
+        });
+        $("#lstMonths").change(function () {
+            LoadReports();
+        });
+    });
+</script>

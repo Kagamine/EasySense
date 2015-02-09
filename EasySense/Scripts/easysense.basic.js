@@ -75,3 +75,16 @@ $(document).keyup(function (e) {
 $(".es-menu-item a").click(function () {
     ShowLoading();
 });
+
+function DayCountOfMonth(year, month) {
+    var list = [null, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    if (year % 4 == 0 && year % 100 != 0)
+        list[2] = 29;
+    return list[month];
+}
+
+function DayOfWeek(date)
+{
+    return "日一二三四五六".charAt(date.getDay());
+}
+

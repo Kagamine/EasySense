@@ -44,13 +44,14 @@ namespace EasySense.Controllers
 
         [HttpGet]
         [AccessToReport]
-        public ActionResult GetReports(int id, int year, int? month, int? week)
+        public ActionResult GetReports(int id, ReportType Type,int year, int? month, int? week)
         {
             IEnumerable<ReportModel> reports = DB.Reports.Where(x => x.ID == id && x.Year == year);
             if (month.HasValue)
                 reports = reports.Where(x => x.Month == month.Value);
             if (week.HasValue)
                 reports = reports.Where(x => x.Week == week.Value);
+            reports = reports.Where(x => x.Type == Type);
             var ret = new List<ReportViewModel>();
             foreach (var r in reports.ToList())
                 ret.Add((ReportViewModel)r);
@@ -83,6 +84,14 @@ namespace EasySense.Controllers
             }
             Model.Time = DateTime.Now;
             Model.UserID = CurrentUser.ID;
+            var cnt = (from r in DB.Reports
+                       where r.Type == Model.Type
+                       && r.Year == Model.Year
+                       && r.Month == Model.Month
+                       && r.Week == Model.Week
+                       && r.Day == Model.Day
+                       select r).Count();
+            if (cnt > 0) return RedirectToAction("Message", "Shared", new { msg = "请勿重复创建报告。" });
             DB.Reports.Add(Model);
             DB.SaveChanges();
             if (Model.Type == ReportType.Day)

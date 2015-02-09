@@ -27,6 +27,21 @@ namespace EasySense.Models
 
         public string QuestionList { get; set; }
 
+        public string Time { get; set; }
+
+        public string Start
+        {
+            get
+            {
+                if (Type == ReportType.Day)
+                {
+                    string[] Day = new string[] { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+                    return Day[Convert.ToInt32(DateTime.Now.DayOfWeek.ToString("d"))].ToString();
+                }
+                return "";
+            }
+        }
+
         public static implicit operator ReportViewModel(ReportModel Report)
         {
             return new ReportViewModel
@@ -40,7 +55,8 @@ namespace EasySense.Models
                 Type = Report.Type,
                 FinishedList = Report.FinishedList,
                 QuestionList = Report.QuestionList,
-                TodoList = Report.TodoList
+                TodoList = Report.TodoList,
+                Time = Report.Time.ToString("yyyy-MM-dd HH:mm")
             };
         }
     }
