@@ -211,7 +211,7 @@ namespace EasySense.Controllers
 
         [AccessToStatistics]
         [HttpGet]
-        public ActionResult EnterpriseChart(int id)
+        public ActionResult EnterpriseChart(Guid id)
         {
             var statistics = DB.Statistics.Find(id);
             return Content(statistics.EnterpriseGraphics, "application/json");
@@ -219,7 +219,7 @@ namespace EasySense.Controllers
 
         [AccessToStatistics]
         [HttpGet]
-        public ActionResult EmployeeChart(int id)
+        public ActionResult EmployeeChart(Guid id)
         {
             var statistics = DB.Statistics.Find(id);
             return Content(statistics.EmployeeGraphics, "application/json");
