@@ -68,7 +68,7 @@ function CloseToggle()
 
 $(document).keyup(function (e) {
     var code = e.keyCode ? e.keyCode : e.which;
-    if (code == 27 || code == 96)
+    if (code == 27)
         CloseToggle();
 });
 

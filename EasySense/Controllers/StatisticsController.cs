@@ -44,6 +44,7 @@ namespace EasySense.Controllers
             if (Model.UserID != null)
                 Projects = Projects.Where(x => x.UserID == Model.UserID.Value);
             Projects = Projects.Where(x => x.UserID != null && x.ProductID != null && x.SignTime != null);
+            Projects = Projects.ToList();
             var ProductIDs = (from p in Projects
                             group p by p.ProductID into g
                             select g.Key).ToList();
@@ -57,7 +58,6 @@ namespace EasySense.Controllers
             var Users = (from u in DB.Users
                          where UserIDs.Contains(u.ID)
                          select u).ToList();
-            Projects = Projects.ToList();
             var DynamicCol = 0;
             var html = "<table style='border: 1px solid #000'><tr><td colspan='{TOTALCOL}' style='text-align: center; font-weight: bold; border: 1px solid #000'>" +Model.Title+"</td></tr>";
             html += "<tr><td colspan='2' style='border: 1px solid #000'></td><td colspan='{DYNAMICCOL}' style='border: 1px solid #000'>所有者</td></tr>";

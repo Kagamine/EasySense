@@ -41,8 +41,7 @@ namespace EasySense.Controllers
                     ViewBag.ProjectNotifications.Add((NotificationViewModel)p);
                 #endregion
                 #region 财龄提醒
-                if (CurrentUser.Role >= UserRole.Finance)
-                {
+                ViewBag.FinanceNotifications = new List<NotificationViewModel>();
                     ViewBag.FinanceNotifications = new List<NotificationViewModel>();
                     var financeNotifications = (from p in DB.Projects
                                                 where p.Percent == 1
@@ -51,7 +50,6 @@ namespace EasySense.Controllers
                                                 select p).ToList();
                     foreach (var p in financeNotifications)
                         ViewBag.FinanceNotifications.Add(NotificationViewModel.BuildFinanceNotification(p));
-                }
                 #endregion
                 #region 日程提醒
                 ViewBag.AlarmNotifications = new List<NotificationViewModel>();
@@ -65,10 +63,10 @@ namespace EasySense.Controllers
                 #endregion
                 #region 生日提醒
                 ViewBag.BirthdayNotifications = new List<NotificationViewModel>();
-                IEnumerable<CustomerModel> birthdayNotifications = from c in DB.Customers
-                                                                   where DateTime.Now.Month == c.Birthday.Month
-                                                                   && DateTime.Now.Day == c.Birthday.Day
-                                                                   select c;
+                IEnumerable<CustomerModel> birthdayNotifications = (from c in DB.Customers
+                                                                    where DateTime.Now.Month == c.Birthday.Month
+                                                                    && DateTime.Now.Day == c.Birthday.Day
+                                                                    select c).ToList();
                 if (CurrentUser.Role == UserRole.Master)
                 {
                     birthdayNotifications = from c in birthdayNotifications
@@ -87,7 +85,7 @@ namespace EasySense.Controllers
                 }
                 birthdayNotifications = birthdayNotifications.ToList();
                 foreach (var b in birthdayNotifications)
-                    ViewBag.FinanceNotifications.Add((NotificationViewModel)b);
+                    ViewBag.BirthdayNotifications.Add((NotificationViewModel)b);
                 #endregion
             }
             ViewBag.SID = requestContext.HttpContext.Session["SID"].ToString();

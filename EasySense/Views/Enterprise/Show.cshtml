@@ -27,6 +27,7 @@
         @using (Html.BeginForm("EditCustomer", "Enterprise", null, FormMethod.Post, new { id = "frmEditCustomer" }))
         {
             @Html.AntiForgerySID()
+            <input type="hidden" name="id" id="CurrentID" />
             <table style="width:100%">
                 <tr>
                     <td>姓名</td>
