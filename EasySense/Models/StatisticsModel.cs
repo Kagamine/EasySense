@@ -55,5 +55,9 @@ namespace EasySense.Models
         public byte[] GraphicsBlob { get; set; }
 
         public string HtmlPreview { get; set; }
+
+        public string EmployeeGraphics { get; set; }
+
+        public string EnterpriseGraphics { get; set; }
     }
 }

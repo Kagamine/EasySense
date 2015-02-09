@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using EasySense.Schema;
 using EasySense.Models;
+using Newtonsoft.Json;
 
 namespace EasySense.Controllers
 {
@@ -45,12 +46,20 @@ namespace EasySense.Controllers
                 Projects = Projects.Where(x => x.UserID == Model.UserID.Value);
             Projects = Projects.Where(x => x.UserID != null && x.ProductID != null && x.SignTime != null);
             Projects = Projects.ToList();
+            var CustomerChart = new List<JQChartViewModel>();
+            var EmployeeChart = new List<JQChartViewModel>();
             var ProductIDs = (from p in Projects
                             group p by p.ProductID into g
                             select g.Key).ToList();
             var Products = (from p in DB.Products
                             where ProductIDs.Contains(p.ID)
                             select p).ToList();
+            var EnterpriseIDs = (from p in Projects
+                                 group p by p.EnterpriseID into g
+                                 select g.Key).ToList();
+            var Enterprises = (from e in DB.Enterprises
+                               where EnterpriseIDs.Contains(e.ID)
+                               select e).ToList();
             var UserIDs = (from p in Projects
                            where p.UserID != null
                            group p by p.UserID into g
@@ -58,6 +67,7 @@ namespace EasySense.Controllers
             var Users = (from u in DB.Users
                          where UserIDs.Contains(u.ID)
                          select u).ToList();
+            #region 构建表格
             var DynamicCol = 0;
             var html = "<table style='border: 1px solid #000'><tr><td colspan='{TOTALCOL}' style='text-align: center; font-weight: bold; border: 1px solid #000'>" +Model.Title+"</td></tr>";
             html += "<tr><td colspan='2' style='border: 1px solid #000'></td><td colspan='{DYNAMICCOL}' style='border: 1px solid #000'>所有者</td></tr>";
@@ -117,6 +127,36 @@ namespace EasySense.Controllers
                 Model.PDFBlob = Helpers.Export.ToPDF(html);
             }
             catch { }
+            #endregion
+            #region 构建簇状图
+            foreach (var p in Products)
+            {
+                var employeeitem = new JQChartViewModel
+                {
+                    type = "column",
+                    title = p.Title,
+                    data = new List<dynamic[]>()
+                };
+                foreach (var u in Users)
+                {
+                    employeeitem.PushData(u.Username, Convert.ToInt32(Projects.Where(x => x.UserID == u.ID).Sum(x => x.Charge.Value)));
+                }
+                var enterpriseitem = new JQChartViewModel
+                {
+                    type = "column",
+                    title = p.Title,
+                    data = new List<dynamic[]>()
+                };
+                foreach (var e in Enterprises)
+                {
+                    enterpriseitem.PushData(e.Title, Convert.ToInt32(Projects.Where(x => x.EnterpriseID != null && x.EnterpriseID == e.ID).Sum(x => x.Charge.Value)));
+                }
+                CustomerChart.Add(enterpriseitem);
+                EmployeeChart.Add(employeeitem);
+            }
+            Model.EnterpriseGraphics = JsonConvert.SerializeObject(CustomerChart);
+            Model.EmployeeGraphics = JsonConvert.SerializeObject(EmployeeChart);
+            #endregion
             DB.SaveChanges();
             return RedirectToAction("Show", "Statistics", new { id = Model.ID });
         }
@@ -167,6 +207,22 @@ namespace EasySense.Controllers
         {
             var statistics = DB.Statistics.Find(id);
             return File(statistics.PDFBlob, "application/vnd.ms-excel", Helpers.Time.ToTimeStamp(DateTime.Now) + ".pdf");
+        }
+
+        [AccessToStatistics]
+        [HttpGet]
+        public ActionResult EnterpriseChart(int id)
+        {
+            var statistics = DB.Statistics.Find(id);
+            return Content(statistics.EnterpriseGraphics, "application/json");
+        }
+
+        [AccessToStatistics]
+        [HttpGet]
+        public ActionResult EmployeeChart(int id)
+        {
+            var statistics = DB.Statistics.Find(id);
+            return Content(statistics.EmployeeGraphics, "application/json");
         }
     }
 }
