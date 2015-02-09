@@ -24,3 +24,34 @@
     <h2 style="color:#fff">报表预览</h2>
     @MvcHtmlString.Create(Model.HtmlPreview)
 </div>
+<div class="es-block">
+    <div id="EmployeeChart"></div>
+    <div id="EnterpriseChart"></div>
+</div>
+<script>
+    $.getJSON("/Statistics/EmployeeChart/@Model.ID", {}, function (src) {
+        $("#EmployeeChart").jqChart({
+            title: { text: '@Model.Title 员工簇状图' },
+            axes: [
+                {
+                    location: 'left',
+                    minimum: 0,
+                }
+            ],
+            series: src
+        });
+    });
+
+    $.getJSON("/Statistics/EnterpriseChart/@Model.ID", {}, function (src) {
+        $("#EnterpriseChart").jqChart({
+            title: { text: '@Model.Title 企业簇状图' },
+            axes: [
+                {
+                    location: 'left',
+                    minimum: 0,
+                }
+            ],
+            series: src
+        });
+    });
+</script>
