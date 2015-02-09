@@ -12,11 +12,34 @@
     }
 </style>
 <div class="es-block-menu">
+    <div class="es-dialog">
+        @using (Html.BeginForm("EditCategory", "System", null, FormMethod.Post, new { id = "frmEditCategory", onsubmit = "ShowLoading()" }))
+        {
+            @Html.AntiForgerySID()
+            <input type="hidden" id="CurrentID" name="id" />
+            <h2>修改项目分类</h2>
+            <table>
+                <tr>
+                    <td>类别名称</td>
+                    <td><input id="txtTitle" name="Title" placeholder="类别名称" class="textbox" /></td>
+                    <td>税率</td>
+                    <td><input id="txtTaxRatio" name="TaxRatio" placeholder="例如: 0.2" class="textbox" /></td>
+                </tr>
+                <tr>
+                    <td>佣金比率</td>
+                    <td><input id="txtSaleAllocRatio" name="SaleAllocRatio" placeholder="例如: 0.05" class="textbox" /></td>
+                    <td>项目部奖金</td>
+                    <td><input id="txtAwardAllocRatio" name="AwardAllocRatio" placeholder="例如: 0.2" class="textbox" /></td>
+                </tr>
+            </table>
+            <p><input type="submit" value="保存修改" class="button button-def" /></p>
+        }
+    </div>
     <a href="/System">地区管理</a>
     <a href="/System/Category" class="es-block-menu-active">项目类别管理</a>
     <a href="#" data-toggle="CreateCategory">新建类别</a>
     <div class="es-menu-extend" id="CreateCategory">
-        @using (Html.BeginForm("CreateCategory", "System",null, FormMethod.Post,new { onsubmit = "ShowLoading()" }))
+        @using (Html.BeginForm("CreateCategory", "System", null, FormMethod.Post, new { onsubmit = "ShowLoading()" }))
         {
             @Html.AntiForgerySID()
             <table>
@@ -40,6 +63,7 @@
     <div class="es-menu-extend" id="CreateProduct">
         @using (Html.BeginForm("CreateProduct", "System", null, FormMethod.Post, new { onsubmit = "ShowLoading()" }))
         {
+            @Html.AntiForgerySID()
             <table>
                 <tr>
                     <td>产品名称</td>
@@ -61,3 +85,96 @@
         }
     </div>
 </div>
+
+<div class="es-table-outer">
+    <table style="width:100%;">
+        <tr>
+            <td style="width:60%;vertical-align: top;">
+                <h3 style="color:#fff">项目分类</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>类别</th>
+                            <th>税率</th>
+                            <th>佣金比率</th>
+                            <th>项目部奖金率</th>
+                            <th>产品</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in Model)
+                        {
+                            <tr>
+                                <td>@c.ID</td>
+                                <td><a href="javascript:LoadProducts(@c.ID)">@c.Title</a></td>
+                                <td>@c.TaxRatio</td>
+                                <td>@c.SaleAllocRatio</td>
+                                <td>@c.AwardAllocRatio</td>
+                                <td>@c.Products.Count</td>
+                                <td>
+                                    <a href="javascript:EditCategory(@c.ID)">编辑</a>
+                                    @Url.LinkWithSID("删除", "DeleteCategory","System", new { id = c.ID })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </td>
+            <td style="padding-left:40px;vertical-align: top;">
+                <h3 style="color:#fff">产品类型</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>属于</th>
+                            <th>名称</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lstProducts">
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    function LoadProducts(id)
+    {
+        ShowLoading();
+        $("#lstProducts").html("");
+        $.getJSON("/System/GetProducts/" + id, {}, function (products) {
+            for (var i = 0; i < products.length; i++)
+            {
+                $("#lstProducts").append('<tr id="product_'+products[i].ID+'"><td>' + products[i].ID + '</td><td>' + products[i].Category + '</td><td>' + products[i].Title + '</td><td><a href="javascript:DeleteProduct(' + products[i].ID + ')">删除</a></td></tr>');
+            }
+            HideLoading();
+        });
+    }
+
+    function DeleteProduct(id)
+    {
+        ShowLoading();
+        $.post("/System/DeleteProduct/" + id, { sid:'@ViewBag.SID'},function(){
+            $("#product_"+id).slideUp(200);
+        });
+    }
+
+    function EditCategory(id)
+    {
+        ShowLoading();
+        $.getJSON("/System/GetCategory/"+id,{},function(c){
+            $("#CurrentID").val(id);
+            $("#txtTitle").val(c.Title);
+            $("#txtTaxRatio").val(c.TaxRatio);
+            $("#txtSaleAllocRatio").val(c.SaleAllocRatio);
+            $("#txtAwardAllocRatio").val(c.AwardAllocRatio);
+            HideLoading();
+            $(".es-dialog").addClass("show");
+        });
+    }
+</script>

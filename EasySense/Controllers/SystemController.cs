@@ -60,5 +60,81 @@ namespace EasySense.Controllers
                               select c).ToList();
             return View(categories);
         }
+
+        [MinRole(UserRole.Root)]
+        [HttpGet]
+        public ActionResult GetProducts(int id)
+        {
+            var category = DB.Categories.Find(id);
+            var ret = new List<ProductViewModel>();
+            foreach (var c in category.Products)
+                ret.Add((ProductViewModel)c);
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateSID]
+        [MinRole(UserRole.Root)]
+        public ActionResult CreateCategory(CategoryModel Model)
+        {
+            DB.Categories.Add(Model);
+            DB.SaveChanges();
+            return RedirectToAction("Category", "System");
+        }
+
+        [HttpPost]
+        [ValidateSID]
+        [MinRole(UserRole.Root)]
+        public ActionResult CreateProduct(ProductModel Model)
+        {
+            DB.Products.Add(Model);
+            DB.SaveChanges();
+            return RedirectToAction("Category", "System");
+        }
+
+        [HttpGet]
+        [ValidateSID]
+        [MinRole(UserRole.Root)]
+        public ActionResult DeleteCategory(int id)
+        {
+            var category = DB.Categories.Find(id);
+            DB.Categories.Remove(category);
+            DB.SaveChanges();
+            return RedirectToAction("Category", "System");
+        }
+
+        [HttpPost]
+        [ValidateSID]
+        [MinRole(UserRole.Root)]
+        public ActionResult DeleteProduct(int id)
+        {
+            var product = DB.Products.Find(id);
+            DB.Products.Remove(product);
+            DB.SaveChanges();
+            return Content("OK");
+        }
+
+
+        [HttpGet]
+        [MinRole(UserRole.Root)]
+        public ActionResult GetCategory(int id)
+        {
+            var category = DB.Categories.Find(id);
+            return Json((CategoryViewModel)category, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateSID]
+        [MinRole(UserRole.Root)]
+        public ActionResult EditCategory(int id, CategoryModel Model)
+        {
+            var category = DB.Categories.Find(id);
+            category.Title = Model.Title;
+            category.AwardAllocRatio = Model.AwardAllocRatio;
+            category.SaleAllocRatio = Model.SaleAllocRatio;
+            category.TaxRatio = Model.TaxRatio;
+            DB.SaveChanges();
+            return RedirectToAction("Category", "System");
+        }
     }
 }
