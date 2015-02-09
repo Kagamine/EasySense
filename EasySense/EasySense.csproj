@@ -309,6 +309,7 @@
     <Content Include="Scripts\fullcalendar.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.custom.min.js" />
     <Content Include="Scripts\jquery.datetimepicker.js" />
+    <Content Include="Scripts\jquery.jqchart.min.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Styles\datetimepicker.css" />
     <Content Include="Styles\es_login.css" />
@@ -359,6 +360,7 @@
     <Compile Include="Models\EnterpriseListViewModel.cs" />
     <Compile Include="Models\EnterpriseModel.cs" />
     <Compile Include="Models\FileModel.cs" />
+    <Compile Include="Models\JQChartViewModel.cs" />
     <Compile Include="Models\NotificationViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\ProjectListViewModel.cs" />
