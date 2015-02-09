@@ -370,6 +370,7 @@
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="Models\ReportViewModel.cs" />
     <Compile Include="Models\StatisticsModel.cs" />
     <Compile Include="Models\SuperSearchViewModel.cs" />
     <Compile Include="Models\UserModel.cs" />

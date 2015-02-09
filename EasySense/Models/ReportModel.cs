@@ -48,5 +48,17 @@ namespace EasySense.Models
 
         [Index]
         public DateTime Time { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var data = obj as ReportModel;
+            if (data.ID == this.ID) return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID;
+        }
     }
 }

@@ -24,23 +24,42 @@ namespace EasySense.Controllers
         [AccessToReport]
         public ActionResult Day(int id)
         {
+            ViewBag.ID = CurrentUser.ID;
             return View();
         }
 
         [AccessToReport]
         public ActionResult Week(int id)
         {
+            ViewBag.ID = CurrentUser.ID;
             return View();
         }
 
         [AccessToReport]
         public ActionResult Month(int id)
         {
+            ViewBag.ID = CurrentUser.ID;
             return View();
+        }
+
+        [HttpGet]
+        [AccessToReport]
+        public ActionResult GetReports(int id, int year, int? month, int? week)
+        {
+            IEnumerable<ReportModel> reports = DB.Reports.Where(x => x.ID == id && x.Year == year);
+            if (month.HasValue)
+                reports = reports.Where(x => x.Month == month.Value);
+            if (week.HasValue)
+                reports = reports.Where(x => x.Week == week.Value);
+            var ret = new List<ReportViewModel>();
+            foreach (var r in reports.ToList())
+                ret.Add((ReportViewModel)r);
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult New()
         {
+            ViewBag.ID = CurrentUser.ID;
             return View();
         }
 
@@ -72,6 +91,33 @@ namespace EasySense.Controllers
                 return RedirectToAction("Month", "Report", new { id = CurrentUser.ID });
             else
                 return RedirectToAction("Week", "Report", new { id = CurrentUser.ID });
+        }
+
+        public ActionResult Edit(int id)
+        {
+            ViewBag.ID = CurrentUser.ID;
+            var report = DB.Reports.Find(id);
+            if (report.UserID != CurrentUser.ID && CurrentUser.Role != UserRole.Root)
+                return RedirectToAction("AccessDenied", "Shared");
+            return View(report);
+        }
+
+        [HttpPost]
+        [ValidateSID]
+        public ActionResult Edit(int id, string TodoList, string FinishedList, string QuestionList)
+        {
+            var report = DB.Reports.Find(id);
+            if (report.UserID != CurrentUser.ID && CurrentUser.Role != UserRole.Root)
+                return RedirectToAction("AccessDenied", "Shared");
+            report.TodoList = TodoList;
+            report.FinishedList = FinishedList;
+            report.QuestionList = QuestionList;
+            if (report.Type == ReportType.Day)
+                return RedirectToAction("Day", "Report", new { id = report.UserID });
+            else if (report.Type == ReportType.Month)
+                return RedirectToAction("Month", "Report", new { id = report.UserID });
+            else
+                return RedirectToAction("Week", "Report", new { id = report.UserID });
         }
 
         [HttpGet]
