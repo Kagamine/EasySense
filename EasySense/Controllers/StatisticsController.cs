@@ -49,8 +49,8 @@ namespace EasySense.Controllers
             var CustomerChart = new List<JQChartViewModel>();
             var EmployeeChart = new List<JQChartViewModel>();
             var ProductIDs = (from p in Projects
-                            group p by p.ProductID into g
-                            select g.Key).ToList();
+                              group p by p.ProductID into g
+                              select g.Key).ToList();
             var Products = (from p in DB.Products
                             where ProductIDs.Contains(p.ID)
                             select p).ToList();
@@ -69,12 +69,12 @@ namespace EasySense.Controllers
                          select u).ToList();
             #region 构建表格
             var DynamicCol = 0;
-            var html = "<table style='border: 1px solid #000'><tr><td colspan='{TOTALCOL}' style='text-align: center; font-weight: bold; border: 1px solid #000'>" +Model.Title+"</td></tr>";
+            var html = "<table style='border: 1px solid #000'><tr><td colspan='{TOTALCOL}' style='text-align: center; font-weight: bold; border: 1px solid #000'>" + Model.Title + "</td></tr>";
             html += "<tr><td colspan='2' style='border: 1px solid #000'></td><td colspan='{DYNAMICCOL}' style='border: 1px solid #000'>所有者</td></tr>";
             html += "<tr><td colspan='2' style='border: 1px solid #000'></td>";
             foreach (var u in Users)
             {
-                html += "<td colspan='{USER" + u.ID + "}' style='border: 1px solid #000'>" + u.Name+"</td>";
+                html += "<td colspan='{USER" + u.ID + "}' style='border: 1px solid #000'>" + u.Name + "</td>";
             }
             html += "</tr>";
             html += "<tr><td style='border: 1px solid #000'>项目类别</td><td style='border: 1px solid #000'>产品类型</td>";
@@ -115,7 +115,7 @@ namespace EasySense.Controllers
                 }
                 html += "</tr>";
             }
-            html = html.Replace("{TOTALCOL}", (DynamicCol + 2).ToString()).Replace("{DYNAMICCOL}", DynamicCol.ToString())+"</table>";
+            html = html.Replace("{TOTALCOL}", (DynamicCol + 2).ToString()).Replace("{DYNAMICCOL}", DynamicCol.ToString()) + "</table>";
             Model.HtmlPreview = html;
             try
             {
@@ -139,7 +139,7 @@ namespace EasySense.Controllers
                 };
                 foreach (var u in Users)
                 {
-                    employeeitem.PushData(u.Username, Convert.ToInt32(Projects.Where(x => x.UserID == u.ID).Sum(x => x.Charge.Value)));
+                    employeeitem.PushData(u.Name, Convert.ToInt32(Projects.Where(x => x.UserID == u.ID).Sum(x => x.Charge.Value)));
                 }
                 var enterpriseitem = new JQChartViewModel
                 {
@@ -223,6 +223,13 @@ namespace EasySense.Controllers
         {
             var statistics = DB.Statistics.Find(id);
             return Content(statistics.EmployeeGraphics, "application/json");
+        }
+
+        [AccessToStatistics]
+        public ActionResult Graphics(Guid id)
+        {
+            var statistics = DB.Statistics.Find(id);
+            return View(statistics);
         }
     }
 }

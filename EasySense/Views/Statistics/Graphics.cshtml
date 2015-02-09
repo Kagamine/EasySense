@@ -1,0 +1,41 @@
+﻿@model StatisticsModel
+@{
+    ViewBag.Title = "簇状图";
+}
+
+<div class="es-block-menu">
+    <a href="/Statistics/Show/@Model.ID">报表预览</a>
+    <a href="/Statistics/Graphics/@Model.ID" class="es-block-menu-active">簇状图</a>
+</div>
+
+<div class="es-block">
+    <div id="EmployeeChart"></div>
+    <div id="EnterpriseChart"></div>
+</div>
+<script>
+    $.getJSON("/Statistics/EmployeeChart/@Model.ID", {}, function (src) {
+        $("#EmployeeChart").jqChart({
+            title: { text: '@Model.Title 员工簇状图' },
+            axes: [
+                {
+                    location: 'left',
+                    minimum: 0
+                }
+            ],
+            series: src
+        });
+    });
+
+    $.getJSON("/Statistics/EnterpriseChart/@Model.ID", {}, function (src) {
+        $("#EnterpriseChart").jqChart({
+            title: { text: '@Model.Title 企业簇状图' },
+            axes: [
+                {
+                    location: 'left',
+                    minimum: 0
+                }
+            ],
+            series: src
+        });
+    });
+</script>
