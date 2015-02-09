@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<CategoryModel>
 @{
     ViewBag.Title = "项目类别管理";
 }
@@ -38,6 +38,26 @@
     </div>
     <a href="#" data-toggle="CreateProduct">新建产品</a>
     <div class="es-menu-extend" id="CreateProduct">
-
+        @using (Html.BeginForm("CreateProduct", "System", null, FormMethod.Post, new { onsubmit = "ShowLoading()" }))
+        {
+            <table>
+                <tr>
+                    <td>产品名称</td>
+                    <td><input name="Title" placeholder="产品名称" class="textbox" /></td>
+                </tr>
+                <tr>
+                    <td>所属项目类别</td>
+                    <td>
+                        <select class="select" name="CategoryID">
+                            @foreach (var c in Model)
+                            {
+                                <option value="@c.ID">@c.Title</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <p><input type="submit" class="button button-def" value="添加产品"  /></p>
+        }
     </div>
 </div>
