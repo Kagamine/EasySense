@@ -96,28 +96,72 @@ namespace EasySense.Models
 
         public float? ProfitAllocRatioCache { get; set; }
 
+        public float? TaxRatioCache { get; set; }
+
         [NotMapped]
         public decimal SellingCommisson
         {
-            get { return 0; }//TODO
+            get
+            {
+                if (Charge != null && AwardAllocRatioCache != null)
+                    return Charge.Value * (decimal)SaleAllocRatioCache.Value;
+                else
+                    return 0;
+            }
         }
 
         [NotMapped]
         public decimal Award
         {
-            get { return 0; }//TODO
+            get
+            {
+                if (Charge != null && AwardAllocRatioCache != null)
+                    return Charge.Value * (decimal)AwardAllocRatioCache.Value;
+                else
+                    return 0;
+            }
         }
 
         [NotMapped]
         public decimal Profit
         {
-            get { return 0; }//TODO
+            get
+            {
+                if (Charge != null && ProfitAllocRatioCache != null)
+                    return Charge.Value * (decimal)ProfitAllocRatioCache.Value;
+                else
+                    return 0;
+            }
+        }
+
+        [NotMapped]
+        public decimal Tax
+        {
+            get
+            {
+                if (Charge != null && TaxRatioCache != null)
+                    return Charge.Value * (decimal)TaxRatioCache.Value;
+                else
+                    return 0;
+            }
         }
 
         [NotMapped]
         public float ProfitRatio
         {
-            get { return 0; }//TODO
+            get
+            {
+                var ret = 1f;
+                if (AwardAllocRatioCache.HasValue)
+                    ret -= AwardAllocRatioCache.Value;
+                if (SaleAllocRatioCache.HasValue)
+                    ret -= SaleAllocRatioCache.Value;
+                if (ProfitAllocRatioCache.HasValue)
+                    ret -= ProfitAllocRatioCache.Value;
+                if (TaxRatioCache.HasValue)
+                    ret -= TaxRatioCache.Value;
+                return ret;
+            }
         }
 
         //Invoice begin

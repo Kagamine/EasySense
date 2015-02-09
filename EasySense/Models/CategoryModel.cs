@@ -22,6 +22,8 @@ namespace EasySense.Models
 
         public float ProfitAllocRatio { get; set; }
 
+        public float TaxRatio { get; set; }
+
         public virtual ICollection<ProductModel> Products { get; set; }
     }
 }

@@ -15,6 +15,10 @@ namespace EasySense.Controllers
         [Route("Login")]
         public ActionResult Login()
         {
+            if (User.Identity.IsAuthenticated == true)
+            {
+                return Redirect("/");
+            }
             return View();
         }
 

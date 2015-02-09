@@ -79,7 +79,6 @@
         @using (Html.BeginForm("Edit", "Enterprise", new { id = Model.ID }, FormMethod.Post, new { id = "frmEditEnterprise", enctype = "multipart/form-data" }))
         {
             @Html.AntiForgerySID()
-            <input name="id" type="hidden" id="CurrentID" />
             <table style="width:600px">
                 <tr>
                     <td>企业名称</td>

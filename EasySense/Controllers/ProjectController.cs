@@ -64,6 +64,25 @@ namespace EasySense.Controllers
             project.Title = Model.Title;
             project.Status = Model.Status;
             project.PayMethod = Model.PayMethod;
+            if (project.ProductID != Model.ProductID)
+            {
+                if (Model.ProductID != null)
+                {
+                    project.ProductID = Model.ProductID;
+                    var product = DB.Products.Find(Model.ProductID);
+                    project.AwardAllocRatioCache = product.Category.AwardAllocRatio;
+                    project.ProfitAllocRatioCache = product.Category.ProfitAllocRatio;
+                    project.SaleAllocRatioCache = product.Category.SaleAllocRatio;
+                    project.TaxRatioCache = product.Category.TaxRatio;
+                }
+                else
+                {
+                    project.AwardAllocRatioCache = null;
+                    project.ProfitAllocRatioCache = null;
+                    project.SaleAllocRatioCache = null;
+                    project.TaxRatioCache = null;
+                }
+            }
             project.Log = string.Format("[{0}] {1}({2}) 修改了项目\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Name, CurrentUser.Username);
             DB.SaveChanges();
             return RedirectToAction("Show", "Project", new { id = id });
@@ -289,6 +308,17 @@ namespace EasySense.Controllers
             foreach (var p in products)
                 ret.Add((ProductViewModel)p);
             return Json(ret, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AccessToProject]
+        [ValidateSID]
+        public ActionResult ChangePercent(int id, float percent)
+        {
+            var project = DB.Projects.Find(id);
+            project.Percent = percent / 100;
+            DB.SaveChanges();
+            return RedirectToAction("Show", "Project", new { id = id });
         }
     }
 }

@@ -41,6 +41,15 @@
     }
 </style>
 <div class="es-block-menu">
+    <div class="es-dialog" style="left:550px;">
+        @using (Html.BeginForm("ChangePercent", "Project", new { id = Model.ID }, FormMethod.Post, null))
+        {
+            @Html.AntiForgerySID()
+            <h3>修改百分比</h3>
+            <p><input type="text" name="percent" class="textbox" /></p>
+            <p><input type="submit" value="保存" class="button button-def" /></p>
+        }
+    </div>
     <a href="/Project/Show/@Model.ID" class="es-block-menu-active">项目信息</a>
     <a href="/Project/Bill/@Model.ID">支出</a>
     <a href="/Project/Log/@Model.ID">操作记录</a>
@@ -92,7 +101,7 @@
                         </td>
                         <td>@Model.End.ToString("yyyy-MM-dd")</td>
                         <td>
-                            <div style="width:80px;border:1px solid #fff;height:20px;text-align:center;border-radius:20px;"><span style="position:relative;z-index:1">50%</span><div style="width:50%;background-color:green;position:relative;top:-20px;left:0;height: 18px;border-radius:18px;"></div></div>
+                            <div style="width:80px;border:1px solid #fff;height:20px;text-align:center;border-radius:20px;"><a style="color:#fff;position:relative;z-index:1" href="javascript:$('.es-dialog').addClass('show')">@(Model.Percent * 100)%</a><div style="width:@(Convert.ToInt32(Model.Percent * 100))%;background-color:green;position:relative;top:-20px;left:0;height: 18px;border-radius:18px;"></div></div>
                         </td>
                     </tr>
                 </table>
@@ -204,11 +213,11 @@
                     <td>
                         <h3>财务信息</h3>
                         <p>项目金额<br /><input name="Charge" type="text" class="textbox" placeholder="项目金额" value="@Model.Charge" /></p>
-                        <p>税金<br /><strong>￥@Model.Award</strong></p>
-                        <p>销售佣金<br /><strong>￥@Model.SellingCommisson</strong></p>
-                        <p>项目部奖金<br /><strong>￥@Model.Award</strong></p>
-                        <p>项目利润<br /><strong>￥@Model.Profit</strong></p>
-                        <p>项目毛利率%<br /><strong></strong></p>
+                        <p>税金<br /><strong>￥@Model.Tax.ToString("0.00")</strong></p>
+                        <p>销售佣金<br /><strong>￥@Model.SellingCommisson.ToString("0.00")</strong></p>
+                        <p>项目部奖金<br /><strong>￥@Model.Award.ToString("0.00")</strong></p>
+                        <p>项目利润<br /><strong>￥@Model.Profit.ToString("0.00")</strong></p>
+                        <p>项目毛利率%<br /><strong>@((Model.ProfitRatio * 100).ToString("0.00"))%</strong></p>
                     </td>
                 }
                 <td>
