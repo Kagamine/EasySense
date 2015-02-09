@@ -42,7 +42,7 @@
 </style>
 <div class="es-block-menu">
     <div class="es-dialog" style="left:550px;">
-        @using (Html.BeginForm("ChangePercent", "Project", new { id = Model.ID }, FormMethod.Post, null))
+        @using (Html.BeginForm("ChangePercent", "Project", new { id = Model.ID }, FormMethod.Post, new { onsubmit= "ShowLoading()" }))
         {
             @Html.AntiForgerySID()
             <h3>修改百分比</h3>

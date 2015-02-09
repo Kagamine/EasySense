@@ -411,6 +411,7 @@
     <None Include="Properties\PublishProfiles\es.pubxml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\System\Index.cshtml" />
+    <Content Include="Views\System\Category.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

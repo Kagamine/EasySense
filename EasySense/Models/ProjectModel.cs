@@ -94,8 +94,6 @@ namespace EasySense.Models
 
         public float? AwardAllocRatioCache { get; set; }
 
-        public float? ProfitAllocRatioCache { get; set; }
-
         public float? TaxRatioCache { get; set; }
 
         [NotMapped]
@@ -127,8 +125,8 @@ namespace EasySense.Models
         {
             get
             {
-                if (Charge != null && ProfitAllocRatioCache != null)
-                    return Charge.Value * (decimal)ProfitAllocRatioCache.Value;
+                if (Charge.HasValue)
+                    return (decimal)ProfitRatio * Charge.Value;
                 else
                     return 0;
             }
@@ -156,10 +154,11 @@ namespace EasySense.Models
                     ret -= AwardAllocRatioCache.Value;
                 if (SaleAllocRatioCache.HasValue)
                     ret -= SaleAllocRatioCache.Value;
-                if (ProfitAllocRatioCache.HasValue)
-                    ret -= ProfitAllocRatioCache.Value;
                 if (TaxRatioCache.HasValue)
                     ret -= TaxRatioCache.Value;
+                var bills = Bills.Sum(x => x.Actual);
+                if(Charge.HasValue)
+                    ret -= (float)(bills / Charge.Value);
                 return ret;
             }
         }

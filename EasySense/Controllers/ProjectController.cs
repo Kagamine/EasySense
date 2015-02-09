@@ -71,14 +71,12 @@ namespace EasySense.Controllers
                     project.ProductID = Model.ProductID;
                     var product = DB.Products.Find(Model.ProductID);
                     project.AwardAllocRatioCache = product.Category.AwardAllocRatio;
-                    project.ProfitAllocRatioCache = product.Category.ProfitAllocRatio;
                     project.SaleAllocRatioCache = product.Category.SaleAllocRatio;
                     project.TaxRatioCache = product.Category.TaxRatio;
                 }
                 else
                 {
                     project.AwardAllocRatioCache = null;
-                    project.ProfitAllocRatioCache = null;
                     project.SaleAllocRatioCache = null;
                     project.TaxRatioCache = null;
                 }

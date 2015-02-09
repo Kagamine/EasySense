@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "项目类别管理";
+}
+
+<style>
+    td a, td a:hover, td a:active, td a:visited {
+        color: #fff;
+    }
+    .es-block-menu table {
+        line-height: 36px;
+    }
+</style>
+<div class="es-block-menu">
+    <a href="/System">地区管理</a>
+    <a href="/System/Category" class="es-block-menu-active">项目类别管理</a>
+    <a href="#" data-toggle="CreateCategory">新建类别</a>
+    <div class="es-menu-extend" id="CreateCategory">
+        @using (Html.BeginForm("CreateCategory", "System",null, FormMethod.Post,new { onsubmit = "ShowLoading()" }))
+        {
+            @Html.AntiForgerySID()
+            <table>
+                <tr>
+                    <td>类别名称</td>
+                    <td><input name="Title" placeholder="类别名称" class="textbox" /></td>
+                    <td>税率</td>
+                    <td><input name="TaxRatio" placeholder="例如: 0.2" class="textbox" /></td>
+                </tr>
+                <tr>
+                    <td>佣金比率</td>
+                    <td><input name="SaleAllocRatio" placeholder="例如: 0.05" class="textbox" /></td>
+                    <td>项目部奖金</td>
+                    <td><input name="AwardAllocRatio" placeholder="例如: 0.2" class="textbox" /></td>
+                </tr>
+            </table>
+            <p><input type="submit" value="创建分类" class="button button-def" /></p>
+        }
+    </div>
+    <a href="#" data-toggle="CreateProduct">新建产品</a>
+    <div class="es-menu-extend" id="CreateProduct">
+
+    </div>
+</div>
