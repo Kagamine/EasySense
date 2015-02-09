@@ -129,5 +129,30 @@ namespace EasySense.Helpers
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
             return (Time - startTime).TotalSeconds.ToString();
         }
+
+        public static int WeekOfYear(DateTime dateTime)
+        {
+            int firstdayofweek = System.Convert.ToDateTime(dateTime.Year.ToString() + "- 1-1 ").DayOfWeek.GetHashCode();
+            int days = dateTime.DayOfYear;
+            int daysOutOneWeek = days - (7 - firstdayofweek);
+            if (daysOutOneWeek <= 0)
+            {
+                return 1;
+            }
+            else
+            {
+                int weeks = daysOutOneWeek / 7;
+                if (daysOutOneWeek % 7 != 0)
+                {
+                    weeks++;
+                }
+                return weeks + 1;
+            }
+        }
+
+        public static int WeekCountOfYear(int year)
+        {
+            return WeekOfYear(Convert.ToDateTime(year + "-12-31"));
+        }
     }
 }

@@ -377,6 +377,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\AccessToAlarmAttribute.cs" />
     <Compile Include="Schema\AccessToFileAttribute.cs" />
+    <Compile Include="Schema\AccessToReportAttribute.cs" />
     <Compile Include="Schema\AccessToStatisticsAttribute.cs" />
     <Compile Include="Schema\BaseAuthorizeAttribute.cs" />
     <Compile Include="Schema\MinRoleAttribute.cs" />
