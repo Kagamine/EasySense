@@ -420,6 +420,11 @@
     <Content Include="Views\System\Index.cshtml" />
     <Content Include="Views\System\Category.cshtml" />
     <Content Include="Views\Statistics\Graphics.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Report\Day.cshtml" />
+    <Content Include="Views\Report\Week.cshtml" />
+    <Content Include="Views\Report\Month.cshtml" />
+    <Content Include="Views\Report\New.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -430,7 +435,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Temp\" />
-    <Folder Include="Views\Report\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

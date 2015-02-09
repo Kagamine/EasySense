@@ -20,6 +20,18 @@ namespace EasySense.Models
 
         public ReportType Type { get; set; }
 
+        [Index]
+        public int Year { get; set; }
+
+        [Index]
+        public int? Month { get; set; }
+
+        [Index]
+        public int? Week { get; set; }
+
+        [Index]
+        public int? Day { get; set; }
+
         [ForeignKey("User")]
         public int UserID { get; set; }
 

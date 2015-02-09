@@ -19,7 +19,7 @@ namespace EasySense.Schema
                                 where u.Username == httpContext.User.Identity.Name
                                 select u).Single();
                     if (user.Role >= UserRole.Root) return true;
-                    var UserID = Guid.Parse(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"].ToString());
+                    var UserID = Convert.ToInt32(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"].ToString());
                     if(UserID == user.ID)
                         return true;
                 }
