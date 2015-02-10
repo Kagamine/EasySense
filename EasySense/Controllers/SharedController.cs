@@ -115,7 +115,7 @@ namespace EasySense.Controllers
 
         public ActionResult AccessDenied()
         {
-            return RedirectToAction("Message", "Shared", new { msg = "为了保护系统安全，请您刷新上一页面重新尝试本操作！" });
+            return RedirectToAction("Message", "Shared", new { msg = "您没有权限执行本操作！" });
         }
 
         public ActionResult Message(string msg)

@@ -26,7 +26,7 @@ namespace EasySense.Schema
                                 where u.Username == httpContext.User.Identity.Name
                                 && u.Role == Role
                                 select u).SingleOrDefault();
-                    if (user != null)
+                    if (user != null && user.Role >= Role)
                         return true;
                 }
             }

@@ -16,15 +16,18 @@ namespace EasySense.Controllers
         {
             ViewBag.Yesterday = ((from r in DB.Reports
                                  where r.Type == ReportType.Day
+                                 && r.UserID == CurrentUser.ID
                                  orderby r.Time descending
                                  select r).FirstOrDefault());
             ViewBag.LastWeek = ((from r in DB.Reports
                              where r.Type == ReportType.Week
-                             orderby r.Time descending
+                             && r.UserID == CurrentUser.ID
+                                 orderby r.Time descending
                              select r).FirstOrDefault());
             ViewBag.LastMonth = ((from r in DB.Reports
                              where r.Type == ReportType.Month
-                             orderby r.Time descending
+                             && r.UserID == CurrentUser.ID
+                                  orderby r.Time descending
                              select r).FirstOrDefault());
             var ThisWeek = Helpers.Time.WeekOfYear(DateTime.Now);
             ViewBag.Day = (from r in DB.Reports
@@ -32,17 +35,20 @@ namespace EasySense.Controllers
                            && r.Year == DateTime.Now.Year
                            && r.Month == DateTime.Now.Month
                            && r.Day == DateTime.Now.Day
+                           && r.UserID == CurrentUser.ID
                            select r).Count() > 0;
             ViewBag.Week = (from r in DB.Reports
                            where r.Type == ReportType.Week
                            && r.Year == DateTime.Now.Year
                            && r.Week == ThisWeek
-                           select r).Count() > 0;
+                           && r.UserID == CurrentUser.ID
+                            select r).Count() > 0;
             ViewBag.Month = (from r in DB.Reports
                            where r.Type == ReportType.Month
                            && r.Year == DateTime.Now.Year
                            && r.Month == DateTime.Now.Month
-                           select r).Count() > 0;
+                           && r.UserID == CurrentUser.ID
+                             select r).Count() > 0;
             return View();
         }
     }

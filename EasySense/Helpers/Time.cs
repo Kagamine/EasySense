@@ -127,7 +127,7 @@ namespace EasySense.Helpers
         public static string ToTimeStamp(System.DateTime Time)
         {
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
-            return (Time - startTime).TotalSeconds.ToString();
+            return Convert.ToInt64((Time - startTime).TotalSeconds).ToString();
         }
 
         public static int WeekOfYear(DateTime dateTime)
