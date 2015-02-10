@@ -89,6 +89,7 @@ namespace EasySense.Controllers
                        && r.Month == Model.Month
                        && r.Week == Model.Week
                        && r.Day == Model.Day
+                       && r.UserID == CurrentUser.ID
                        select r).Count();
             if (cnt > 0) return RedirectToAction("Message", "Shared", new { msg = "请勿重复创建报告。" });
             Model.TodoList = Helpers.HtmlFilter.Instance.SanitizeHtml(Model.TodoList);
