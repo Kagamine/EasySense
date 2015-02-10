@@ -56,10 +56,10 @@ namespace EasySense.Controllers
                 var alarmNotifications = (from a in DB.Alarms
                                           where a.UserID == CurrentUser.ID
                                           && a.Remind.HasValue
-                                          && a.End <= DateTime.Now
+                                          && a.End >= DateTime.Now
                                           select a).ToList();
                 foreach (var a in alarmNotifications)
-                    ViewBag.FinanceNotifications.Add((NotificationViewModel)a);
+                    ViewBag.AlarmNotifications.Add((NotificationViewModel)a);
                 #endregion
                 #region 生日提醒
                 ViewBag.BirthdayNotifications = new List<NotificationViewModel>();

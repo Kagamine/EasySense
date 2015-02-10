@@ -156,9 +156,12 @@ namespace EasySense.Models
                     ret -= SaleAllocRatioCache.Value;
                 if (TaxRatioCache.HasValue)
                     ret -= TaxRatioCache.Value;
-                var bills = Bills.Sum(x => x.Actual);
-                if(Charge.HasValue)
-                    ret -= (float)(bills / Charge.Value);
+                if (Bills != null)
+                {
+                    var bills = Bills.Sum(x => x.Actual);
+                    if (Charge.HasValue)
+                        ret -= (float)(bills / Charge.Value);
+                }
                 return ret;
             }
         }
