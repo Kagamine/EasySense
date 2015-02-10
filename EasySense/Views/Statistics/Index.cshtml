@@ -12,7 +12,7 @@
     }
 </style>
 <div class="es-block-menu">
-    @if (ViewBag.UserRole.Role == UserRole.Root)
+    @if (ViewBag.CurrentUser.Role == UserRole.Root)
     {
         <a href="#" data-toggle="CreateStatistics">定制报表</a>
         <div class="es-menu-extend" id="CreateStatistics">
