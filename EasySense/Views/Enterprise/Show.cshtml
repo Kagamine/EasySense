@@ -262,6 +262,47 @@
         $("#frmEditEnterprise").submit();
     });
     $("#btnAddCustomer").click(function () {
+        if ($("#txtName").val() == "")
+        {
+            alert("联系人姓名不能为空");
+            return;
+        }
+        if ($("#txtPosition").val() == "") {
+            alert("联系人职位不能为空");
+            return;
+        }
+        if ($("#txtTel").val() == "") {
+            alert("联系人固定电话不能为空");
+            return;
+        }
+        if ($("#txtPhone").val() == "") {
+            alert("联系人手机不能为空");
+            return;
+        }
+        if ($("#txtFax").val() == "") {
+            alert("联系人传真不能为空");
+            return;
+        }
+        if ($("#txtEmail").val() == "") {
+            alert("联系人电子邮箱不能为空");
+            return;
+        }
+        if ($("#txtQQ").val() == "") {
+            alert("联系人QQ不能为空");
+            return;
+        }
+        if ($("#txtWechat").val() == "") {
+            alert("联系人微信号不能为空");
+            return;
+        }
+        if ($("#txtBirthday").val() == "") {
+            alert("联系人生日不能为空");
+            return;
+        }
+        if ($("#txtHint").val() == "") {
+            alert("联系人备注不能为空");
+            return;
+        }
         ShowLoading();
         $.post("/Enterprise/CreateCustomer/@Model.ID", {
             Name: $("#txtName").val(),

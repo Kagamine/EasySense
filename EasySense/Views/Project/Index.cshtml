@@ -88,6 +88,22 @@
     $("#txtPlanBegin").datetimepicker();
     $("#txtPlanEnd").datetimepicker();
     $("#btnAddProject").click(function () {
+        if ($("#txtNewTitle").val() == "") {
+            alert("项目标题不能为空！");
+            return;
+        }
+        if ($("#txtDescription").val() == "") {
+            alert("项目说明不能为空！");
+            return;
+        }
+        if ($("#txtPlanBegin").val() == "") {
+            alert("项目开始时间不能为空！");
+            return;
+        }
+        if ($("#txtPlanEnd").val() == "") {
+            alert("项目结束时间不能为空！");
+            return;
+        }
         ShowLoading();
         $.post("/Project/Create",
             {

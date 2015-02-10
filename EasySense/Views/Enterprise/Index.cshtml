@@ -92,6 +92,55 @@
 </div>
 <script>
     $("#btnAddEnterprise").click(function () {
+        if ($("#txtTitle").val() == "")
+        {
+            alert("企业名称不能为空");
+            return;
+        }
+        if ($("#txtAddress").val() == "") {
+            alert("企业通信地址不能为空");
+            return;
+        }
+        if ($("#txtZip").val() == "") {
+            alert("企业邮政编码不能为空");
+            return;
+        }
+        if ($("#txtWebsite").val() == "") {
+            alert("企业网址不能为空");
+            return;
+        }
+        if ($("#txtTel").val() == "") {
+            alert("企业电话不能为空");
+            return;
+        }
+        if ($("#txtFax").val() == "") {
+            alert("企业传真不能为空");
+            return;
+        }
+        if ($("#txtProperty").val() == "") {
+            alert("企业性质不能为空");
+            return;
+        }
+        if ($("#txtType").val() == "") {
+            alert("企业类型不能为空");
+            return;
+        }
+        if ($("#txtScale").val() == "") {
+            alert("企业规模不能为空");
+            return;
+        }
+        if ($("#txtSalesVolume").val() == "") {
+            alert("企业销售额不能为空");
+            return;
+        }
+        if ($("#txtBrand").val() == "") {
+            alert("品牌不能为空");
+            return;
+        }
+        if ($("#txtHint").val() == "") {
+            alert("备注不能为空");
+            return;
+        }
         ShowLoading();
         $.post("/Enterprise/Create", {
             Title: $("#txtTitle").val(),
