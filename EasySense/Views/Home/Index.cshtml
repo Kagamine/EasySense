@@ -1,17 +1,154 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "首页";
 }
 
-<div class="es-block-menu">
+<style>
+    .es-table-outer tr {
+        cursor: pointer;
+    }
 
-    <a href="#" data-toggle="ExportMenu">导出</a>
-    <div class="es-menu-extend" id="ExportMenu">
-        test
+    table {
+        line-height: 36px;
+    }
+
+    .es-block-menu {
+        margin-top:10px;
+        color:#000!important;
+    }
+
+        #Plan table tr{
+            cursor:default;
+            line-height: 24px;
+        }
+
+        #Plan h3, #Plan h2, #Plan h4, #Plan a {
+            color: orange;
+        }
+</style>
+<div class="es-table-outer" id="Plan">
+    <table style="width: 100%">
+        <tr>
+            @if (ViewBag.Yesterday != null)
+            {
+                <td style="vertical-align: top">
+                    <h3 class="label">@ViewBag.Yesterday.Year 年 @ViewBag.Yesterday.Month 月 @ViewBag.Yesterday.Day 日</h3>
+                    <h4>待办事项</h4>
+                    <div>
+                        @MvcHtmlString.Create(ViewBag.Yesterday.TodoList)
+                    </div>
+                    <h4>遇到问题</h4>
+                    <div>
+                        @MvcHtmlString.Create(ViewBag.Yesterday.QuestionList)
+                    </div>
+                    <h4>已办事项</h4>
+                    <div>
+                        @MvcHtmlString.Create(ViewBag.Yesterday.FinishedList)
+                    </div>
+                </td>
+            }
+            @if (ViewBag.LastWeek != null)
+            {
+                <td style="vertical-align: top">
+                    <h3 class="label">@ViewBag.LastWeek.Year 年 第 @ViewBag.LastWeek.Week 周</h3>
+                    <h4>待办事项</h4>
+                    <div>
+                        @MvcHtmlString.Create(ViewBag.LastWeek.TodoList)
+                    </div>
+                    <h4>遇到问题</h4>
+                    <div>
+                        @MvcHtmlString.Create(ViewBag.LastWeek.QuestionList)
+                    </div>
+                    <h4>已办事项</h4>
+                    <div>
+                        @MvcHtmlString.Create(ViewBag.LastWeek.FinishedList)
+                    </div>
+                </td>
+            }
+            @if (ViewBag.LastMonth != null)
+            {
+                <td style="vertical-align: top">
+                    <h3 class="label">@ViewBag.LastMonth.Year 年 @ViewBag.LastMonth.Month 月</h3>
+                    <h4>待办事项</h4>
+                    <div>
+                        @MvcHtmlString.Create(ViewBag.LastMonth.TodoList)
+                    </div>
+                    <h4>遇到问题</h4>
+                    <div>
+                        @MvcHtmlString.Create(ViewBag.LastMonth.QuestionList)
+                    </div>
+                    <h4>已办事项</h4>
+                    <div>
+                        @MvcHtmlString.Create(ViewBag.LastMonth.FinishedList)
+                    </div>
+                </td>
+            }
+            <td style="vertical-align: top">
+                <h3 class="label">报告状态检查</h3>
+                @if (!ViewBag.Day)
+                {
+                    <p>您还没有提交今日日报</p>
+                }
+                @if (!ViewBag.Week)
+                {
+                    <p>您还没有提交本周周报</p>
+                }
+                @if (!ViewBag.Month)
+                {
+                    <p>您还没有提交本月月报</p>
+                }
+                <p><a href="/Report/Day/@ViewBag.CurrentUser.ID">编写工作报告</a></p>
+            </td>
+        </tr>
+    </table>
+</div>
+    <div class="es-table-outer">
+        <div class="es-block-menu">
+            <a href="#" data-toggle="ProjectsFilter">项目过滤器</a>
+            <div id="ProjectsFilter" class="es-menu-extend">
+                <p>项目名称：<input id="txtTitle" type="text" class="textbox" placeholder="项目名称" />&nbsp;&nbsp; 项目状态：<select id="lstStatus" class="select" style="width: 130px"><option value="">全部</option><option value="0">当前</option><option value="1">完成</option><option value="2">竞标</option><option value="3">废弃</option></select></p>
+                <p>签订时间：从 <input id="txtBegin" type="text" class="textbox" value="" /> 到 <input id="txtEnd" type="text" class="textbox" value="" /></p>
+                <p><a href="javascript:page=0;$('#lstProjects').html('');Load();CloseToggle();">检索</a> <a href="javascript:CloseToggle();">关闭</a></p>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th data-col="ID">ID</th>
+                    <th data-col="UserID">所有者 </th>
+                    <th data-col="Title">项目名称 </th>
+                    <th data-col="Charge">项目金额 </th>
+                    <th data-col="SignTime">签订日期 </th>
+                    <th data-col="ProductID">产品类型 </th>
+                    <th data-col="EnterpriseID">客户 </th>
+                    <th data-col="Enterprise.Brand">品牌 </th>
+                    <th data-col="CustomerID">联系人 </th>
+                    <th data-col="Status">状态 </th>
+                    <th data-col="InvoiceTime">开票日期 </th>
+                    <th data-col="ChargeTime">收款日期 </th>
+                </tr>
+            </thead>
+            <tbody id="lstProjects"></tbody>
+        </table>
     </div>
-    <a href="#">添加</a>
-</div>
-
-<div class="es-block">
-    <h2>Index</h2>
-</div>
+    <script>
+        $("#txtBegin").datetimepicker();
+        $("#txtEnd").datetimepicker();
+        $("#txtPlanBegin").datetimepicker();
+        $("#txtPlanEnd").datetimepicker();
+        $("#btnAddProject").click(function () {
+            ShowLoading();
+            $.post("/Project/Create",
+                {
+                    Title: $("#txtNewTitle").val(),
+                    Status: $("#lstNewStatus").val(),
+                    Description: $("#txtDescription").val(),
+                    Begin: $("#txtPlanBegin").val(),
+                    End: $("#txtPlanEnd").val(),
+                    Priority: $("#lstPriority").val(),
+                    sid: "@ViewBag.SID"
+                }, function (id) {
+                    window.location = "/Project/Show/" + id;
+                });
+        });
+    </script>
