@@ -112,5 +112,16 @@ namespace EasySense.Controllers
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult AccessDenied()
+        {
+            return RedirectToAction("Message", "Shared", new { msg = "为了保护系统安全，请您刷新上一页面重新尝试本操作！" });
+        }
+
+        public ActionResult Message(string msg)
+        {
+            ViewBag.Message = msg;
+            return View();
+        }
     }
 }

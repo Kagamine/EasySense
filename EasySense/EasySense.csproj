@@ -426,6 +426,7 @@
     <Content Include="Views\Report\Month.cshtml" />
     <Content Include="Views\Report\New.cshtml" />
     <Content Include="Views\Report\Edit.cshtml" />
+    <Content Include="Views\Shared\Message.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
