@@ -288,7 +288,7 @@
                     $("#CustomerSelect").html("");
                     for(var i =0 ;i<c.length;i++)
                     {
-                        $("#CustomerSelect").append('<a href="javascript:$(\'#CustomerID\').val('+c[i].ID+');" data-content=\''+c[i].Name+'\'>'+c[i].Name+'</a>');
+                        $("#CustomerSelect").append('<a href="javascript:$(\'#CustomerID\').val('+c[i].ID+');" data-content=\''+c[i].Name+'\'>'+c[i].Name+'</a><hr />');
                     }
                     if (c.length == 0) {
                         $("#lstEnterprises").html("<small>没有找到匹配的企业</small><hr />");
