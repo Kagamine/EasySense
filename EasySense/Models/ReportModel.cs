@@ -38,13 +38,10 @@ namespace EasySense.Models
 
         public virtual UserModel User { get; set; }
 
-        [Required]
         public string TodoList { get; set; }
 
-        [Required]
         public string FinishedList { get; set; }
 
-        [Required]
         public string QuestionList { get; set; }
 
         [Index]
