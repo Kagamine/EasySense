@@ -358,6 +358,7 @@
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\DepartmentModel.cs" />
+    <Compile Include="Models\DepartmentViewModel.cs" />
     <Compile Include="Models\EasySenseContext.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\EnterpriseListViewModel.cs" />
@@ -427,6 +428,7 @@
     <Content Include="Views\Report\New.cshtml" />
     <Content Include="Views\Report\Edit.cshtml" />
     <Content Include="Views\Shared\Message.cshtml" />
+    <Content Include="Views\System\Department.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

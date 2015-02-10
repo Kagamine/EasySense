@@ -1,0 +1,113 @@
+﻿@model IEnumerable<DepartmentModel>
+@{
+    ViewBag.Title = "部门管理";
+}
+
+<style>
+    td a, td a:hover, td a:active, td a:visited {
+        color: #fff;
+    }
+
+    .es-block-menu table {
+        line-height: 36px;
+    }
+</style>
+
+<div class="es-block-menu">
+    <div class="es-dialog">
+        @using (Html.BeginForm("EditDepartment", "System", null, FormMethod.Post, new { onsubmit = "ShowLoading()" }))
+        {
+            @Html.AntiForgerySID()
+            <table>
+                <tr>
+                    <td>部门名称</td>
+                    <td><input id="txtTitle" type="text" name="Title" placeholder="部门名称" class="textbox" /></td>
+                </tr>
+                <tr>
+                    <td>部门主任</td>
+                    <td>
+                        <select id="lstUserID" class="select" name="UserID">
+                            <option>未指定</option>
+                            @foreach (UserModel u in ViewBag.Users)
+                            {
+                                <option value="@u.ID">@u.Name (@u.Username)</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <p><input type="submit" value="保存修改" class="button button-def" /></p>
+        }
+    </div>
+    <a href="/System">地区管理</a>
+    <a href="/System/Category">项目类别管理</a>
+    <a href="/System/Department" class="es-block-menu-active">部门管理</a>
+    <a href="#" data-toggle="AddDepartment">添加部门</a>
+    <div id="AddDepartment">
+        @using (Html.BeginForm("CreateDepartment", "System", null, FormMethod.Post, new { onsubmit = "ShowLoading()" }))
+        {
+            @Html.AntiForgerySID()
+            <table>
+                <tr>
+                    <td>部门名称</td>
+                    <td><input type="text" name="Title" placeholder="部门名称" class="textbox" /></td>
+                </tr>
+                <tr>
+                    <td>部门主任</td>
+                    <td>
+                        <select class="select" name="UserID">
+                            <option>未指定</option>
+                            @foreach (UserModel u in ViewBag.Users)
+                            {
+                                <option value="@u.ID">@u.Name (@u.Username)</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <p><input type="submit" value="创建部门" class="button button-def" /></p>
+        }
+    </div>
+</div>
+
+<div class="es-table-outer">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>部门ID</th>
+                <th>部门名称</th>
+                <th>部门人数</th>
+                <th>部门主任</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model)
+            {
+                <tr>
+                    <td>@d.ID</td>
+                    <td>@d.Title</td>
+                    <td>@d.Users.Count</td>
+                    <td>@(d.UserID == null?"未指定" :d.User.Name)</td>
+                    <td>
+                        <a href="javascript:EditDepartment(@d.ID)">编辑</a>
+                        @Url.LinkWithSID("删除","DeleteDepartment", "System",new { id=d.ID})
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function EditDepartment(id)
+    {
+        ShowLoading();
+        $.getJSON("/System/GetDepartment/" + id, {}, function (d) {
+            $("#txtTitle").val(d.Title);
+            $("#lstUserID").val(d.UserID);
+            HideLoading();
+            $(".es-dialog").addClass("show");
+        });
+    }
+</script>
