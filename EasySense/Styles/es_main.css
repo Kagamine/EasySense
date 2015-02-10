@@ -682,4 +682,10 @@ a:hover {
 
 .es-report {
     display: none;
+    border-left:5px solid #ccc;
+    padding-left: 10px;
+}
+.es-report-home {
+    border-left:5px solid #ccc;
+    padding-left: 10px;
 }
