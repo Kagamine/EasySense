@@ -174,7 +174,6 @@ namespace EasySense.Models
         [StringLength(256)]
         public string InvoiceSN { get; set; }
 
-        [Required]
         public string Hint { get; set; }
 
         public DateTime? ChargeTime { get; set; }

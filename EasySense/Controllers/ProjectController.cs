@@ -81,7 +81,7 @@ namespace EasySense.Controllers
                     project.TaxRatioCache = null;
                 }
             }
-            project.Log = string.Format("[{0}] {1}({2}) 修改了项目\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Name, CurrentUser.Username);
+            project.Log += string.Format("[{0}] {1}({2}) 修改了项目\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Name, CurrentUser.Username);
             DB.SaveChanges();
             return RedirectToAction("Show", "Project", new { id = id });
         }
@@ -91,7 +91,7 @@ namespace EasySense.Controllers
         {
             IEnumerable<ProjectModel> projects = (from p in DB.Projects
                                                   where p.Title.Contains(Title)
-                                                  select p);
+                                                  select p).ToList();
             if (Status.HasValue)
                 projects = projects.Where(x => x.Status == Status.Value);
             if (Begin.HasValue)
@@ -101,7 +101,7 @@ namespace EasySense.Controllers
             if (CurrentUser.Role == UserRole.Employee)
                 projects = projects.Where(x => x.UserID == CurrentUser.ID);
             else if (CurrentUser.Role == UserRole.Master)
-                projects = projects.Where(x => x.User.Department.UserID == CurrentUser.ID);
+                projects = projects.Where(x => x.User.DepartmentID != null && x.User.Department.UserID == CurrentUser.ID);
             if (string.IsNullOrEmpty(OrderBy))
             {
                 projects = projects.OrderByDescending(x => x.Status).ThenByDescending(x=>x.Priority);
@@ -223,6 +223,9 @@ namespace EasySense.Controllers
             Model.Time = DateTime.Now;
             DB.Bills.Add(Model);
             DB.SaveChanges();
+            var Project = DB.Projects.Find(id);
+            Project.Log += string.Format("[{0}] {1}添加了支出(-{2})\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Username, Model.Plan);
+            DB.SaveChanges();
             return Content(Model.ID.ToString());
         }
 
@@ -236,7 +239,9 @@ namespace EasySense.Controllers
             bill.Type = Model.Type;
             bill.Plan = Model.Plan;
             bill.Actual = Model.Actual;
+            bill.Project.Log += string.Format("[{0}] {1}修改了支出\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Username);
             DB.SaveChanges();
+
             return RedirectToAction("Bill", "Project", new { id = bill.ProjectID });
         }
 
@@ -246,6 +251,8 @@ namespace EasySense.Controllers
         public ActionResult DeleteBill(Guid id)
         {
             var bill = DB.Bills.Find(id);
+            bill.Project.Log += string.Format("[{0}] {1}删除了支出", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Username);
+            DB.SaveChanges();
             DB.Bills.Remove(bill);
             DB.SaveChanges();
             return Content("OK");

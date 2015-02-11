@@ -19,7 +19,11 @@ namespace EasySense.Schema
                                 where u.Username == httpContext.User.Identity.Name
                                 select u).Single();
                     if (user.Role >= UserRole.Root) return true;
-                    var StatisticsID = Guid.Parse(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"].ToString());
+                    Guid StatisticsID;
+                    if (((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"] != null)
+                        StatisticsID = Guid.Parse(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"].ToString());
+                    else
+                        StatisticsID = Guid.Parse(httpContext.Request.Form["id"].ToString());
                     var statistics = db.Statistics.Find(StatisticsID);
                     if (statistics.PushTo == null)
                         return true;

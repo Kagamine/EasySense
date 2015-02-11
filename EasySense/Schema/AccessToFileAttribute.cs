@@ -19,7 +19,11 @@ namespace EasySense.Schema
                                 where u.Username == httpContext.User.Identity.Name
                                 select u).Single();
                     if (user.Role >= UserRole.Root) return true;
-                    var FileID = Guid.Parse(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"].ToString());
+                    Guid FileID;
+                    if (((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"] != null)
+                        FileID = Guid.Parse(((MvcHandler)httpContext.Handler).RequestContext.RouteData.Values["id"].ToString());
+                    else
+                        FileID = Guid.Parse(httpContext.Request.Form["id"].ToString());
                     if ((from f in db.Files where f.ID == FileID select f).Count() > 0)
                         return true;
                 }

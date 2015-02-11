@@ -143,6 +143,7 @@ namespace EasySense.Controllers
             var departments = (from d in DB.Departments
                                orderby d.ID descending
                                select d).ToList();
+            ViewBag.Users = DB.Users.OrderBy(x=>x.Role).ToList();
             return View(departments);
         }
 
@@ -185,7 +186,7 @@ namespace EasySense.Controllers
         public ActionResult GetDepartment(int id)
         {
             var department = DB.Departments.Find(id);
-            return Json((DepartmentModel)department, JsonRequestBehavior.AllowGet);
+            return Json((DepartmentViewModel)department, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -118,7 +118,7 @@
                 <td>
                     <h3>基本信息</h3>
                     <p>项目名称<br /><input name="Title" type="text" class="textbox" placeholder="项目名称" value="@Model.Title" /></p>
-                    <p>项目说明<br /><textarea name="Description" class="textbox">@Model.Description</textarea></p>
+                    <p>项目说明<br /><textarea name="Description" class="nullable textbox">@Model.Description</textarea></p>
                     <p>计划开始时间<br /><input name="Begin" type="text" class="textbox" placeholder="计划开始时间" value="@Model.Begin" /></p>
                     <p>计划完成时间<br /><input name="End" type="text" class="textbox" placeholder="计划完成时间" value="@Model.End" /></p>
                     <p>
@@ -182,7 +182,7 @@
                             <option>未指定类别</option>
                             @foreach (CategoryModel c in ViewBag.Categories)
                             {
-                                <option value="@c.ID" @(Model.ProductID.HasValue && c.ID == Model.ProductID ? " selected" : "")>@c.Title</option>
+                                <option value="@c.ID" @(Model.ProductID.HasValue && c.ID == Model.Product.CategoryID ? " selected" : "")>@c.Title</option>
                             }
                         </select>
                         <br />
@@ -194,7 +194,7 @@
                             <option>未指定产品</option>
                         </select>
                     </p>
-                    <p>签订日期<br /><input type="text" name="SignTime" class="textbox" placeholder="签订日期" value="@Model.SignTime" /></p>
+                    <p>签订日期<br /><input type="text" name="SignTime" class="nullable textbox" placeholder="签订日期" value="@Model.SignTime" /></p>
                     <p>
                         所在地区
                         <br />
@@ -212,7 +212,7 @@
                 {
                     <td>
                         <h3>财务信息</h3>
-                        <p>项目金额<br /><input name="Charge" type="text" class="textbox" placeholder="项目金额" value="@Model.Charge" /></p>
+                        <p>项目金额<br /><input name="Charge" type="text" class="nullable textbox" placeholder="项目金额" value="@Model.Charge" /></p>
                         <p>税金<br /><strong>￥@Model.Tax.ToString("0.00")</strong></p>
                         <p>销售佣金<br /><strong>￥@Model.SellingCommisson.ToString("0.00")</strong></p>
                         <p>项目部奖金<br /><strong>￥@Model.Award.ToString("0.00")</strong></p>
@@ -222,11 +222,11 @@
                 }
                 <td>
                     <h3>发票信息</h3>
-                    <p>发票金额<br /><input name="InvoicePrice" type="text" class="textbox" placeholder="发票金额" value="@Model.InvoicePrice" /></p>
-                    <p>开票日期<br /><input type="text" name="InvoiceTime" class="textbox" placeholder="开票日期" value="@Model.InvoiceTime" /></p>
-                    <p>发票号<br /><input name="InvoiceSN" type="text" class="textbox" placeholder="发票号" value="@Model.InvoiceSN" /></p>
-                    <p>备注<br /><textarea name="Hint" class="textbox" placeholder="备注">@Model.Hint</textarea></p>
-                    <p>收款日期<br /><input type="text" name="ChargeTime" class="textbox" placeholder="收款日期" value="@Model.ChargeTime" /></p>
+                    <p>发票金额<br /><input name="InvoicePrice" type="text" class="nullable textbox" placeholder="发票金额" value="@Model.InvoicePrice" /></p>
+                    <p>开票日期<br /><input type="text" name="InvoiceTime" class="nullable textbox" placeholder="开票日期" value="@Model.InvoiceTime" /></p>
+                    <p>发票号<br /><input name="InvoiceSN" type="text" class="nullable textbox" placeholder="发票号" value="@Model.InvoiceSN" /></p>
+                    <p>备注<br /><textarea name="Hint" class="nullable textbox" placeholder="备注">@Model.Hint</textarea></p>
+                    <p>收款日期<br /><input type="text" name="ChargeTime" class="nullable textbox" placeholder="收款日期" value="@Model.ChargeTime" /></p>
                     <p>
                         交易类型
                         <br />
@@ -236,7 +236,7 @@
                             <option value="Transfer" @(Model.PayMethod == PayMethod.Transfer ? " selected" : "")>转账</option>
                         </select>
                     </p>
-                    <p>实收金额<br /><input name="ActualPayments" type="text" class="textbox" placeholder="实收金额" value="@Model.ActualPayments" /></p>
+                    <p>实收金额<br /><input name="ActualPayments" type="text" class="nullable textbox" placeholder="实收金额" value="@Model.ActualPayments" /></p>
                 </td>
             </tr>
         </table>
@@ -251,6 +251,7 @@
             $("input[name='End']").datetimepicker();
             $("input[name='InvoiceTime']").datetimepicker();
             $("input[name='SignTime']").datetimepicker();
+            $("input[name='ChargeTime']").datetimepicker();
             $("#EnterpriseName").blur(function () {
                 if ($("#EnterpriseID").val() == null || $("#EnterpriseID").val() == "") {
                     $("#CustomerName").attr("disabled", "disabled");

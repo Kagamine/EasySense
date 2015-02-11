@@ -48,7 +48,7 @@
                 <tr>
                     <td>内容</td>
                     <td>
-                        <textarea class="textbox" name="Hint" id="txtHint"></textarea>
+                        <textarea class="textbox nullable" name="Hint" id="txtHint"></textarea>
                     </td>
                 </tr>
             </table>
@@ -87,7 +87,7 @@
                 <tr>
                     <td>内容</td>
                     <td>
-                        <textarea class="textbox" name="Hint"></textarea>
+                        <textarea class="textbox nullable" name="Hint"></textarea>
                     </td>
                 </tr>
             </table>
@@ -138,7 +138,7 @@
             $("#txtBegin").val(alarm.Begin);
             $("#txtEnd").val(alarm.End);
             $("#lstRemind").val(alarm.Remind);
-            $("#lstHint").val(alarm.Hint);
+            $("#txtHint").val(alarm.Hint);
             $("#CurrentID").val(id);
             $("#btnDeleteAlarm").attr("href", "/Alarm/Delete/" + id + "?sid=@ViewBag.SID");
             $(".es-dialog").addClass("show");

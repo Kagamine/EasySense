@@ -31,6 +31,7 @@ namespace EasySense.Controllers
             user.Name = Model.Name;
             user.Role = Model.Role;
             user.Email = Model.Email;
+            user.DepartmentID = Model.DepartmentID;
             if (!string.IsNullOrEmpty(Model.Password))
                 user.Password = Helpers.Security.SHA256(Model.Password);
             user.Key = Helpers.Pinyin.Convert(Model.Name);

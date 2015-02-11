@@ -14,10 +14,11 @@
 </style>
 
 <div class="es-block-menu">
-    <div class="es-dialog">
+    <div class="es-dialog" style="left: 450px">
         @using (Html.BeginForm("EditDepartment", "System", null, FormMethod.Post, new { onsubmit = "ShowLoading()" }))
         {
             @Html.AntiForgerySID()
+            <input type="hidden" id="CurrentID" name="id" />
             <table>
                 <tr>
                     <td>部门名称</td>
@@ -43,7 +44,7 @@
     <a href="/System/Category">项目类别管理</a>
     <a href="/System/Department" class="es-block-menu-active">部门管理</a>
     <a href="#" data-toggle="AddDepartment">添加部门</a>
-    <div id="AddDepartment">
+    <div id="AddDepartment" class="es-menu-extend">
         @using (Html.BeginForm("CreateDepartment", "System", null, FormMethod.Post, new { onsubmit = "ShowLoading()" }))
         {
             @Html.AntiForgerySID()
@@ -104,6 +105,7 @@
     {
         ShowLoading();
         $.getJSON("/System/GetDepartment/" + id, {}, function (d) {
+            $("#CurrentID").val(id);
             $("#txtTitle").val(d.Title);
             $("#lstUserID").val(d.UserID);
             HideLoading();

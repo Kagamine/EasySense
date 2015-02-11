@@ -16,7 +16,6 @@ namespace EasySense.Models
         [Index]
         public string Title { get; set; }
 
-        [Required]
         public string Hint { get; set; }
 
         [Index]

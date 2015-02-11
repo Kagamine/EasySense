@@ -93,7 +93,7 @@ $(document).ready(function () {
         $("#denterprise").html("");
         $.getJSON("/Enterprise/Search", { Text: $("#txtEnterpriseSearch").val() }, function (data) {
             for (var i = 0; i < data.length; i++) {
-                var html = '<div class="es-enterprise-item"><a href="/Enterprise/Show/' + data[i].ID + '" class="title">' + data[i].Title + '</a> <a href="javascript:Delete(' + data[i].ID + ')">删除</a> <a href="/Enterprise/Edit/' + data[i].ID + '">编辑</a></div>';
+                var html = '<div class="es-enterprise-item"><a href="/Enterprise/Show/' + data[i].ID + '" class="title">' + data[i].Title + '</a> <a href="javascript:Delete(' + data[i].ID + ')">删除</a></div>';
                 var level = data[i].Level;
                 if (level == "A")
                     $("#aenterprise").prepend(html);
@@ -122,4 +122,21 @@ $(window).scroll(function () {
     if ($(document).height() <= totalheight) {
         Load();
     }
+});
+
+$("form").submit(function (e) {
+    $.each($(this).find("input[type='text']"), function (i, item) {
+        if ($(item).val() == "" && $(item).attr("name")!="undefined" && !$(item).hasClass("nullable")) {
+            if ($(item).attr("placeholder") != null && $(item).attr("placeholder") != "")
+                alert($(item).attr("placeholder") + "不能为空！");
+            else
+                alert($(item).attr("name") + " 不能为空！");
+            HideLoading();
+            e.preventDefault();
+            return false;
+        }
+        else {
+            return true;
+        }
+    });
 });
