@@ -245,7 +245,7 @@
             <p>相关项目: </p>
             @foreach (var p in c.Projects)
             {
-                <p><a target="_blank" href="/Project/Show/@p.ID">@p.Title</a></p>
+                <p><a target="_blank" href="/Project/Show/@p.ID" onclick="setTimeout(function () { $('.es-dialog').removeClass('show') }, 1000)">@p.Title</a></p>
             }
             @if (c.Projects.Count == 0)
             {
@@ -333,6 +333,7 @@
     });
     function EditCustomer(id)
     {
+        $(".es-dialog").removeClass(".show");
         ShowLoading();
         $.getJSON("/Enterprise/Customer/" + id, {}, function (customer) {
             $("#CurrentID").val(id);

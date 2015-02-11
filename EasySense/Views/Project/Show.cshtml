@@ -170,7 +170,7 @@
                     <p>
                         订单状态
                         <br />
-                        <select class="select" status="Ordering">
+                        <select class="select" status="Ordering" name="Ordering">
                             <option value="true" @(Model.Ordering ? " selected" : "")>有订单</option>
                             <option value="true" @(!Model.Ordering ? " selected" : "")>无订单</option>
                         </select>
@@ -202,7 +202,7 @@
                             <option>未指定地区</option>
                             @foreach (ZoneModel z in ViewBag.Zones)
                             {
-                                <option value="@z.ID">@z.Title</option>
+                                <option value="@z.ID" @(Model.ZoneID  == z.ID ? " selected" : "")>@z.Title</option>
                             }
                         </select>
                         <br />
