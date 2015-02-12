@@ -162,7 +162,7 @@ namespace EasySense.Controllers
         private string BuildHtmlTable(int id)
         {
             var enterprise = DB.Enterprises.Find(id);
-            var html = "<table style='border: 1px solid #000'><tr><td colspan=\"10\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>" + enterprise.Title + " 联系人</td></tr><tr><td style='border-bottom:1px solid #000'>姓名</td><td style='border-bottom:1px solid #000'>性别</td><td style='border-bottom:1px solid #000'>固定电话</td><td style='border-bottom:1px solid #000'>传真</td><td style='border-bottom:1px solid #000'>手机</td><td style='border-bottom:1px solid #000'>电子邮箱</td><td style='border-bottom:1px solid #000'>QQ</td><td style='border-bottom:1px solid #000'>微信</td><td style='border-bottom:1px solid #000'>生日</td><td style='border-bottom:1px solid #000'>备注</td></tr>";
+            var html = "<table style='border: 1px solid #000;border-collapse:collapse'><tr><td colspan=\"10\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>" + enterprise.Title + " 联系人</td></tr><tr><td style='border-bottom:1px solid #000'>姓名</td><td style='border-bottom:1px solid #000'>性别</td><td style='border-bottom:1px solid #000'>固定电话</td><td style='border-bottom:1px solid #000'>传真</td><td style='border-bottom:1px solid #000'>手机</td><td style='border-bottom:1px solid #000'>电子邮箱</td><td style='border-bottom:1px solid #000'>QQ</td><td style='border-bottom:1px solid #000'>微信</td><td style='border-bottom:1px solid #000'>生日</td><td style='border-bottom:1px solid #000'>备注</td></tr>";
             foreach (var c in enterprise.Customers)
             {
                 html += string.Format(

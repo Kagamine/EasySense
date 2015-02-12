@@ -69,7 +69,7 @@ namespace EasySense.Controllers
                          select u).ToList();
             #region 构建表格
             var DynamicCol = 0;
-            var html = "<table style='border: 1px solid #000'><tr><td colspan='{TOTALCOL}' style='text-align: center; font-weight: bold; border: 1px solid #000'>" + Model.Title + "</td></tr>";
+            var html = "<table style='border: 1px solid #000;border-collapse:collapse'><tr><td colspan='{TOTALCOL}' style='text-align: center; font-weight: bold; border: 1px solid #000'>" + Model.Title + "</td></tr>";
             html += "<tr><td colspan='2' style='border: 1px solid #000'></td><td colspan='{DYNAMICCOL}' style='border: 1px solid #000'>所有者</td></tr>";
             html += "<tr><td colspan='2' style='border: 1px solid #000'></td>";
             foreach (var u in Users)
@@ -110,7 +110,7 @@ namespace EasySense.Controllers
                                      && pr.SignTime < end
                                      && pr.Charge != null
                                      select pr).Sum(x => x.Charge.Value);
-                        html += "<td style='border: 1px solid #000'>￥" + price.ToString("0.00") + "<td>";
+                        html += "<td style='border: 1px solid #000'>￥" + price.ToString("0.00") + "</td>";
                     }
                 }
                 html += "</tr>";
@@ -139,7 +139,7 @@ namespace EasySense.Controllers
                 };
                 foreach (var u in Users)
                 {
-                    employeeitem.PushData(u.Name, Convert.ToInt32(Projects.Where(x => x.UserID == u.ID).Sum(x => x.Charge.Value)));
+                    employeeitem.PushData(u.Name, Convert.ToInt32(Projects.Where(x => x.UserID == u.ID && x.Charge != null).Sum(x => x.Charge.Value)));
                 }
                 var enterpriseitem = new JQChartViewModel
                 {
@@ -149,7 +149,7 @@ namespace EasySense.Controllers
                 };
                 foreach (var e in Enterprises)
                 {
-                    enterpriseitem.PushData(e.Title, Convert.ToInt32(Projects.Where(x => x.EnterpriseID != null && x.EnterpriseID == e.ID).Sum(x => x.Charge.Value)));
+                    enterpriseitem.PushData(e.Title, Convert.ToInt32(Projects.Where(x => x.EnterpriseID != null && x.EnterpriseID == e.ID &&x.Charge !=null).Sum(x => x.Charge.Value)));
                 }
                 CustomerChart.Add(enterpriseitem);
                 EmployeeChart.Add(employeeitem);
