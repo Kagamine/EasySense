@@ -108,7 +108,17 @@
             <div id="ProjectsFilter" class="es-menu-extend">
                 <p>项目名称：<input id="txtTitle" type="text" class="textbox" placeholder="项目名称" />&nbsp;&nbsp; 项目状态：<select id="lstStatus" class="select" style="width: 130px"><option value="">全部</option><option value="0">当前</option><option value="1">完成</option><option value="2">竞标</option><option value="3">废弃</option></select></p>
                 <p>签订时间：从 <input id="txtBegin" type="text" class="textbox" value="" /> 到 <input id="txtEnd" type="text" class="textbox" value="" /></p>
-                <p><a href="javascript:page=0;$('#lstProjects').html('');Load();CloseToggle();">检索</a> <a href="javascript:CloseToggle();">关闭</a></p>
+                <p>开票时间：从 <input id="txtInvoiceBegin" type="text" class="textbox" value="" /> 到 <input id="txtInvoiceEnd" type="text" class="textbox" value="" /></p>
+                <p>
+                    企业名称：
+                    <select class="select" id="lstEnterpriseID">
+                        <option>不限制</option>
+                        @foreach (EnterpriseModel e in ViewBag.Enterprises)
+                        {
+                            <option value="@e.ID">@e.Title</option>
+                        }
+                    </select>
+                    <p><a href="javascript:page=0;$('#lstProjects').html('');Load();CloseToggle();">检索</a> <a href="javascript:CloseToggle();">关闭</a></p>
             </div>
         </div>
         <table class="table">
@@ -134,6 +144,8 @@
     <script>
         $("#txtBegin").datetimepicker();
         $("#txtEnd").datetimepicker();
+        $("#txtInvoiceBegin").datetimepicker();
+        $("#txtInvoiceEnd").datetimepicker();
         $("#txtPlanBegin").datetimepicker();
         $("#txtPlanEnd").datetimepicker();
         $("#btnAddProject").click(function () {

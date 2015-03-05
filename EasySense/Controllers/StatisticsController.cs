@@ -24,13 +24,18 @@ namespace EasySense.Controllers
                 statistics = statistics.Where(x => x.PushTo == null);
             statistics = statistics.OrderByDescending(x => x.Time).ToList();
             ViewBag.Users = DB.Users.ToList();
+            ViewBag.Enterprises = DB.Enterprises.ToList();
+            ViewBag.Customers = DB.Customers.ToList();
+            ViewBag.Brands = (from e in DB.Enterprises
+                              select e.Brand).Distinct().ToList();
+            ViewBag.Products = DB.Products.ToList();
             return View(statistics);
         }
 
         [HttpPost]
         [ValidateSID]
         [MinRole(UserRole.Root)]
-        public ActionResult Create(StatisticsModel Model)
+        public ActionResult Create(StatisticsModel Model, int[] xEnterpriseIDs, int[] xCustomerIDs, int[] xProductIDs, string[] xBrands, decimal? ChargeBegin, decimal? ChargeEnd)
         {
             Model.ID = Guid.NewGuid();
             Model.Time = DateTime.Now;
@@ -44,6 +49,30 @@ namespace EasySense.Controllers
                 Projects = Projects.Where(x => x.Status == Model.Status.Value);
             if (Model.UserID != null)
                 Projects = Projects.Where(x => x.UserID == Model.UserID.Value);
+            if (xEnterpriseIDs!= null && xEnterpriseIDs.Count() > 0)
+            {
+                var eids = xEnterpriseIDs.ToList();
+                Projects = Projects.Where(x => x.EnterpriseID!= null && eids.Contains(x.EnterpriseID.Value));
+            }
+            if (xCustomerIDs != null && xCustomerIDs.Count() > 0)
+            {
+                var cids = xCustomerIDs.ToList();
+                Projects = Projects.Where(x => x.CustomerID != null && cids.Contains(x.CustomerID.Value));
+            }
+            if (xProductIDs != null && xProductIDs.Count() > 0)
+            {
+                var pids = xProductIDs.ToList();
+                Projects = Projects.Where(x => x.ProductID != null && pids.Contains(x.ProductID.Value));
+            }
+            if (xBrands != null && xBrands.Count() > 0)
+            {
+                var tmp = xBrands.ToList();
+                Projects = Projects.Where(x => x.Enterprise != null && tmp.Contains(x.Enterprise.Brand));
+            }
+            if (ChargeBegin.HasValue)
+                Projects = Projects.Where(x => x.Charge >= ChargeBegin.Value);
+            if (ChargeEnd.HasValue)
+                Projects = Projects.Where(x => x.Charge <= ChargeEnd.Value);
             Projects = Projects.Where(x => x.UserID != null && x.ProductID != null && x.SignTime != null);
             Projects = Projects.ToList();
             var CustomerChart = new List<JQChartViewModel>();

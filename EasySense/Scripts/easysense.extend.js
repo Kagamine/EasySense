@@ -36,7 +36,10 @@ function LoadProjects()
         Title: $("#txtTitle").val(),
         Status: $("#lstStatus").val(),
         Begin: $("#txtBegin").val(),
-        End: $("#txtEnd").val()
+        End: $("#txtEnd").val(),
+        InvoiceBegin: $("#txtInvoiceBegin").val(),
+        InvoiceEnd: $("#txtInvoiceEnd").val(),
+        EnterpriseID: $("#lstEnterpriseID").val()
     }, function (data) {
         for (var i = 0; i < data.length; i++)
         {
@@ -48,40 +51,49 @@ function LoadProjects()
     });
 }
 
-$(document).ready(function () {
-    $("#btnAllSearch").click(function () {
-        $("#SearchResult").html("<img src='/Images/loading-small.gif' />加载中...");
-        $.getJSON("/Search", { Text: $("#txtSearchAll").val() }, function (data) {
-            //console.log(data);
-            var str = "";
-            if ($("#SearchResult").length > 0) {
-                str += "<p class='es-notification-subtitle'>项目(" + data.Projects.length + ")</p>";
-                if (data.Projects.length > 0) {
-                    $.each(data.Projects, function (key, value) {
-                        str += "<p><a href='/Project/Show/" + value.ID + "'>" + value.Title + "</a></p>";
-                    });
-                }
-                str += "<p class='es-notification-subtitle'>客户(" + data.Enterprises.length + ")</p>";
-                if (data.Enterprises.length > 0) {
-                    $.each(data.Enterprises, function (key, value) {
-                        str += "<p><a href='/Enterprise/Show/" + value.ID + "'>" + value.Title + "</a></p>";
-                    });
-                }
-                str += "<p class='es-notification-subtitle'>名录(" + data.Customers.length + ")</p>";
-                if (data.Customers.length > 0) {
-                    $.each(data.Customers, function (key, value) {
-                        str += "<p><a href='/Enterprise/Show/" + value.EnterpriseID + "'>" + value.Name + " ("+value.Enterprise+")</a></p>";
-                    });
-                }
-                str += "<p class='es-notification-subtitle'>员工(" + data.Users.length + ")</p>";
-                if (data.Users.length > 0) {
-                    $.each(data.Users, function (key, value) {
-                        str += "<p><img src='/User/Avatar/1' /><a href='#" + value.ID + "'>" + value.Name + "</a></p>";
-                    });
-                }
-                $("#SearchResult").html(str);
+function Search() {
+    $("#SearchResult").html("<img src='/Images/loading-small.gif' />加载中...");
+    $.getJSON("/Search", { Text: $("#txtSearchAll").val() }, function (data) {
+        var str = "";
+        if ($("#SearchResult").length > 0) {
+            str += "<p class='es-notification-subtitle'>项目(" + data.Projects.length + ")</p>";
+            if (data.Projects.length > 0) {
+                $.each(data.Projects, function (key, value) {
+                    str += "<p><a href='/Project/Show/" + value.ID + "'>" + value.Title + "</a></p>";
+                });
             }
-        });
+            str += "<p class='es-notification-subtitle'>客户(" + data.Enterprises.length + ")</p>";
+            if (data.Enterprises.length > 0) {
+                $.each(data.Enterprises, function (key, value) {
+                    str += "<p><a href='/Enterprise/Show/" + value.ID + "'>" + value.Title + "</a></p>";
+                });
+            }
+            str += "<p class='es-notification-subtitle'>名录(" + data.Customers.length + ")</p>";
+            if (data.Customers.length > 0) {
+                $.each(data.Customers, function (key, value) {
+                    str += "<p><a href='/Enterprise/Show/" + value.EnterpriseID + "'>" + value.Name + " (" + value.Enterprise + ")</a></p>";
+                });
+            }
+            str += "<p class='es-notification-subtitle'>员工(" + data.Users.length + ")</p>";
+            if (data.Users.length > 0) {
+                $.each(data.Users, function (key, value) {
+                    str += "<p><img src='/User/Avatar/1' /><a href='#" + value.ID + "'>" + value.Name + "</a></p>";
+                });
+            }
+            $("#SearchResult").html(str);
+        }
+    });
+}
+
+$(document).ready(function () {
+    $('#txtSearchAll').keyup(function (e) {
+        if (e.keyCode == 13) {
+            $("#btnAllSearch").click();
+        }
+    }); 
+
+    $("#btnAllSearch").click(function () {
+        Search();
     });
 
     function LoadEnterprise() {

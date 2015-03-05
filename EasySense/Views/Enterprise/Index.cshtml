@@ -174,4 +174,8 @@
             HideLoading();
         });
     });
+
+    function Delete(id) {
+        window.location = '/Enterprise/Delete/' + id + '?sid=@ViewBag.SID';
+    }
 </script>

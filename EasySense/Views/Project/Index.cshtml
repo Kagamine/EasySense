@@ -57,7 +57,52 @@
     <div id="ProjectsFilter" class="es-menu-extend">
         <p>项目名称：<input id="txtTitle" type="text" class="textbox" placeholder="项目名称" />&nbsp;&nbsp; 项目状态：<select id="lstStatus" class="select" style="width: 130px"><option value="">全部</option><option value="0">当前</option><option value="1">完成</option><option value="2">竞标</option><option value="3">废弃</option></select></p>
         <p>签订时间：从 <input id="txtBegin" type="text" class="textbox" value="" /> 到 <input id="txtEnd" type="text" class="textbox" value="" /></p>
+        <p>开票时间：从 <input id="txtInvoiceBegin" type="text" class="textbox" value="" /> 到 <input id="txtInvoiceEnd" type="text" class="textbox" value="" /></p>
+        <p>
+            企业名称：
+            <select class="select" id="lstEnterpriseID">
+                <option>不限制</option>
+                @foreach (EnterpriseModel e in ViewBag.Enterprises)
+                {
+                    <option value="@e.ID">@e.Title</option>
+                }
+            </select>
+        </p>
         <p><a href="javascript:page=0;$('#lstProjects').html('');Load();CloseToggle();">检索</a><a href="javascript:CloseToggle();">关闭</a></p>
+    </div>
+    <a href="#" data-toggle="ProjectsExport">导出</a>
+    <div id="ProjectsExport" class="es-menu-extend">
+        @using (Html.BeginForm("Export", "Project", FormMethod.Post))
+        {
+            @Html.AntiForgerySID()
+            <h3>导出项目</h3>
+            <p>
+                签订时间：
+                <input id="txtExportBegin" name="begin" type="text" class="textbox nullable" value="" /> 到
+                <input id="txtExportEnd" name="end" type="text" class="textbox nullable" value="" />
+            </p>
+            <p>
+                <button class="button button-def" name="type" value="Excel">导出Excel</button>
+                <button class="button button-def" name="type" value="PDF">导出PDF</button>
+            </p>
+        }
+        @if (ViewBag.CurrentUser.Role >= UserRole.Finance)
+        {
+            using (Html.BeginForm("ExportBill", "Project", FormMethod.Post))
+            {
+                <h3>导出支出</h3>
+                <p>
+                    支出时间：
+                    <input name="begin" type="text" class="textbox nullable" value="" /> 到
+                    <input name="end" type="text" class="textbox nullable" value="" />
+                </p>
+                <p>
+                    <button class="button button-def" name="type" value="Excel">导出Excel</button>
+                    <button class="button button-def" name="type" value="PDF">导出PDF</button>
+                </p>
+            }
+        }
+        <p><a href="javascript:CloseToggle();">关闭</a></p>
     </div>
 </div>
 <div class="es-table-outer">
@@ -83,6 +128,8 @@
     </table>
 </div>
 <script>
+    $("[name='begin']").datetimepicker();
+    $("[name='end']").datetimepicker();
     $("#txtBegin").datetimepicker();
     $("#txtEnd").datetimepicker();
     $("#txtPlanBegin").datetimepicker();

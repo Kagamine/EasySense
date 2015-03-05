@@ -10,7 +10,7 @@ namespace EasySense.Schema
     {
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            filterContext.Result = new RedirectResult("/Shared/AccessDenied"); ;
+            filterContext.Result = new RedirectResult("/Shared/AccessDenied"); 
         }
     }
 }

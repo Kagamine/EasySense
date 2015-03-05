@@ -142,7 +142,7 @@
                     </p>
                     <h3>客户信息</h3>
                     <input id="EnterpriseID" type="hidden" name="EnterpriseID" value="@Model.EnterpriseID" />
-                    <p>客户名称<br /><input id="EnterpriseName" data-toggle="EnterpriseSelect" type="text" class="textbox" placeholder="客户名称或客户首字母" value="@(Model.EnterpriseID == null?"" : Model.Enterprise.Title)" /></p>
+                    <p>客户名称<br /><input id="EnterpriseName" name="EnterpriseName" data-toggle="EnterpriseSelect" type="text" class="nullable textbox" placeholder="客户名称或客户首字母" value="@(Model.EnterpriseID == null?"" : Model.Enterprise.Title)" /></p>
                     <div class="es-menu-extend" id="EnterpriseSelect">
                         <div id="lstEnterprises">
                             @if (ViewBag.Enterprises.Count == 0)
@@ -160,7 +160,7 @@
                         </div>
                     </div>
                     <input type="hidden" name="CustomerID" id="CustomerID" value="@Model.CustomerID" />
-                    <p>客户联系人<br /><input id="CustomerName" data-toggle="CustomerSelect" type="text" class="textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" disabled /></p>
+                    <p>客户联系人<br /><input id="CustomerName" name="CustomerName" data-toggle="CustomerSelect" type="text" class="nullable textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" /></p>
                     <div class="es-menu-extend" id="CustomerSelect">
                         <small>搜索联系人</small>
                     </div>
@@ -254,7 +254,6 @@
             $("input[name='ChargeTime']").datetimepicker();
             $("#EnterpriseName").blur(function () {
                 if ($("#EnterpriseID").val() == null || $("#EnterpriseID").val() == "") {
-                    $("#CustomerName").attr("disabled", "disabled");
                     $("#CustomerName").val("");
                     $("#CustomerID").val(null);
                 }
@@ -262,7 +261,6 @@
                     $("#CustomerName").removeAttr("disabled");
             });
             $("#EnterpriseName").keyup(function () {
-                $("#CustomerName").attr("disabled", "disabled");
                 $("#CustomerName").val("");
                 $("#CustomerID").val(null);
                 if ($("#EnterpriseName").val() == "") return;

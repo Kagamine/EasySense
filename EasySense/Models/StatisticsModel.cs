@@ -23,7 +23,7 @@ namespace EasySense.Models
         public DateTime? Begin { get; set; }
         
         public DateTime? End { get; set; }
-
+        
         [ForeignKey("User")]
         public int? UserID { get; set; }
 

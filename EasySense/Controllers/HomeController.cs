@@ -49,6 +49,8 @@ namespace EasySense.Controllers
                            && r.Month == DateTime.Now.Month
                            && r.UserID == CurrentUser.ID
                              select r).Count() > 0;
+            ViewBag.Enterprises = (from e in DB.Enterprises
+                                   select e).ToList();
             return View();
         }
     }

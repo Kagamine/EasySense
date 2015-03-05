@@ -27,7 +27,7 @@
                     <div class="es-notification" id="ProjectNotification">
                         @foreach (NotificationViewModel n in ViewBag.ProjectNotifications)
                         {
-                            <span>@n.Title (@n.Time)</span>
+                            <span><a href="/Project/Show/@n.ID">@n.Title</a> (存在问题)</span>
                             <hr />
                         }
                         共@(ViewBag.ProjectNotifications.Count)个提醒

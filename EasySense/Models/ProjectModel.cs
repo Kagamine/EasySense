@@ -101,7 +101,7 @@ namespace EasySense.Models
         {
             get
             {
-                if (Charge != null && AwardAllocRatioCache != null)
+                if (Charge != null && SaleAllocRatioCache != null)
                     return Charge.Value * (decimal)SaleAllocRatioCache.Value;
                 else
                     return 0;

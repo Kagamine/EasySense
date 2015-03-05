@@ -17,6 +17,8 @@ namespace EasySense.Controllers
         // GET: Project
         public ActionResult Index()
         {
+            ViewBag.Enterprises = (from e in DB.Enterprises
+                                   select e).ToList();
             return View();
         }
 
@@ -42,7 +44,7 @@ namespace EasySense.Controllers
         [UserOwnedProject]
         [HttpPost]
         [ValidateSID]
-        public ActionResult Edit(int id, ProjectModel Model)
+        public ActionResult Edit(int id, ProjectModel Model, string EnterpriseName, string CustomerName)
         {
             var project = DB.Projects.Find(id);
             project.ZoneID = Model.ZoneID;
@@ -81,13 +83,78 @@ namespace EasySense.Controllers
                     project.TaxRatioCache = null;
                 }
             }
+            if (!string.IsNullOrEmpty(EnterpriseName))
+            {
+                if (project.Enterprise == null || project.Enterprise != null && !EnterpriseName.Contains(project.Enterprise.Title) && EnterpriseName != project.Enterprise.Title)
+                {
+                    var tmp = (from e in DB.Enterprises where e.Title == EnterpriseName select e.ID).ToList();
+                    if (tmp.Count > 0)
+                        project.EnterpriseID = tmp[0];
+                    else
+                    {
+                        var e = new EnterpriseModel
+                        {
+                            Level = EnterpriseLevel.D,
+                            Key = Helpers.Pinyin.Convert(EnterpriseName),
+                            Title = EnterpriseName,
+                            Phone = "Null",
+                            Address = "Null",
+                            SalesVolume = "Null",
+                            Scale= "Null",
+                            Brand= "Null",
+                            Hint= "Null",
+                            Fax= "Null",
+                            Property = "Null",
+                            Type = "Null",
+                            Website = "Null",
+                            Zip = "Null"
+                        };
+                        DB.Enterprises.Add(e);
+                        DB.SaveChanges();
+                        project.EnterpriseID = e.ID;
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(CustomerName))
+            {
+                if (project.CustomerID == null || project.CustomerID !=null && !CustomerName.Contains(project.Customer.Name) && CustomerName!=project.Customer.Name)
+                {
+                    var tmp = (from e in DB.Customers where e.Name == CustomerName select e.ID).ToList();
+                    if (tmp.Count > 0)
+                        project.CustomerID = tmp[0];
+                    else
+                    {
+                        if (project.EnterpriseID.HasValue)
+                        {
+                            var c = new CustomerModel
+                            {
+                                Name = CustomerName,
+                                Sex = Sex.Male,
+                                Email = "Null",
+                                Birthday = DateTime.Now,
+                                EnterpriseID = project.EnterpriseID.Value,
+                                Hint = "Null",
+                                Fax = "Null",
+                                Phone = "Null",
+                                QQ = "Null",
+                                Tel = "Null",
+                                WeChat = "Null",
+                                Position = "Null"
+                            };
+                            DB.Customers.Add(c);
+                            DB.SaveChanges();
+                            project.CustomerID = c.ID;
+                        }
+                    }
+                }
+            }
             project.Log += string.Format("[{0}] {1}({2}) 修改了项目\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Name, CurrentUser.Username);
             DB.SaveChanges();
             return RedirectToAction("Show", "Project", new { id = id });
         }
 
         [HttpGet]
-        public ActionResult Search(int Page, string Title, ProjectStatus? Status, DateTime? Begin, DateTime? End, string OrderBy, string Order)
+        public ActionResult Search(int Page, string Title, ProjectStatus? Status, DateTime? Begin, DateTime? End, string OrderBy, string Order, DateTime? InvoiceBegin, DateTime? InvoiceEnd, int? EnterpriseID)
         {
             IEnumerable<ProjectModel> projects = (from p in DB.Projects
                                                   where p.Title.Contains(Title)
@@ -98,6 +165,12 @@ namespace EasySense.Controllers
                 projects = projects.Where(x => x.Begin <= Begin.Value);
             if (End.HasValue)
                 projects = projects.Where(x => x.End <= End.Value);
+            if (InvoiceBegin.HasValue)
+                projects = projects.Where(x => x.InvoiceTime >= InvoiceBegin.Value);
+            if (InvoiceEnd.HasValue)
+                projects = projects.Where(x => x.InvoiceTime >= InvoiceEnd.Value);
+            if (EnterpriseID.HasValue)
+                projects.Where(x => x.EnterpriseID == EnterpriseID.Value);
             if (CurrentUser.Role == UserRole.Employee)
                 projects = projects.Where(x => x.UserID == CurrentUser.ID);
             else if (CurrentUser.Role == UserRole.Master)
@@ -324,6 +397,91 @@ namespace EasySense.Controllers
             project.Percent = percent / 100;
             DB.SaveChanges();
             return RedirectToAction("Show", "Project", new { id = id });
+        }
+
+        [ValidateSID]
+        public ActionResult Export(DateTime? begin, DateTime? end, string type)
+        {
+            IEnumerable<ProjectModel> projects = DB.Projects;
+            if (begin.HasValue)
+                projects = projects.Where(x => x.SignTime >= begin.Value);
+            if (end.HasValue)
+                projects = projects.Where(x => x.SignTime <= end.Value);
+            if (CurrentUser.Role == UserRole.Employee)
+                projects = projects.Where(x => x.UserID == CurrentUser.ID);
+            if (CurrentUser.Role == UserRole.Master)
+                projects = projects.Where(x => x.User.DepartmentID != null && x.User.Department.UserID == CurrentUser.ID);
+            projects = projects.ToList();
+            var html = @"<table style='border: 1px solid #000;border-collapse:collapse'>
+<tr>
+    <td class='border: 1px solid #000;border-collapse:collapse'>ID</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>项目名称</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>所有者</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>金额</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>签订日期</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>产品类型</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>客户</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>品牌</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>联系人</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>状态</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>开票日期</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>收款日期</td>
+</tr>";
+            foreach (var p in projects)
+            {
+                var tmp = (ProjectListViewModel)p;
+                html += string.Format(@"<table style='border: 1px solid #000;border-collapse:collapse'>
+<tr>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{0}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{1}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{2}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{3}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{4}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{5}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{6}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{7}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{8}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{9}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{10}</td>
+    <td class='border: 1px solid #000;border-collapse:collapse'>{11}</td>
+</tr>", tmp.ID , tmp.Title,tmp.Owner, tmp.Charge, tmp.SignTime, tmp.Product, tmp.Enterprise, tmp.Customer, tmp.Brand, tmp.Status, tmp.InvoiceTime, tmp.ChargeTime);
+            }
+            html += "</table>";
+            if (type == "PDF")
+                return File(Helpers.Export.ToPDF(html), "application/pdf", Helpers.Time.ToTimeStamp(DateTime.Now) + ".pdf");
+            else
+                return File(Helpers.Export.ToExcel(html), "application/vnd.ms-excel", Helpers.Time.ToTimeStamp(DateTime.Now) + ".xls");
+        }
+
+        public ActionResult ExportBill(DateTime? begin, DateTime? end, string type)
+        {
+            if (CurrentUser.Role < UserRole.Finance)
+                return Redirect("/Shared/AccessDenied");
+            IEnumerable<BillModel> bills = (from b in DB.Bills
+                         orderby b.Time descending
+                         select b);
+            if (begin.HasValue)
+                bills = bills.Where(x => x.Time >= begin.Value);
+            if (end.HasValue)
+                bills = bills.Where(x => x.Time <= end.Value);
+            bills = bills.ToList();
+            var html = "<table style='border: 1px solid #000;border-collapse:collapse'><tr><td colspan=\"5\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>支出明细</td></tr><tr><td style='border-bottom:1px solid #000'>支出日期</td><td style='border-bottom:1px solid #000'>支出类型</td><td style='border-bottom:1px solid #000'>说明</td><td style='border-bottom:1px solid #000'>计划经费</td><td style='border-bottom:1px solid #000'>实际经费</td></tr>";
+            foreach (var b in bills)
+            {
+                html += string.Format(
+                    "<tr><td style='border-bottom:1px solid #000'>{0}</td style='border-bottom:1px solid #000'><td style='border-bottom:1px solid #000'>{1}</td><td style='border-bottom:1px solid #000'>{2}</td><td style='border-bottom:1px solid #000'>￥{3}</td><td style='border-bottom:1px solid #000'>￥{4}</td></tr>",
+                    b.Time.ToString("yyyy-MM-dd"),
+                    ((BillViewModel)b).Type,
+                    b.Hint,
+                    b.Plan.ToString("0.00"),
+                    b.Actual.ToString("0.00")
+                );
+            }
+            html += "</table>";
+            if (type == "PDF")
+                return File(Helpers.Export.ToPDF(html), "application/pdf", Helpers.Time.ToTimeStamp(DateTime.Now) + ".pdf");
+            else
+                return File(Helpers.Export.ToExcel(html), "application/vnd.ms-excel", Helpers.Time.ToTimeStamp(DateTime.Now) + ".xls");
         }
     }
 }

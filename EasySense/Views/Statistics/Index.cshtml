@@ -53,6 +53,52 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>项目金额高于</td>
+                        <td><input type="text" class="textbox nullable" name="ChargeBegin" /></td>
+                        <td>项目金额低于</td>
+                        <td><input type="text" class="textbox nullable" name="ChargeEnd" /></td>
+                    </tr>
+                    <tr>
+                        <td>产品类型</td>
+                        <td>
+                            <div style="line-height: 20px; padding: 5px; border: 1px solid #ccc; width: 165px; height: 100px; overflow:auto">
+                                @foreach (ProductModel p in ViewBag.Products)
+                                {
+                                    <input type="checkbox" name="xProductIDs" value="@p.ID" />@p.Title<br />
+                                }
+                            </div>
+                        </td>
+                        <td>联系人</td>
+                        <td>
+                            <div style="line-height: 20px; padding: 5px; border: 1px solid #ccc; width: 165px; height: 100px; overflow:auto">
+                                @foreach (CustomerModel c in ViewBag.Customers)
+                                {
+                                    <input type="checkbox" name="xCustomerIDs" value="@c.ID" /><span>@c.Name (@c.Enterprise.Title))</span><br />
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>企业</td>
+                        <td>
+                            <div style="line-height: 20px; padding: 5px; border: 1px solid #ccc; width: 165px; height: 100px; overflow:auto">
+                                @foreach (EnterpriseModel e in ViewBag.Enterprises)
+                                {
+                                    <input type="checkbox" name="xEnterpriseIDs" value="@e.ID" />@e.Title<br />
+                                }
+                            </div>
+                        </td>
+                        <td>品牌</td>
+                        <td>
+                            <div style="line-height: 20px; padding: 5px; border: 1px solid #ccc; width: 165px; height: 100px; overflow:auto">
+                                @foreach (string b in ViewBag.Brands)
+                                {
+                                    <input type="checkbox" name="xBrands" value="@(b)" />@b<br/>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>查看权限</td>
                         <td>
                             <select class="select" name="PushTo">
