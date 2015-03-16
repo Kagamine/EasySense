@@ -149,6 +149,8 @@ namespace EasySense.Models
         {
             get
             {
+                if (Charge == 0)
+                    return 0;
                 var ret = 1f;
                 if (AwardAllocRatioCache.HasValue)
                     ret -= AwardAllocRatioCache.Value;

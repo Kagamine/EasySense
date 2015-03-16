@@ -24,7 +24,7 @@ namespace EasySense.Controllers
                 #region 项目提醒
                 ViewBag.ProjectNotifications = new List<NotificationViewModel>();
                 IEnumerable<ProjectModel> projectNotifications = from p in DB.Projects
-                                                                 where p.Percent < 1
+                                                                 where p.Status == ProjectStatus.Current
                                                                  && DateTime.Now > p.End
                                                                  orderby p.End ascending
                                                                  select p;

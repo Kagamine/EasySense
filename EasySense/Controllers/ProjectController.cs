@@ -19,6 +19,7 @@ namespace EasySense.Controllers
         {
             ViewBag.Enterprises = (from e in DB.Enterprises
                                    select e).ToList();
+            ViewBag.Config = System.Configuration.ConfigurationManager.AppSettings;
             return View();
         }
 
@@ -38,6 +39,7 @@ namespace EasySense.Controllers
             ViewBag.Enterprises = new List<EnterpriseListViewModel>();
             foreach (var e in enterprises)
                 ViewBag.Enterprises.Add((EnterpriseListViewModel)e);
+            ViewBag.Config = System.Configuration.ConfigurationManager.AppSettings;
             return View(project);
         }
 
@@ -65,6 +67,8 @@ namespace EasySense.Controllers
             project.CustomerID = Model.CustomerID;
             project.Title = Model.Title;
             project.Status = Model.Status;
+            if (Model.Status == ProjectStatus.Completed)
+                project.Percent = 1;
             project.PayMethod = Model.PayMethod;
             if (project.ProductID != Model.ProductID)
             {
@@ -346,7 +350,7 @@ namespace EasySense.Controllers
                          where b.ProjectID == id
                          orderby b.Time descending
                          select b).ToList();
-            var html = "<table style='border: 1px solid #000;border-collapse:collapse'><tr><td colspan=\"5\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>" + project.Title+ " 支出明细</td></tr><tr><td style='border-bottom:1px solid #000'>支出日期</td><td style='border-bottom:1px solid #000'>支出类型</td><td style='border-bottom:1px solid #000'>说明</td><td style='border-bottom:1px solid #000'>计划经费</td><td style='border-bottom:1px solid #000'>实际经费</td></tr>";
+            var html = "<table style='border: 1px solid #000;border-collapse:collapse'><tr><td colspan=\"5\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>" + project.Title + " ID:" + project.ID + " 支出明细</td></tr><tr><td style='border-bottom:1px solid #000'>支出日期</td><td style='border-bottom:1px solid #000'>支出类型</td><td style='border-bottom:1px solid #000'>说明</td><td style='border-bottom:1px solid #000'>计划经费</td><td style='border-bottom:1px solid #000'>实际经费</td></tr>";
             foreach (var b in bills)
             {
                 html += string.Format(
@@ -465,16 +469,18 @@ namespace EasySense.Controllers
             if (end.HasValue)
                 bills = bills.Where(x => x.Time <= end.Value);
             bills = bills.ToList();
-            var html = "<table style='border: 1px solid #000;border-collapse:collapse'><tr><td colspan=\"5\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>支出明细</td></tr><tr><td style='border-bottom:1px solid #000'>支出日期</td><td style='border-bottom:1px solid #000'>支出类型</td><td style='border-bottom:1px solid #000'>说明</td><td style='border-bottom:1px solid #000'>计划经费</td><td style='border-bottom:1px solid #000'>实际经费</td></tr>";
+            var html = "<table style='border: 1px solid #000;border-collapse:collapse'><tr><td colspan=\"7\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>支出明细</td></tr><tr><td style='border-bottom:1px solid #000'>项目ID</td><td style='border-bottom:1px solid #000'>项目名称</td><td style='border-bottom:1px solid #000'>支出日期</td><td style='border-bottom:1px solid #000'>支出类型</td><td style='border-bottom:1px solid #000'>说明</td><td style='border-bottom:1px solid #000'>计划经费</td><td style='border-bottom:1px solid #000'>实际经费</td></tr>";
             foreach (var b in bills)
             {
                 html += string.Format(
-                    "<tr><td style='border-bottom:1px solid #000'>{0}</td style='border-bottom:1px solid #000'><td style='border-bottom:1px solid #000'>{1}</td><td style='border-bottom:1px solid #000'>{2}</td><td style='border-bottom:1px solid #000'>￥{3}</td><td style='border-bottom:1px solid #000'>￥{4}</td></tr>",
+                    "<tr><td style='border-bottom:1px solid #000'>{5}</td style='border-bottom:1px solid #000'><td style='border-bottom:1px solid #000'>{6}</td style='border-bottom:1px solid #000'><td style='border-bottom:1px solid #000'>{0}</td style='border-bottom:1px solid #000'><td style='border-bottom:1px solid #000'>{1}</td><td style='border-bottom:1px solid #000'>{2}</td><td style='border-bottom:1px solid #000'>￥{3}</td><td style='border-bottom:1px solid #000'>￥{4}</td></tr>",
                     b.Time.ToString("yyyy-MM-dd"),
                     ((BillViewModel)b).Type,
                     b.Hint,
                     b.Plan.ToString("0.00"),
-                    b.Actual.ToString("0.00")
+                    b.Actual.ToString("0.00"),
+                    b.ProjectID,
+                    b.Project.Title
                 );
             }
             html += "</table>";

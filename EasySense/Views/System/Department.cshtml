@@ -44,6 +44,7 @@
     <a href="/System/Category">项目类别管理</a>
     <a href="/System/Department" class="es-block-menu-active">部门管理</a>
     <a href="#" data-toggle="AddDepartment">添加部门</a>
+    <a href="/System/Field">必填项管理</a>
     <div id="AddDepartment" class="es-menu-extend">
         @using (Html.BeginForm("CreateDepartment", "System", null, FormMethod.Post, new { onsubmit = "ShowLoading()" }))
         {

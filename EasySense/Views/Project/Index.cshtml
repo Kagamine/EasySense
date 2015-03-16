@@ -18,7 +18,7 @@
             <table style="width:600px">
                 <tr>
                     <td>项目名称</td>
-                    <td><input id="txtNewTitle" type="text" class="textbox" placeholder="项目名称" /></td>
+                    <td><input id="txtNewTitle" type="text" class="textbox @(Convert.ToBoolean(ViewBag.Config["Title"])?"" :"nullable")" placeholder="项目名称" /></td>
                     <td>项目状态</td>
                     <td>
                         <select id="lstNewStatus" class="select span-width">
@@ -31,13 +31,13 @@
                 </tr>
                 <tr>
                     <td>说明</td>
-                    <td colspan="3"><input id="txtDescription" type="text" class="textbox full-width nullable" placeholder="项目说明" /></td>
+                    <td colspan="3"><input id="txtDescription" type="text" class="textbox full-width @(Convert.ToBoolean(ViewBag.Config["Description"])?"" :"nullable")" placeholder="项目说明" /></td>
                 </tr>
                 <tr>
                     <td>计划开始时间</td>
-                    <td><input id="txtPlanBegin" type="text" class="textbox" placeholder="计划开始时间" /></td>
+                    <td><input id="txtPlanBegin" type="text" class="textbox @(Convert.ToBoolean(ViewBag.Config["Begin"])?"" :"nullable")" placeholder="计划开始时间" /></td>
                     <td>计划结束时间</td>
-                    <td><input id="txtPlanEnd" type="text" class="textbox full-width" placeholder="计划结束时间" /></td>
+                    <td><input id="txtPlanEnd" type="text" class="textbox full-width @(Convert.ToBoolean(ViewBag.Config["End"])?"" :"nullable")" placeholder="计划结束时间" /></td>
                 </tr>
                 <tr>
                     <td>优先级</td>

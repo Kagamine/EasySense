@@ -61,6 +61,7 @@
     </div>
     <a href="#" data-toggle="CreateProduct">新建产品</a>
     <a href="/System/Department">部门管理</a>
+    <a href="/System/Field">必填项管理</a>
     <div class="es-menu-extend" id="CreateProduct">
         @using (Html.BeginForm("CreateProduct", "System", null, FormMethod.Post, new { onsubmit = "ShowLoading()" }))
         {

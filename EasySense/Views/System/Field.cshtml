@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "必填项管理";
+}
+
+<div class="es-block-menu">
+    <a href="/System">地区管理</a>
+    <a href="/System/Category">项目类别管理</a>
+    <a href="/System/Department">部门管理</a>
+    <a href="/System/Field" class="es-block-menu-active">必填项管理</a>
+</div>
+<div class="es-table-outer">
+    @using (Html.BeginForm("Field", "System", FormMethod.Post)) {
+        @Html.AntiForgerySID()
+    <table style="width: 100%">
+        <tr>
+            <td>项目标题<input type="checkbox" name="Title" @(Convert.ToBoolean(ViewBag.Config["Title"]) ? "checked" : "") /></td>
+            <td>项目说明<input type="checkbox" name="Description" @(Convert.ToBoolean(ViewBag.Config["Description"]) ? "checked" : "") /></td>
+            <td>开始时间<input type="checkbox" name="Begin" @(Convert.ToBoolean(ViewBag.Config["Begin"]) ? "checked" : "") /></td>
+            <td>结束时间<input type="checkbox" name="End" @(Convert.ToBoolean(ViewBag.Config["End"]) ? "checked" : "") /></td>
+        </tr>
+        <tr>
+            <td>签订日期<input type="checkbox" name="SignTime" @(Convert.ToBoolean(ViewBag.Config["SignTime"]) ? "checked" : "") /></td>
+            <td>项目金额<input type="checkbox" name="Charge" @(Convert.ToBoolean(ViewBag.Config["Charge"]) ? "checked" : "") /></td>
+            <td>发票金额<input type="checkbox" name="InvoicePrice" @(Convert.ToBoolean(ViewBag.Config["InvoicePrice"]) ? "checked" : "") /></td>
+            <td>开票日期<input type="checkbox" name="InvoiceTime" @(Convert.ToBoolean(ViewBag.Config["InvoiceTime"]) ? "checked" : "") /></td>
+        </tr>
+        <tr>
+            <td>发票号<input type="checkbox" name="InvoiceSN" @(Convert.ToBoolean(ViewBag.Config["InvoiceSN"]) ? "checked" : "") /></td>
+            <td>发票备注<input type="checkbox" name="Hint" @(Convert.ToBoolean(ViewBag.Config["Hint"]) ? "checked" : "") /></td>
+            <td>收款日期<input type="checkbox" name="ChargeTime" @(Convert.ToBoolean(ViewBag.Config["ChargeTime"]) ? "checked" : "") /></td>
+            <td>实收金额<input type="checkbox" name="ActualPayments" @(Convert.ToBoolean(ViewBag.Config["ActualPayments"]) ? "checked" : "") /></td>
+        </tr>
+    </table>
+    <p>
+        <input type="button" id="btnSave" value="保存" class="button button-def" />
+    </p>
+}
+</div>
+
+<script>
+    $('#btnSave').click(function () {
+        $.post("/System/Field", {
+            sid: '@ViewBag.SID',
+            Title: $("[name='Title']").is(":checked"),
+            Description: $("[name='Description']").is(":checked"),
+            Begin: $("[name='Begin']").is(":checked"),
+            End: $("[name='End']").is(":checked"),
+            SignTime: $("[name='SignTime']").is(":checked"),
+            Charge: $("[name='Charge']").is(":checked"),
+            InvoicePrice: $("[name='InvoicePrice']").is(":checked"),
+            InvoiceTime: $("[name='InvoiceTime']").is(":checked"),
+            InvoiceSN: $("[name='InvoiceSN']").is(":checked"),
+            Hint: $("[name='Hint']").is(":checked"),
+            ChargeTime: $("[name='ChargeTime']").is(":checked"),
+            ActualPayments: $("[name='ActualPayments']").is(":checked")
+        }, function () {
+            window.location.reload();
+        });
+    });
+</script>

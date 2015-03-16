@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using EasySense.Schema;
 using EasySense.Models;
+using System.Configuration;
 
 namespace EasySense.Controllers
 {
@@ -187,6 +188,35 @@ namespace EasySense.Controllers
         {
             var department = DB.Departments.Find(id);
             return Json((DepartmentViewModel)department, JsonRequestBehavior.AllowGet);
+        }
+
+        [MinRole(UserRole.Root)]
+        public ActionResult Field()
+        {
+            ViewBag.Config = ConfigurationManager.AppSettings;
+            return View();
+        }
+
+        [HttpPost]
+        [MinRole(UserRole.Root)]
+        public ActionResult Field(bool Title, bool Description, bool Begin,
+            bool End, bool SignTime, bool Charge, bool InvoicePrice, 
+            bool InvoiceSN, bool Hint, bool ChargeTime, bool ActualPayments,
+            bool InvoiceTime)
+        {
+            ConfigurationManager.AppSettings["Title"] = Title.ToString();
+            ConfigurationManager.AppSettings["Description"] = Description.ToString();
+            ConfigurationManager.AppSettings["Begin"] = Begin.ToString();
+            ConfigurationManager.AppSettings["End"] = End.ToString();
+            ConfigurationManager.AppSettings["SignTime"] = SignTime.ToString();
+            ConfigurationManager.AppSettings["Charge"] = Charge.ToString();
+            ConfigurationManager.AppSettings["InvoicePrice"] = InvoicePrice.ToString();
+            ConfigurationManager.AppSettings["InvoiceSN"] = InvoiceSN.ToString();
+            ConfigurationManager.AppSettings["Hint"] = Hint.ToString();
+            ConfigurationManager.AppSettings["ChargeTime"] = ChargeTime.ToString();
+            ConfigurationManager.AppSettings["ActualPayments"] = ActualPayments.ToString();
+            ConfigurationManager.AppSettings["InvoiceTime"] = InvoiceTime.ToString();
+            return RedirectToAction("Field", "System");
         }
     }
 }

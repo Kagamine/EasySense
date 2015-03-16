@@ -417,7 +417,6 @@
     <Content Include="Views\Statistics\Index.cshtml" />
     <Content Include="Views\Statistics\Show.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
-    <None Include="Properties\PublishProfiles\es.pubxml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\System\Index.cshtml" />
     <Content Include="Views\System\Category.cshtml" />
@@ -429,6 +428,8 @@
     <Content Include="Views\Report\Edit.cshtml" />
     <Content Include="Views\Shared\Message.cshtml" />
     <Content Include="Views\System\Department.cshtml" />
+    <None Include="Properties\PublishProfiles\esdemo.pubxml" />
+    <Content Include="Views\System\Field.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
