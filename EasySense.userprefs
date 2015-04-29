@@ -1,0 +1,12 @@
+﻿<Properties StartupItem="EasySense/EasySense.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="EasySense/Views/Shared/Login.cshtml">
+    <Files>
+      <File FileName="EasySense/Views/Shared/Login.cshtml" Line="17" Column="27" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
