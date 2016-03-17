@@ -9,6 +9,8 @@ namespace EasySense.Models
     {
         public int ID { get; set; }
 
+        public string RefNum { get; set; }
+
         public string Owner { get; set; }
 
         public string Title { get; set; }
@@ -53,14 +55,15 @@ namespace EasySense.Models
             return new ProjectListViewModel
             {
                 ID = Project.ID,
+                RefNum = Project.RefNum,
                 Owner = Project.User.Name,
                 Title = Project.Title,
                 Charge = Project.Charge == null ? "未填写" : Project.Charge.Value.ToString("0.00"),
                 SignTime = Project.SignTime == null ? "未签订" : Project.SignTime.Value.ToString("yyyy-MM-dd"),
-                Product = Project.ProductID == null ? "未指定" : Project.Product.Category.Title,
-                Enterprise = Project.EnterpriseID == null ? "未指定" : Project.Enterprise.Title,
-                Customer = Project.CustomerID == null ? "未指定" : Project.Customer.Name,
-                Brand = Project.EnterpriseID == null ? "未知" : Project.Enterprise.Brand,
+                Product = Project.Product == null ? "未指定" : Project.Product.Title,
+                Enterprise = Project.Enterprise == null ? "未指定" : Project.Enterprise.Title,
+                Customer = Project.Customer == null ? "未指定" : Project.Customer.Name,
+                Brand = Project.Enterprise == null ? "未知" : Project.Enterprise.Brand,
                 Status = status,
                 InvoiceTime = Project.InvoiceTime == null?"未开票" : Project.InvoiceTime.Value.ToString("yyyy-MM-dd"),
                 ChargeTime = Project.ChargeTime==null?"未付款" : Project.ChargeTime.Value.ToString("yyyy-MM-dd")

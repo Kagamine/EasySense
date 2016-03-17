@@ -17,11 +17,35 @@
         <h2>填写工作报告</h2>
         <p><strong>工作报告类型</strong></p>
         <p>
-            <select name="Type" class="select">
-                <option value="Day">日报 (@DateTime.Now.ToString("yyyy年MM月dd日"))</option>
-                <option value="Week">周报 (第 @ViewBag.ThisWeek 周)</option>
-                <option value="Month">月报 (@DateTime.Now.Month 月)</option>
+            <select id="Type" name="Type" class="select" style="width:100px;" onchange="changeType(this)">
+                <option value="Day">日报</option>
+                <option value="Week">周报</option>
+                <option value="Month">月报</option>
             </select>
+            <span id="spanMonth" style="display:none;">
+                月份：<select name="Month0" id="selectMonth" class="select" style="width:100px;">
+                    <option value="1">一月</option>
+                    <option value="2">二月</option>
+                    <option value="3">三月</option>
+                    <option value="4">四月</option>
+                    <option value="5">五月</option>
+                    <option value="6">六月</option>
+                    <option value="7">七月</option>
+                    <option value="8">八月</option>
+                    <option value="9">九月</option>
+                    <option value="10">十月</option>
+                    <option value="11">十一月</option>
+                    <option value="12">十二月</option>
+                </select>(超出5天后不可汇报)
+            </span>
+            <span id="spanWeek" style="display:none;">
+                周：<select name="Week0" id="selectWeek" class="select" style="width:100px;">
+                    <option value="1">本周</option>
+                    <option value="2">下周</option>
+                    <option value="3">下下周</option>
+                </select>(超出3天后不可汇报)
+            </span>
+            <span id="spanDate">日期：<input name="Date0" id="txtDate" type="text" class="textbox" /></span>
         </p>
         <p><strong>待办事项</strong></p>
         <p><textarea class="ckeditor" name="TodoList"></textarea></p>
@@ -29,6 +53,77 @@
         <p><textarea class="ckeditor" name="QuestionList"></textarea></p>
         <p><strong>已完成列表</strong></p>
         <p><textarea class="ckeditor" name="FinishedList"></textarea></p>
-        <p><input type="submit" class="button button-def" value="保存" /></p>
+        <p><input type="button" class="button button-def" onclick="save0(this.form);" value="保存" /></p>
     }
 </div>
+<script>
+    function changeType(select) {
+        var type = $("#Type").val();
+        if (type == 'Day') {
+            $("#spanMonth").hide();
+            $("#spanWeek").hide();
+            $("#spanDate").show();
+        } else if (type == 'Week') {
+            $("#spanDate").hide();
+            $("#spanWeek").show();
+            $("#spanMonth").hide();
+        } else if (type == 'Month') {
+            $("#spanMonth").show();
+            $("#spanWeek").hide();
+            $("#spanDate").hide();
+        }
+    }
+
+    function save0(form) {
+        var type = $("#Type").val();
+        if (type == 'Day') {
+
+        } else if (type == 'Week') {
+            var d = new Date();
+            var week = $("#selectWeek").val();
+            if (1 == week) {
+                var day = d.getDate();
+                if (day > 3) {
+                    alert('超出3天后不可汇报');
+                    return;
+                }
+            }
+        } else if (type == 'Month') {
+            var d = new Date();
+            var vYear = d.getFullYear();
+            var vMon = d.getMonth() + 1;
+            var month = $("#selectMonth").val();
+            if (vMon > parseInt(month)) {
+                alert('超出5天后不可汇报');
+                return;
+            } else if (vMon == month) {
+                var day = d.getDate();
+                if (day > 5) {
+                    alert('超出5天后不可汇报');
+                    return;
+                }
+            }
+        }
+
+        form.submit();
+    }
+
+    $(document).ready(function () {
+        $("#txtDate").datetimepicker({ timepicker: false, format: 'Y/m/d' });
+        //
+        var type = $("#Type").val();
+        if (type == 'Day') {
+            $("#spanMonth").hide();
+            $("#spanWeek").hide();
+            $("#spanDate").show();
+        } else if (type == 'Week') {
+            $("#spanDate").hide();
+            $("#spanWeek").show();
+            $("#spanMonth").hide();
+        } else if (type == 'Month') {
+            $("#spanMonth").show();
+            $("#spanWeek").hide();
+            $("#spanDate").hide();
+        }
+    });
+</script>

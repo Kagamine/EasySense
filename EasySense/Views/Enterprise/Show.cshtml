@@ -30,6 +30,18 @@
             <input type="hidden" name="id" id="CurrentID" />
             <table style="width:100%">
                 <tr>
+                    <td>产品类别</td>
+                    <td><input id="ProductCategory" name="ProductCategory" type="text" class="textbox" placeholder="产品类别" /></td>
+                    <td>产品名称</td>
+                    <td><input id="ProductName" name="ProductName" type="text" class="textbox full-width" placeholder="产品名称" /></td>
+                </tr>
+                <tr>
+                    <td>部门</td>
+                    <td><input id="DepartmentName" name="DepartmentName" type="text" class="textbox" placeholder="部门" /></td>
+                    <td>办公邮箱</td>
+                    <td><input id="OfficeEmail" name="OfficeEmail" type="text" class="textbox full-width" placeholder="办公邮箱" /></td>
+                </tr>
+                <tr>
                     <td>姓名</td>
                     <td><input id="Name" name="Name" type="text" class="textbox" placeholder="姓名" /></td>
                     <td>性别</td>
@@ -71,7 +83,7 @@
             </table>
             <p style="text-align:center">
                 <a href="javascript:void(0);" id="btnSaveCustomer">保存修改</a> 
-                <a id="btnDeleteCustomer">删除该联系人</a>
+                <a id="btnDeleteCustomer">删除该联系人</a>&nbsp;<a href='javascript:;' onclick='$(".es-dialog").removeClass("show");'>关闭</a>
             </p>
         }
     </div>
@@ -137,6 +149,18 @@
     <a href="#" data-toggle="AddCustomer">添加联系人</a>
     <div class="es-menu-extend" id="AddCustomer">
         <table style="width:600px">
+            <tr>
+                <td>产品类别</td>
+                <td><input id="txtProductCategory" type="text" class="textbox" placeholder="产品类别" /></td>
+                <td>产品名称</td>
+                <td><input id="txtProductName" type="text" class="textbox full-width" placeholder="产品名称" /></td>
+            </tr>
+            <tr>
+                <td>部门</td>
+                <td><input id="txtDepartmentName" type="text" class="textbox" placeholder="部门" /></td>
+                <td>办公邮箱</td>
+                <td><input id="txtOfficeEmail" type="text" class="textbox full-width" placeholder="办公邮箱" /></td>
+            </tr>
             <tr>
                 <td>姓名</td>
                 <td><input id="txtName" type="text" class="textbox" placeholder="姓名" /></td>
@@ -216,44 +240,65 @@
     </table>
 </div>
 
-<div class="es-customer-container" id="lstCustomers">
-    @foreach (var c in Model.Customers)
-    {
-        <div class="es-customer" onclick="EditCustomer(@c.ID)">
-            <h3>@c.Name @(c.Sex == Sex.Male ? "♂" : "♀")</h3>
-            <table>
-                <tr>
-                    <td>职位: @c.Position</td>
-                    <td>电话: @c.Tel</td>
-                </tr>
-                <tr>
-                    <td>手机: @c.Phone</td>
-                    <td>传真: @c.Fax</td>
-                </tr>
-                <tr>
-                    <td>微信: @c.WeChat</td>
-                    <td>QQ: @c.QQ</td>
-                </tr>
-                <tr>
-                    <td colspan="2">邮箱: @c.Email</td>
-                </tr>
-                <tr>
-                    <td colspan="2">生日: @c.Birthday.ToString("MM月dd日")</td>
-                </tr>
-            </table>
-            <p>备注: @c.Hint</p>
-            <p>相关项目: </p>
-            @foreach (var p in c.Projects)
-            {
-                <p><a target="_blank" href="/Project/Show/@p.ID" onclick="setTimeout(function () { $('.es-dialog').removeClass('show') }, 1000)">@p.Title</a></p>
-            }
-            @if (c.Projects.Count == 0)
-            {
-                <p>无</p>
-            }
-        </div>
-    }
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th data-col="DepartmentName">部门</th>
+            <th data-col="ProductCategory">产品类别</th>
+            <th data-col="ProductName">产品名称</th>
+            <th data-col="Name">联系人</th>
+            <th data-col="Sex">性别</th>
+            <th data-col="Position">职位</th>
+            <th data-col="Tel">电话</th>
+            <th data-col="Fax">传真</th>
+            <th data-col="Phone">手机</th>
+            <th data-col="OfficeEmail">办公邮箱</th>
+            <th data-col="Email">私人邮箱</th>
+            <th data-col="QQ">QQ</th>
+            <th data-col="WeChat">微信</th>
+            <th data-col="Birthday">生日</th>
+            <th data-col="Hint">备注</th>
+            <th>相关项目</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody id="lstCustomers" enterpriseid="@Model.ID">
+        @foreach (var c in Model.Customers)
+        {
+            <tr ondblclick="EditCustomer(@c.ID)">
+                <td>@c.DepartmentName</td>
+                <td>@c.ProductCategory</td>
+                <td>@c.ProductName</td>
+                <td>@c.Name</td>
+                <td>@(c.Sex == Sex.Male ? "男" : "女")</td>
+                <td>@c.Position</td>
+                <td>@c.Tel</td>
+                <td>@c.Fax</td>
+                <td>@c.Phone</td>
+                <td>@c.OfficeEmail</td>
+                <td>@c.Email</td>
+                <td>@c.QQ</td>
+                <td>@c.WeChat</td>
+                <td>@c.Birthday.ToString("MM月dd日")</td>
+                <td>@c.Hint</td>
+                <td>
+                    @foreach (var p in c.Projects)
+                    {
+                        <p><a target="_blank" href="/Project/Show/@p.ID" onclick="setTimeout(function () { $('.es-dialog').removeClass('show') }, 1000)">@p.Title</a></p>
+                    }
+                    @if (c.Projects.Count == 0)
+                    {
+                        <p>无</p>
+                    }
+                </td>
+                <td>
+                    <a href="javascript:EditCustomer(@c.ID)">编辑</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 
 <script>
     $("#txtBirthday").datetimepicker();
@@ -262,8 +307,7 @@
         $("#frmEditEnterprise").submit();
     });
     $("#btnAddCustomer").click(function () {
-        if ($("#txtName").val() == "")
-        {
+        if ($("#txtName").val() == "") {
             alert("联系人姓名不能为空");
             return;
         }
@@ -305,6 +349,10 @@
         }
         ShowLoading();
         $.post("/Enterprise/CreateCustomer/@Model.ID", {
+            DepartmentName: $("#txtDepartmentName").val(),
+            ProductCategory: $("#txtProductCategory").val(),
+            ProductName: $("#txtProductName").val(),
+            OfficeEmail: $("#txtOfficeEmail").val(),
             Name: $("#txtName").val(),
             Sex: $("#lstSex").val(),
             Position: $("#txtPosition").val(),
@@ -318,25 +366,39 @@
             Hint: $("#txtHint").val(),
             sid: "@ViewBag.SID"
         }, function (id) {
-            var html = '<div class="es-customer" onclick="EditCustomer(' + id + ')">';
-            html += '<h3>' + $("#txtName").val() + ' ' + ($("#lstSex").val() == "Male" ? "♂" : "♀") + '</h3>';
-            html += '<table><tr><td>职位: ' + $("#txtPosition").val() + '</td><td>电话: ' + $("#txtTel").val() + '</td></tr>';
-            html += '<tr><td>手机: ' + $("#txtPhone").val() + '</td><td>传真: ' + $("#txtFax").val() + '</td></tr>';
-            html += '<tr><td>微信: ' + $("#txtWechat").val() + '</td><td>QQ: ' + $("#txtQQ").val() + '</td></tr>';
-            html += '<tr><td colspan="2">邮箱: ' + $("#txtEmail").val() + '</td></tr>';
-            html += '<tr><td colspan="2">生日: ' + $("#txtBirthday").val() + '</td></tr></table>';
-            html += '<p>备注: ' + $("#txtHint").val() + '</p><p>相关项目: 无</p>';
+            var html = '<tr ondblclick="EditCustomer(' + id + ')">';
+            html += '<td>' + $("#txtDepartmentName").val() + '</td>';
+            html += '<td>' + $("#txtProductCategory").val() + '</td>';
+            html += '<td>' + $("#txtProductName").val() + '</td>';
+            html += '<td>' + $("#txtName").val() + '</td>';
+            html += '<td>' + ($("#lstSex").val() == "Male" ? "男" : "女") + '</td>';
+            html += '<td>' + $("#txtPosition").val() + '</td>';
+            html += '<td>' + $("#txtTel").val() + '</td>';
+            html += '<td>' + $("#txtFax").val() + '</td>';
+            html += '<td>' + $("#txtPhone").val() + '</td>';
+            html += '<td>' + $("#txtOfficeEmail").val() + '</td>';
+            html += '<td>' + $("#txtEmail").val() + '</td>';
+            html += '<td>' + $("#txtQQ").val() + '</td>';
+            html += '<td>' + $("#txtWechat").val() + '</td>';
+            html += '<td>' + $("#txtBirthday").val() + '</td>';
+            html += '<td>' + $("#txtHint").val() + '</td>';
+            html += '<td><p>无</p></td>';
+            html += '<td><a href="javascript:EditCustomer(' + id + ')">编辑</a></td>';
+            html += '</tr>';
             $('#lstCustomers').prepend(html);
             CloseToggle();
             HideLoading();
         })
     });
-    function EditCustomer(id)
-    {
+    function EditCustomer(id) {
         $(".es-dialog").removeClass(".show");
         ShowLoading();
         $.getJSON("/Enterprise/Customer/" + id, {}, function (customer) {
             $("#CurrentID").val(id);
+            $("#DepartmentName").val(customer.DepartmentName);
+            $("#ProductCategory").val(customer.ProductCategory);
+            $("#ProductName").val(customer.ProductName);
+            $("#OfficeEmail").val(customer.OfficeEmail);
             $("#Name").val(customer.Name);
             $("#Sex").val(customer.Sex);
             $("#Position").val(customer.Position);
@@ -348,7 +410,7 @@
             $("#Wechat").val(customer.WeChat);
             $("#Birthday").val(customer.Birthday);
             $("#Hint").val(customer.Hint);
-            $("#btnDeleteCustomer").attr("href", "/Enterprise/DeleteCustomer/" + id + "?sid=@ViewBag.SID");
+            $("#btnDeleteCustomer").attr("href", "javascript:DeleteCusomer(" + id + ")");
             $(".es-dialog").addClass("show");
             HideLoading();
         });
@@ -358,4 +420,16 @@
         ShowLoading();
         $("#frmEditCustomer").submit();
     });
+
+    function DeleteCusomer(id) {
+        ShowLoading();
+        $.get("/Enterprise/DeleteCustomer/" + id, { sid: '@ViewBag.SID' }, function (c) {
+            HideLoading();
+            if ("cannot delete" == c) {
+                alert('无法删除该联系人。请确认其它地方是否关联了该联系人信息。');
+            } else {
+                window.location = "/Enterprise/Show/" + c;
+            }
+        });
+    }
 </script>

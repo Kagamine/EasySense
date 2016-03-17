@@ -97,6 +97,18 @@ namespace EasySense.Models
         public float? TaxRatioCache { get; set; }
 
         [NotMapped]
+        public string Tel { get; set; }
+
+        [NotMapped]
+        public string Phone { get; set; }
+
+        [NotMapped]
+        public string Email { get; set; }
+
+        [NotMapped]
+        public string Brand { get; set; }
+
+        [NotMapped]
         public decimal SellingCommisson
         {
             get
@@ -185,8 +197,9 @@ namespace EasySense.Models
         [Index]
         public PayMethod PayMethod { get; set; }
 
-        [Required]
         public string Log { get; set; }
+
+        public string RefNum { get; set; }
 
         public virtual ICollection<BillModel> Bills { get; set; }
 

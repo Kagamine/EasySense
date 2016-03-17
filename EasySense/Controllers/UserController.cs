@@ -21,7 +21,7 @@ namespace EasySense.Controllers
         public ActionResult Avatar(int id)
         {
             var user = DB.Users.Find(id);
-            if (user.Avatar == null)
+            if (user == null || user.Avatar == null)
                 return File(System.IO.File.ReadAllBytes(Server.MapPath("~/Images/Avatar.png")), "image/png");
             return File(user.Avatar, "image/png");
         }

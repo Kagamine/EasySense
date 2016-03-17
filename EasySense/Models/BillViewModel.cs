@@ -21,8 +21,15 @@ namespace EasySense.Models
 
         public string Type { get; set; }
 
+        public string RefNum { get; set; }
+
         public static implicit operator BillViewModel(BillModel Bill)
         {
+            string refNum = null;
+            if (Bill.Project != null)
+            {
+                refNum = Bill.Project.RefNum;
+            }
             return new BillViewModel
             {
                 ID = Bill.ID,
@@ -31,7 +38,8 @@ namespace EasySense.Models
                 Time = Bill.Time.ToString("yyyy-MM-dd"),
                 Plan = Bill.Plan,
                 TypeAsInt = Bill.Type,
-                Type = BillModel.BillTypes[Bill.Type]
+                Type = BillModel.BillTypes[Bill.Type],
+                RefNum = refNum
             };
         }
     }

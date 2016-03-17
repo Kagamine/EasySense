@@ -44,9 +44,9 @@
                     <select id="lstDepartment" class="select" name="DepartmentID">
                         <option>未指定</option>
                         @foreach (DepartmentModel d in ViewBag.Departments)
-                            {
-                            <option value="@d.ID">@d.Title</option>
-                            }
+                        {
+                        <option value="@d.ID">@d.Title</option>
+                        }
                     </select>
                 </td>
                 <td>电子邮箱</td>
@@ -54,7 +54,7 @@
             </tr>
         </table>
         }
-        <p style="text-align: center"><a href="#" id="btnSaveEmployee">保存员工信息</a></p>
+        <p style="text-align: center"><a href="#" id="btnSaveEmployee">保存员工信息</a>&nbsp;<a href='javascript:;' onclick='$(".es-dialog").removeClass("show");'>关闭</a></p>
     </div>
     <a href="javascript:;" data-toggle="CreateEmployee">添加员工</a>
     <div id="CreateEmployee" class="es-menu-extend">
@@ -139,9 +139,13 @@
 <script>
     function DeleteUser(id) {
         ShowLoading();
-        $.post("/Employee/Delete/" + id, { sid: '@ViewBag.SID' }, function () {
-            $("#user_" + id).slideUp(200);
+        $.get("/Employee/Delete/" + id, { sid: '@ViewBag.SID' }, function (content) {
             HideLoading();
+            if ("cannot delete" == content) {
+                alert('无法删除该员工。请确认其它地方是否关联了该员工信息。');
+                return;
+            }
+            $("#user_" + id).slideUp(200);
         });
     }
 

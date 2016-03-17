@@ -42,18 +42,19 @@
 </style>
 <div class="es-block-menu">
     <div class="es-dialog" style="left:550px;">
-        @using (Html.BeginForm("ChangePercent", "Project", new { id = Model.ID }, FormMethod.Post, new { onsubmit= "ShowLoading()" }))
+        @using (Html.BeginForm("ChangePercent", "Project", new { id = Model.ID }, FormMethod.Post, new { onsubmit = "ShowLoading()" }))
         {
             @Html.AntiForgerySID()
             <h3>修改百分比</h3>
             <p><input type="text" name="percent" class="textbox" /></p>
-            <p><input type="submit" value="保存" class="button button-def" /></p>
+            <p><input type="submit" value="保存" class="button button-def" /><input type="button" value="关闭" class="button button-def" class="button button-def" onclick="$('.es-dialog').removeClass('show');" /></p>
         }
     </div>
     <a href="/Project/Show/@Model.ID" class="es-block-menu-active">项目信息</a>
     <a href="/Project/Bill/@Model.ID">支出</a>
     <a href="/Project/Log/@Model.ID">操作记录</a>
-    @Url.LinkWithSID("删除项目", "Delete", "Project", new { id = Model.ID });
+    @Url.LinkWithSID("删除项目", "Delete", "Project", new { id = Model.ID })
+    <a href="javascript:EditProject();">编辑项目</a>
 </div>
 <div class="es-table-outer">
     <table>
@@ -101,7 +102,7 @@
                         </td>
                         <td>@Model.End.ToString("yyyy-MM-dd")</td>
                         <td>
-                            <div style="width:80px;border:1px solid #fff;height:20px;text-align:center;border-radius:20px;"><a style="color:#fff;position:relative;z-index:1" href="javascript:$('.es-dialog').addClass('show')">@(Model.Percent * 100)%</a><div style="width:@(Convert.ToInt32(Model.Percent * 100))%;background-color:green;position:relative;top:-20px;left:0;height: 18px;border-radius:18px;"></div></div>
+                            <div style="width:80px;border:1px solid #fff;height:20px;text-align:center;border-radius:20px;"><a style="color:#fff;position:relative;z-index:1" href="javascript:;" onclick="$('.es-dialog').addClass('show')">@(Model.Percent * 100)%</a><div style="width:@(Convert.ToInt32(Model.Percent * 100))%;background-color:green;position:relative;top:-20px;left:0;height: 18px;border-radius:18px;"></div></div>
                         </td>
                     </tr>
                 </table>
@@ -110,39 +111,39 @@
     </table>
 </div>
 <div class="es-block">
-    @using (Html.BeginForm("Edit", "Project",new { id = Model.ID }, FormMethod.Post, new { id = "frmEditProject" }))
+    @using (Html.BeginForm("Edit", "Project", new { id = Model.ID }, FormMethod.Post, new { id = "frmEditProject" }))
     {
         @Html.AntiForgerySID()
         <table>
             <tr>
                 <td>
                     <h3>基本信息</h3>
-                    <p>项目名称<br /><input name="Title" type="text" class="textbox @(Convert.ToBoolean(ViewBag.Config["Title"])?"" :"nullable")" placeholder="项目名称" value="@Model.Title" /></p>
-                    <p>项目说明<br /><textarea name="Description" class="@(Convert.ToBoolean(ViewBag.Config["Description"])?"" :"nullable") textbox">@Model.Description</textarea></p>
-                    <p>计划开始时间<br /><input name="Begin" type="text" class="textbox @(Convert.ToBoolean(ViewBag.Config["Begin"])?"" :"nullable")" placeholder="计划开始时间" value="@Model.Begin" /></p>
-                    <p>计划完成时间<br /><input name="End" type="text" class="textbox @(Convert.ToBoolean(ViewBag.Config["End"])?"" :"nullable")" placeholder="计划完成时间" value="@Model.End" /></p>
+                    <p>项目名称<br /><input name="Title" type="text" class="@(Convert.ToBoolean(ViewBag.Config["Title"])?"" :"nullable") textbox" placeholder="项目名称" value="@Model.Title" /><img id="__TitleNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>项目说明<br /><textarea name="Description" class="@(Convert.ToBoolean(ViewBag.Config["Description"])?"" :"nullable") textbox" placeholder="项目说明">@Model.Description</textarea><img id="__DescriptionNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>计划开始时间<br /><input name="Begin" type="text" class="@(Convert.ToBoolean(ViewBag.Config["Begin"])?"" :"nullable") textbox" placeholder="计划开始时间" value="@Model.Begin" /><img id="__BeginNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>计划完成时间<br /><input name="End" type="text" class="@(Convert.ToBoolean(ViewBag.Config["End"])?"" :"nullable") textbox" placeholder="计划完成时间" value="@Model.End" /><img id="__EndNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
                     <p>
                         优先级
                         <br />
-                        <select class="select" name="Priority">
+                        <select class="@(Convert.ToBoolean(ViewBag.Config["Priority"]) ? "" : "nullable") select" name="Priority" placeholder="优先级">
                             <option value="0" @(Model.Priority == ProjectPriority.Normal ? " selected" : "")>正常</option>
                             <option value="1" @(Model.Priority == ProjectPriority.Medium ? " selected" : "")>中等</option>
                             <option value="2" @(Model.Priority == ProjectPriority.High ? " selected" : "")>高</option>
-                        </select>
+                        </select><img id="__PriorityNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img>
                     </p>
                     <p>
                         项目状态
                         <br />
-                        <select class="select" name="Status">
+                        <select class="@(Convert.ToBoolean(ViewBag.Config["Status"]) ? "" : "nullable") select" name="Status" placeholder="项目状态">
                             <option value="Current" @(Model.Status == ProjectStatus.Current ? " selected" : "")>当前</option>
                             <option value="Completed" @(Model.Status == ProjectStatus.Completed ? " selected" : "")>完成</option>
                             <option value="Bidding" @(Model.Status == ProjectStatus.Bidding ? " selected" : "")>竞标</option>
                             <option value="Dumped" @(Model.Status == ProjectStatus.Dumped ? " selected" : "")>废弃</option>
-                        </select>
+                        </select><img id="__StatusNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img>
                     </p>
                     <h3>客户信息</h3>
                     <input id="EnterpriseID" type="hidden" name="EnterpriseID" value="@Model.EnterpriseID" />
-                    <p>客户名称<br /><input id="EnterpriseName" name="EnterpriseName" data-toggle="EnterpriseSelect" type="text" class="nullable textbox" placeholder="客户名称或客户首字母" value="@(Model.EnterpriseID == null?"" : Model.Enterprise.Title)" /></p>
+                    <p>客户名称<br /><input id="EnterpriseName" name="EnterpriseName" data-toggle="EnterpriseSelect" type="text" class="@(Convert.ToBoolean(ViewBag.Config["EnterpriseName"]) ? "" : "nullable") textbox" placeholder="客户名称" value="@(Model.EnterpriseID == null?"" : Model.Enterprise.Title)" /><img id="__EnterpriseNameNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
                     <div class="es-menu-extend" id="EnterpriseSelect">
                         <div id="lstEnterprises">
                             @if (ViewBag.Enterprises.Count == 0)
@@ -154,17 +155,17 @@
                             {
                                 foreach (EnterpriseListViewModel e in ViewBag.Enterprises)
                                 {
-                                    <img src="/Enterprise/Icon/@e.ID" class="es-icon-small" /><a href="javascript:$('#EnterpriseID').val(@e.ID);" data-content="@e.Title">@e.Title</a><hr />
+                                    <img src="/Enterprise/Icon/@e.ID" class="es-icon-small" /><a href="javascript:;" onclick="$('#EnterpriseID').val(@e.ID);searchCustomers('@e.ID', 'CustomerSelect');" data-content="@e.Title0">@e.Title0</a><hr />
                                 }
                             }
                         </div>
                     </div>
                     <input type="hidden" name="CustomerID" id="CustomerID" value="@Model.CustomerID" />
-                    <p>客户联系人<br /><input id="CustomerName" name="CustomerName" data-toggle="CustomerSelect" type="text" class="nullable textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" /></p>
-                    <p>电话<br /><input id="txtTel" name="Tel" class="nullable textbox" value="@(Model.CustomerID == null ? "" :Model.Customer.Tel)" /></p>
-                    <p>手机<br /><input id="txtPhone" name="Phone" class="nullable textbox" value="@(Model.CustomerID == null ? "" :Model.Customer.Phone)" /></p>
-                    <p>邮箱<br /><input id="txtEmail" name="Email" class="nullable textbox" value="@(Model.CustomerID == null ? "" :Model.Customer.Email)" /></p>
-                    <p>品牌<br /><input id="txtBrand" name="Brand" class="nullable textbox" value="@(Model.EnterpriseID == null?"" :Model.Enterprise.Brand)" /></p>
+                    <p>客户联系人<br /><input id="CustomerName" name="CustomerName" data-toggle="CustomerSelect" type="text" class="@(Convert.ToBoolean(ViewBag.Config["CustomerName"]) ? "" : "nullable") textbox" placeholder="客户联系人" value="@(Model.CustomerID == null?"" : Model.Customer.Name)" /><img id="__CustomerNameNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>电话<br /><input id="txtTel" name="Tel" class="@(Convert.ToBoolean(ViewBag.Config["Tel"]) ? "" : "nullable") textbox" placeholder="电话" value="@(Model.CustomerID == null ? "" :Model.Customer.Tel)" /><img id="__TelNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>手机<br /><input id="txtPhone" name="Phone" class="@(Convert.ToBoolean(ViewBag.Config["Phone"]) ? "" : "nullable") textbox" placeholder="手机" value="@(Model.CustomerID == null ? "" :Model.Customer.Phone)" /><img id="__PhoneNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>邮箱<br /><input id="txtEmail" name="Email" class="@(Convert.ToBoolean(ViewBag.Config["Email"]) ? "" : "nullable") textbox" placeholder="邮箱" value="@(Model.CustomerID == null ? "" :Model.Customer.Email)" /><img id="__EmailNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>品牌<br /><input id="txtBrand" name="Brand" class="@(Convert.ToBoolean(ViewBag.Config["Brand"]) ? "" : "nullable") textbox" placeholder="品牌" value="@(Model.EnterpriseID == null?" " :Model.Enterprise.Brand)" /><img id="__BrandNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
                     <div class="es-menu-extend" id="CustomerSelect">
                         <small>搜索联系人</small>
                     </div>
@@ -174,41 +175,41 @@
                     <p>
                         订单状态
                         <br />
-                        <select class="select" status="Ordering" name="Ordering">
+                        <select class="@(Convert.ToBoolean(ViewBag.Config["Ordering"]) ? "" : "nullable") select" placeholder="订单状态" status="Ordering" name="Ordering">
                             <option value="true" @(Model.Ordering ? " selected" : "")>有订单</option>
                             <option value="true" @(!Model.Ordering ? " selected" : "")>无订单</option>
-                        </select>
+                        </select><img id="__OrderingNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img>
                     </p>
                     <p>
                         项目类别
                         <br />
-                        <select class="select" name="CategoryID" id="lstCategoryID">
+                        <select class="@(Convert.ToBoolean(ViewBag.Config["CategoryID"]) ? "" : "nullable") select" placeholder="项目类别" name="CategoryID" id="lstCategoryID">
                             <option>未指定类别</option>
                             @foreach (CategoryModel c in ViewBag.Categories)
                             {
                                 <option value="@c.ID" @(Model.ProductID.HasValue && c.ID == Model.Product.CategoryID ? " selected" : "")>@c.Title</option>
                             }
-                        </select>
+                        </select><img id="__CategoryIDNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img>
                         <br />
                     </p>
                     <p>
                         产品类型
                         <br />
-                        <select class="select" name="ProductID" id="lstProductID">
+                        <select class="@(Convert.ToBoolean(ViewBag.Config["ProductID"]) ? "" : "nullable") select" placeholder="产品类型" name="ProductID" id="lstProductID">
                             <option>未指定产品</option>
-                        </select>
+                        </select><img id="__ProductIDNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img>
                     </p>
-                    <p>签订日期<br /><input type="text" name="SignTime" class="@(Convert.ToBoolean(ViewBag.Config["SignTime"])?"" :"nullable") textbox" placeholder="签订日期" value="@Model.SignTime" /></p>
+                    <p>签订日期<br /><input type="text" name="SignTime" class="@(Convert.ToBoolean(ViewBag.Config["SignTime"])?"" :"nullable") textbox" placeholder="签订日期" value="@Model.SignTime" /><img id="__SignTimeNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
                     <p>
                         所在地区
                         <br />
-                        <select class="select" name="ZoneID">
+                        <select class="@(Convert.ToBoolean(ViewBag.Config["ZoneID"]) ? "" : "nullable") select" placeholder="所在地区" name="ZoneID">
                             <option>未指定地区</option>
                             @foreach (ZoneModel z in ViewBag.Zones)
                             {
-                                <option value="@z.ID" @(Model.ZoneID  == z.ID ? " selected" : "")>@z.Title</option>
+                                <option value="@z.ID" @(Model.ZoneID == z.ID ? " selected" : "")>@z.Title</option>
                             }
-                        </select>
+                        </select><img id="__ZoneIDNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img>
                         <br />
                     </p>
                 </td>
@@ -216,7 +217,7 @@
                 {
                     <td>
                         <h3>财务信息</h3>
-                        <p>项目金额<br /><input name="Charge" type="text" class="@(Convert.ToBoolean(ViewBag.Config["Charge"])?"" :"nullable") textbox" placeholder="项目金额" value="@Model.Charge" /></p>
+                        <p>项目金额<br /><input name="Charge" type="text" class="@(Convert.ToBoolean(ViewBag.Config["Charge"])?"" :"nullable") textbox" placeholder="项目金额" value="@Model.Charge" /><img id="__ChargeNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
                         <p>税金<br /><strong>￥@Model.Tax.ToString("0.00")</strong></p>
                         <p>销售佣金<br /><strong>￥@Model.SellingCommisson.ToString("0.00")</strong></p>
                         <p>项目部奖金<br /><strong>￥@Model.Award.ToString("0.00")</strong></p>
@@ -226,21 +227,21 @@
                 }
                 <td>
                     <h3>发票信息</h3>
-                    <p>发票金额<br /><input name="InvoicePrice" type="text" class="@(Convert.ToBoolean(ViewBag.Config["InvoicePrice"])?"" :"nullable") textbox" placeholder="发票金额" value="@Model.InvoicePrice" /></p>
-                    <p>开票日期<br /><input type="text" name="InvoiceTime" class="@(Convert.ToBoolean(ViewBag.Config["InvoiceTime"])?"" :"nullable") textbox" placeholder="开票日期" value="@Model.InvoiceTime" /></p>
-                    <p>发票号<br /><input name="InvoiceSN" type="text" class="@(Convert.ToBoolean(ViewBag.Config["InvoiceSN"])?"" :"nullable") textbox" placeholder="发票号" value="@Model.InvoiceSN" /></p>
-                    <p>备注<br /><textarea name="Hint" class="@(Convert.ToBoolean(ViewBag.Config["Hint"])?"" :"nullable") textbox" placeholder="备注">@Model.Hint</textarea></p>
-                    <p>收款日期<br /><input type="text" name="ChargeTime" class="@(Convert.ToBoolean(ViewBag.Config["ChargeTime"])?"" :"nullable") textbox" placeholder="收款日期" value="@Model.ChargeTime" /></p>
+                    <p>发票金额<br /><input name="InvoicePrice" type="text" class="@(Convert.ToBoolean(ViewBag.Config["InvoicePrice"])?"" :"nullable") textbox" placeholder="发票金额" value="@Model.InvoicePrice" /><img id="__InvoicePriceNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>开票日期<br /><input type="text" name="InvoiceTime" class="@(Convert.ToBoolean(ViewBag.Config["InvoiceTime"])?"" :"nullable") textbox" placeholder="开票日期" value="@Model.InvoiceTime" /><img id="__InvoiceTimeNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>发票号<br /><input name="InvoiceSN" type="text" class="@(Convert.ToBoolean(ViewBag.Config["InvoiceSN"])?"" :"nullable") textbox" placeholder="发票号" value="@Model.InvoiceSN" /><img id="__InvoiceSNNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>备注<br /><textarea name="Hint" class="@(Convert.ToBoolean(ViewBag.Config["Hint"])?"" :"nullable") textbox" placeholder="备注">@Model.Hint</textarea><img id="__HintNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
+                    <p>收款日期<br /><input type="text" name="ChargeTime" class="@(Convert.ToBoolean(ViewBag.Config["ChargeTime"])?"" :"nullable") textbox" placeholder="收款日期" value="@Model.ChargeTime" /><img id="__ChargeTimeNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
                     <p>
                         交易类型
                         <br />
-                        <select class="select" name="PayMethod">
+                        <select class="@(Convert.ToBoolean(ViewBag.Config["PayMethod"]) ? "" : "nullable") select" placeholder="交易类型" name="PayMethod">
                             <option value="Unpaid" @(Model.PayMethod == PayMethod.Unpaid ? " selected" : "")>未确定</option>
                             <option value="Cash" @(Model.PayMethod == PayMethod.Cash ? " selected" : "")>现金</option>
                             <option value="Transfer" @(Model.PayMethod == PayMethod.Transfer ? " selected" : "")>转账</option>
-                        </select>
+                        </select><img id="__PayMethodNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img>
                     </p>
-                    <p>实收金额<br /><input name="ActualPayments" type="text" class="@(Convert.ToBoolean(ViewBag.Config["ActualPayments"])?"" :"nullable") textbox" placeholder="实收金额" value="@Model.ActualPayments" /></p>
+                    <p>实收金额<br /><input name="ActualPayments" type="text" class="@(Convert.ToBoolean(ViewBag.Config["ActualPayments"])?"" :"nullable") textbox" placeholder="实收金额" value="@Model.ActualPayments" /><img id="__ActualPaymentsNull" style="display:none; width: 16px; height: 16px; margin-left: 3px;" src="/Images/null.png"></img></p>
                 </td>
             </tr>
         </table>
@@ -248,14 +249,46 @@
     @if (ViewBag.CurrentUser.Role != UserRole.Finance)
     {
         <div class="es-block-menu">
-            <p style="text-align:center"><a href="javascript:ShowLoading();$('#frmEditProject').submit();">保存全部信息</a></p>
+            <p style="text-align:center"><a href="javascript:saveAllInfo();" style="display:none;" id="__saveAllInfo">保存全部信息</a></p>
         </div>
         <script>
+            function notNull(v) {
+                if (v) {
+                    return v;
+                } else {
+                    return '';
+                }
+            }
+            function saveAllInfo() {
+                if (!checkNullable("frmEditProject")) {
+                    return;
+                }
+                ShowLoading();
+                $('#frmEditProject').submit();
+            }
+
+            function DisableAllInput(isDisabled) {
+                var form = document.getElementById("frmEditProject");
+                $(form).find("input").each(function(){
+                    $(this).attr("disabled", isDisabled)
+                });
+                $(form).find("textarea").each(function(){
+                    $(this).attr("disabled", isDisabled)
+                });
+                $(form).find("select").each(function(){
+                    $(this).attr("disabled", isDisabled)
+                });
+            }
+            function EditProject() {
+                DisableAllInput(false);
+                $("#__saveAllInfo").show();
+            }
+
             $("input[name='Begin']").datetimepicker();
             $("input[name='End']").datetimepicker();
-            $("input[name='InvoiceTime']").datetimepicker();
-            $("input[name='SignTime']").datetimepicker();
-            $("input[name='ChargeTime']").datetimepicker();
+            $("input[name='InvoiceTime']").datetimepicker({ timepicker: false, format: 'Y/m/d' });
+            $("input[name='SignTime']").datetimepicker({ timepicker: false, format: 'Y/m/d' });
+            $("input[name='ChargeTime']").datetimepicker({ timepicker: false, format: 'Y/m/d' });
             $("#EnterpriseName").blur(function () {
                 if ($("#EnterpriseID").val() == null || $("#EnterpriseID").val() == "") {
                     $("#CustomerName").val("");
@@ -271,7 +304,7 @@
                 $("#lstEnterprises").html("<img src='/Images/loading_small.gif' class='es-icon-small'>加载中...<hr />");
                 $.getJSON("/Enterprise/Search", { Text: $("#EnterpriseName").val() }, function (data) {
                     for (var i = 0; i < data.length; i++) {
-                        $("#lstEnterprises").append('<img src="/Enterprise/Icon/' + data[i].ID + '" class="es-icon-small" /><a href="javascript:$(\'#EnterpriseID\').val(' + data[i].ID + ');" data-content="' + data[i].Title + '">' + data[i].Title + '</a><hr />');
+                        $("#lstEnterprises").append('<img src="/Enterprise/Icon/' + data[i].ID + '" class="es-icon-small" /><a href="javascript:;" onclick="$(\'#EnterpriseID\').val(' + data[i].ID + ');" data-content="' + data[i].Title0 + '">' + data[i].Title0 + '</a><hr />');
                     }
                     if (data.length == 0) {
                         $("#lstEnterprises").html("<small>没有找到匹配的企业</small><hr />");
@@ -291,7 +324,8 @@
                     $("#CustomerSelect").html("");
                     for(var i =0 ;i<c.length;i++)
                     {
-                        $("#CustomerSelect").append('<a href="javascript:$(\'#CustomerID\').val('+c[i].ID+');$(\'txtTel\').val(\''+ c[i].Tel +'\');$(\'txtEmail\').val(\''+ c[i].Email +'\');" data-content=\''+c[i].Name+'\'>'+c[i].Name+'</a><hr />');
+                        var row = '<a href="javascript:$(\'#CustomerID\').val('+notNull(c[i].ID)+');$(\'#txtTel\').val(\''+ notNull(c[i].Tel) +'\');$(\'#txtEmail\').val(\''+ notNull(c[i].OfficeEmail) +'\');$(\'#txtPhone\').val(\''+ notNull(c[i].Phone) +'\');$(\'#txtBrand\').val(\''+ notNull(c[i].DepartmentName) +'\');" data-content=\''+notNull(c[i].Name)+'\'>'+notNull(c[i].Name)+'</a><hr />';
+                        $("#CustomerSelect").append(row);
                     }
                     if (c.length == 0) {
                         $("#lstEnterprises").html("<small>没有找到匹配的企业</small><hr />");
@@ -306,23 +340,31 @@
 
             var ProductID = @(Model.ProductID.HasValue?Model.ProductID.ToString() :"null");
 
-            function RefreshProductList()
+            function RefreshProductList(ProductID)
             {
                 var cid = $("#lstCategoryID").val();
                 $.getJSON("/Project/GetProducts/" + cid, {}, function (products) {
                     $("#lstProductID").html("");
                     for (var i = 0; i < products.length; i++) {
-                        $("#lstProductID").append('<option value=\"' + products[i].ID + '\">' + products[i].Title + '</option>');
+                        var selected = "";
+                        if (ProductID == products[i].ID) {
+                            selected = " selected";
+                        }
+                        $("#lstProductID").append('<option value=\"' + products[i].ID + '\"' + selected + '>' + products[i].Title + '</option>');
                     }
                 })
             }
 
-            RefreshProductList();
-            $("#lstProductID").val(ProductID);
+            RefreshProductList(ProductID);
+            // $("#lstProductID").val(ProductID);
 
             $("#lstCategoryID").change(function () {
                 RefreshProductList();
             });
+
+            $("#CustomerSelect").html("");
+
+            DisableAllInput(true);
         </script>
     }
     else

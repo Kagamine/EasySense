@@ -29,6 +29,14 @@ namespace EasySense.Models
 
         public string Hint { get; set; }
 
+        public string DepartmentName { get; set; }
+
+        public string ProductCategory { get; set; }
+
+        public string ProductName { get; set; }
+
+        public string OfficeEmail { get; set; }
+
         public int EnterpriseID { get; set; }
 
         public string Birthday { get; set; }
@@ -38,6 +46,10 @@ namespace EasySense.Models
             return new CustomerViewModel
             {
                 ID = Customer.ID,
+                DepartmentName = Customer.DepartmentName,
+                ProductCategory = Customer.ProductCategory,
+                ProductName = Customer.ProductName,
+                OfficeEmail = Customer.OfficeEmail,
                 Name = Customer.Name,
                 Sex = Customer.Sex,
                 Position = Customer.Position,

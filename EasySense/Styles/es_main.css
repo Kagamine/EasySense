@@ -532,6 +532,22 @@ a:hover {
     overflow: auto;
 }
 
+.area-a {
+  	background:url("/Images/area-a.png") repeat fixed!important;
+}
+
+.area-b {
+  	background:url("/Images/area-b.png") repeat fixed!important;
+}
+
+.area-c {
+  	background:url("/Images/area-c.png") repeat fixed!important;
+}
+
+.area-d {
+  	background:url("/Images/area-d.png") repeat fixed!important;
+}
+
 .es-enterprise-item {
     margin: 0 10px 5px 10px;
     padding: 5px 10px;

@@ -73,20 +73,24 @@
 
 <div>
     <div class="es-enterprise left orange">
-        <div class="es-enterprise-content" id="aenterprise">
-        </div>
+        <div style="float:left;margin-top:100px;width:100%;"><table width="100%" border="0"><tbody><tr><td width="100%" align="center"><font size="30px;">A</font></td></tr></tbody></table></div>
+        <div class="es-enterprise-content" style="float: left; width: 100%; margin-top: -155px; margin-left: -20px;" id="aenterprise">
+</div>
     </div>
     <div class="es-enterprise right pink">
-        <div class="es-enterprise-content" id="benterprise">
+        <div style="float:left;margin-top:100px;width:100%;"><table width="100%" border="0"><tbody><tr><td width="100%" align="center"><font size="30px;">B</font></td></tr></tbody></table></div>
+        <div class="es-enterprise-content" style="float: left; width: 100%; margin-top: -155px; margin-left: -20px;" id="benterprise">
         </div>
     </div>
     <div style="clear:both"></div>
     <div class="es-enterprise left blue">
-        <div class="es-enterprise-content" id="centerprise">
+        <div style="float:left;margin-top:100px;width:100%;"><table width="100%" border="0"><tbody><tr><td width="100%" align="center"><font size="30px;">C</font></td></tr></tbody></table></div>
+        <div class="es-enterprise-content" style="float: left; width: 100%; margin-top: -155px; margin-left: -20px;" id="centerprise">
         </div>
     </div>
     <div class="es-enterprise right green">
-        <div class="es-enterprise-content" id="denterprise">
+        <div style="float:left;margin-top:100px;width:100%;"><table width="100%" border="0"><tbody><tr><td width="100%" align="center"><font size="30px;">D</font></td></tr></tbody></table></div>
+        <div class="es-enterprise-content" style="float: left; width: 100%; margin-top: -155px; margin-left: -20px;" id="denterprise">
         </div>
     </div>
 </div>
@@ -158,7 +162,7 @@
             Hint: $("#txtHint").val(),
             sid: "@ViewBag.SID"
         }, function (id) {
-            var html = '<div class="es-enterprise-item"><a href="/Enterprise/Show/'+id+'" class="title">?-'+$("#txtTitle").val()+'</a> <a href="javascript:Delete('+id+')">删除</a> <a href="/Enterprise/Edit/'+id+'">编辑</a></div>';
+            var html = '<div class="es-enterprise-item"><a href="/Enterprise/Show/'+id+'" class="title">?-'+$("#txtTitle").val()+'</a> <a href="javascript:Delete('+id+')">删除</a></div>';
             var level = $("#lstLevel").val();
             if(level == 0)
                 $("#aenterprise").prepend(html);
@@ -175,7 +179,16 @@
         });
     });
 
+
     function Delete(id) {
-        window.location = '/Enterprise/Delete/' + id + '?sid=@ViewBag.SID';
+        ShowLoading();
+        $.get("/Enterprise/Delete/" + id, { sid: '@ViewBag.SID' }, function (content) {
+            HideLoading();
+            if ("cannot delete" == content) {
+                alert('无法删除该客户。请确认其它地方是否关联了该客户信息。');
+                return;
+            }
+            window.location = '/Enterprise/Index/?sid=@ViewBag.SID';
+        });
     }
 </script>

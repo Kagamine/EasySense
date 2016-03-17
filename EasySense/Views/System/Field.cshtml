@@ -16,11 +16,29 @@
         <tr>
             <td>项目标题<input type="checkbox" name="Title" @(Convert.ToBoolean(ViewBag.Config["Title"]) ? "checked" : "") /></td>
             <td>项目说明<input type="checkbox" name="Description" @(Convert.ToBoolean(ViewBag.Config["Description"]) ? "checked" : "") /></td>
-            <td>开始时间<input type="checkbox" name="Begin" @(Convert.ToBoolean(ViewBag.Config["Begin"]) ? "checked" : "") /></td>
-            <td>结束时间<input type="checkbox" name="End" @(Convert.ToBoolean(ViewBag.Config["End"]) ? "checked" : "") /></td>
+            <td>计划开始时间<input type="checkbox" name="Begin" @(Convert.ToBoolean(ViewBag.Config["Begin"]) ? "checked" : "") /></td>
+            <td>计划完成时间<input type="checkbox" name="End" @(Convert.ToBoolean(ViewBag.Config["End"]) ? "checked" : "") /></td>
         </tr>
         <tr>
+            <td>优先级<input type="checkbox" name="Priority" @(Convert.ToBoolean(ViewBag.Config["Priority"]) ? "checked" : "") /></td>
+            <td>项目状态<input type="checkbox" name="Status" @(Convert.ToBoolean(ViewBag.Config["Status"]) ? "checked" : "") /></td>
+            <td>客户名称<input type="checkbox" name="EnterpriseName" @(Convert.ToBoolean(ViewBag.Config["EnterpriseName"]) ? "checked" : "") /></td>
+            <td>客户联系人<input type="checkbox" name="CustomerName" @(Convert.ToBoolean(ViewBag.Config["CustomerName"]) ? "checked" : "") /></td>
+        </tr>
+        <tr>
+            <td>电话<input type="checkbox" name="Tel" @(Convert.ToBoolean(ViewBag.Config["Tel"]) ? "checked" : "") /></td>
+            <td>手机<input type="checkbox" name="Phone" @(Convert.ToBoolean(ViewBag.Config["Phone"]) ? "checked" : "") /></td>
+            <td>邮箱<input type="checkbox" name="Email" @(Convert.ToBoolean(ViewBag.Config["Email"]) ? "checked" : "") /></td>
+            <td>品牌<input type="checkbox" name="Brand" @(Convert.ToBoolean(ViewBag.Config["Brand"]) ? "checked" : "") /></td>
+        </tr>
+        <tr>
+            <td>订单状态<input type="checkbox" name="Ordering" @(Convert.ToBoolean(ViewBag.Config["Ordering"]) ? "checked" : "") /></td>
+            <td>项目类别<input type="checkbox" name="CategoryID" @(Convert.ToBoolean(ViewBag.Config["CategoryID"]) ? "checked" : "") /></td>
+            <td>产品类型<input type="checkbox" name="ProductID" @(Convert.ToBoolean(ViewBag.Config["ProductID"]) ? "checked" : "") /></td>
             <td>签订日期<input type="checkbox" name="SignTime" @(Convert.ToBoolean(ViewBag.Config["SignTime"]) ? "checked" : "") /></td>
+        </tr>
+        <tr>
+            <td>所在地区<input type="checkbox" name="ZoneID" @(Convert.ToBoolean(ViewBag.Config["ZoneID"]) ? "checked" : "") /></td>
             <td>项目金额<input type="checkbox" name="Charge" @(Convert.ToBoolean(ViewBag.Config["Charge"]) ? "checked" : "") /></td>
             <td>发票金额<input type="checkbox" name="InvoicePrice" @(Convert.ToBoolean(ViewBag.Config["InvoicePrice"]) ? "checked" : "") /></td>
             <td>开票日期<input type="checkbox" name="InvoiceTime" @(Convert.ToBoolean(ViewBag.Config["InvoiceTime"]) ? "checked" : "") /></td>
@@ -29,7 +47,10 @@
             <td>发票号<input type="checkbox" name="InvoiceSN" @(Convert.ToBoolean(ViewBag.Config["InvoiceSN"]) ? "checked" : "") /></td>
             <td>发票备注<input type="checkbox" name="Hint" @(Convert.ToBoolean(ViewBag.Config["Hint"]) ? "checked" : "") /></td>
             <td>收款日期<input type="checkbox" name="ChargeTime" @(Convert.ToBoolean(ViewBag.Config["ChargeTime"]) ? "checked" : "") /></td>
-            <td>实收金额<input type="checkbox" name="ActualPayments" @(Convert.ToBoolean(ViewBag.Config["ActualPayments"]) ? "checked" : "") /></td>
+            <td>交易类型<input type="checkbox" name="PayMethod" @(Convert.ToBoolean(ViewBag.Config["PayMethod"]) ? "checked" : "") /></td>
+        </tr>
+        <tr>
+            <td colspan="4">实收金额<input type="checkbox" name="ActualPayments" @(Convert.ToBoolean(ViewBag.Config["ActualPayments"]) ? "checked" : "") /></td>
         </tr>
     </table>
     <p>
@@ -46,13 +67,26 @@
             Description: $("[name='Description']").is(":checked"),
             Begin: $("[name='Begin']").is(":checked"),
             End: $("[name='End']").is(":checked"),
+            Priority: $("[name='Priority']").is(":checked"),
+            Status: $("[name='Status']").is(":checked"),
+            EnterpriseName: $("[name='EnterpriseName']").is(":checked"),
+            CustomerName: $("[name='CustomerName']").is(":checked"),
+            Tel: $("[name='Tel']").is(":checked"),
+            Phone: $("[name='Phone']").is(":checked"),
+            Email: $("[name='Email']").is(":checked"),
+            Brand: $("[name='Brand']").is(":checked"),
+            Ordering: $("[name='Ordering']").is(":checked"),
+            CategoryID: $("[name='CategoryID']").is(":checked"),
+            ProductID: $("[name='ProductID']").is(":checked"),
             SignTime: $("[name='SignTime']").is(":checked"),
+            ZoneID: $("[name='ZoneID']").is(":checked"),
             Charge: $("[name='Charge']").is(":checked"),
             InvoicePrice: $("[name='InvoicePrice']").is(":checked"),
             InvoiceTime: $("[name='InvoiceTime']").is(":checked"),
             InvoiceSN: $("[name='InvoiceSN']").is(":checked"),
             Hint: $("[name='Hint']").is(":checked"),
             ChargeTime: $("[name='ChargeTime']").is(":checked"),
+            PayMethod: $("[name='PayMethod']").is(":checked"),
             ActualPayments: $("[name='ActualPayments']").is(":checked")
         }, function () {
             window.location.reload();

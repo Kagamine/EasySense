@@ -46,8 +46,15 @@ namespace EasySense.Controllers
         {
             var user = DB.Users.Find(id);
             DB.Users.Remove(user);
-            DB.SaveChanges();
-            return RedirectToAction("Index", "Employee");
+            try
+            {
+                DB.SaveChanges();
+                return RedirectToAction("Index", "Employee");
+            }
+            catch
+            {
+                return Content("cannot delete");
+            }
         }
 
         [HttpGet]

@@ -25,36 +25,48 @@ namespace EasySense.Models
         public Sex Sex { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Position { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Tel { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Fax { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Phone { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Email { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string QQ { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string WeChat { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Hint { get; set; }
+
+        [StringLength(50)]
+        public string DepartmentName { get; set; }
+
+        [StringLength(50)]
+        public string ProductCategory { get; set; }
+
+        [StringLength(50)]
+        public string ProductName { get; set; }
+
+        [StringLength(50)]
+        public string OfficeEmail { get; set; }
 
         [ForeignKey("Enterprise")]
         public int EnterpriseID { get; set; }

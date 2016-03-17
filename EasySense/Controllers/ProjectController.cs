@@ -8,6 +8,9 @@ using System.IO;
 using EasySense.Models;
 using EasySense.Schema;
 using EO.Pdf;
+using EasySense.Utils;
+using EasySense.Helpers;
+using System.Data.Entity.Validation;
 
 namespace EasySense.Controllers
 {
@@ -19,6 +22,8 @@ namespace EasySense.Controllers
         {
             ViewBag.Enterprises = (from e in DB.Enterprises
                                    select e).ToList();
+            ViewBag.Users = (from u in DB.Users
+                                   select u).ToList();
             ViewBag.Config = System.Configuration.ConfigurationManager.AppSettings;
             return View();
         }
@@ -58,6 +63,7 @@ namespace EasySense.Controllers
             project.Description = Model.Description;
             project.InvoicePrice = Model.InvoicePrice;
             project.InvoiceSN = Model.InvoiceSN;
+            project.InvoiceTime = Model.InvoiceTime;
             project.Ordering = Model.Ordering;
             project.Priority = Model.Priority;
             project.Charge = Model.Charge;
@@ -67,6 +73,7 @@ namespace EasySense.Controllers
             project.CustomerID = Model.CustomerID;
             project.Title = Model.Title;
             project.Status = Model.Status;
+            project.Log += string.Format("[{0}] {1}({2}) 修改了项目\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Name, CurrentUser.Username);
             if (Model.Status == ProjectStatus.Completed)
                 project.Percent = 1;
             project.PayMethod = Model.PayMethod;
@@ -91,31 +98,73 @@ namespace EasySense.Controllers
             {
                 if (project.Enterprise == null || project.Enterprise != null && !EnterpriseName.Contains(project.Enterprise.Title) && EnterpriseName != project.Enterprise.Title)
                 {
-                    var tmp = (from e in DB.Enterprises where e.Title == EnterpriseName select e.ID).ToList();
+                    var tmp = (from e in DB.Enterprises where e.Title == EnterpriseName select e).ToList();
                     if (tmp.Count > 0)
-                        project.EnterpriseID = tmp[0];
+                    {
+                        EnterpriseModel enterprise = (EnterpriseModel) tmp[0];
+                        enterprise.Title = EnterpriseName;
+                        enterprise.Key = Helpers.Pinyin.Convert(EnterpriseName);
+                        enterprise.Phone = (Model.Phone == null ? "" : Model.Phone);
+                        enterprise.Brand = Model.Brand;
+                        //
+                        project.EnterpriseID = enterprise.ID;
+                        try
+                        {
+                            DB.SaveChanges();
+                        }
+                        catch (DbEntityValidationException dbEx)
+                        {
+                            throw dbEx;
+                        }
+                    }
                     else
                     {
                         var e = new EnterpriseModel
                         {
                             Level = EnterpriseLevel.D,
                             Key = Helpers.Pinyin.Convert(EnterpriseName),
-                            Title = EnterpriseName,
-                            Phone = "Null",
+                            Title = (EnterpriseName == null ? "" : EnterpriseName),
+                            Phone = (Model.Phone == null ? "" : Model.Phone),
                             Address = "Null",
                             SalesVolume = "Null",
-                            Scale= "Null",
-                            Brand= "Null",
-                            Hint= "Null",
-                            Fax= "Null",
+                            Scale = "Null",
+                            Brand = Model.Brand,
+                            Hint = "Null",
+                            Fax = "Null",
                             Property = "Null",
                             Type = "Null",
                             Website = "Null",
                             Zip = "Null"
                         };
                         DB.Enterprises.Add(e);
-                        DB.SaveChanges();
+                        try
+                        {
+                            DB.SaveChanges();
+                        }
+                        catch (DbEntityValidationException dbEx)
+                        {
+                            throw dbEx;
+                        }
                         project.EnterpriseID = e.ID;
+                    }
+                }
+                else
+                {
+                    if (project.EnterpriseID != null)
+                    {
+                        EnterpriseModel enterprise = DB.Enterprises.Find(project.EnterpriseID);
+                        enterprise.Title = EnterpriseName;
+                        enterprise.Key = Helpers.Pinyin.Convert(EnterpriseName);
+                        enterprise.Phone = (Model.Phone == null ? "" : Model.Phone);
+                        enterprise.Brand = Model.Brand;
+                        try
+                        {
+                            DB.SaveChanges();
+                        }
+                        catch (DbEntityValidationException dbEx)
+                        {
+                            throw dbEx;
+                        }
                     }
                 }
             }
@@ -123,9 +172,25 @@ namespace EasySense.Controllers
             {
                 if (project.CustomerID == null || project.CustomerID !=null && !CustomerName.Contains(project.Customer.Name) && CustomerName!=project.Customer.Name)
                 {
-                    var tmp = (from e in DB.Customers where e.Name == CustomerName select e.ID).ToList();
+                    var tmp = (from e in DB.Customers where e.Name == CustomerName select e).ToList();
                     if (tmp.Count > 0)
-                        project.CustomerID = tmp[0];
+                    {
+                        CustomerModel customer = (CustomerModel) tmp[0];
+                        customer.Name = CustomerName;
+                        customer.Email = (Model.Email == null ? "" : Model.Email);
+                        customer.Phone = (Model.Phone == null ? "" : Model.Phone);
+                        customer.Tel = (Model.Tel == null ? "" : Model.Tel);
+                        //
+                        project.CustomerID = customer.ID;
+                        try
+                        {
+                            DB.SaveChanges();
+                        }
+                        catch (DbEntityValidationException dbEx)
+                        {
+                            throw dbEx;
+                        }
+                    }
                     else
                     {
                         if (project.EnterpriseID.HasValue)
@@ -134,61 +199,94 @@ namespace EasySense.Controllers
                             {
                                 Name = CustomerName,
                                 Sex = Sex.Male,
-                                Email = "Null",
+                                Email = (Model.Email == null ? "" : Model.Email),
                                 Birthday = DateTime.Now,
                                 EnterpriseID = project.EnterpriseID.Value,
                                 Hint = "Null",
                                 Fax = "Null",
-                                Phone = "Null",
+                                Phone = (Model.Phone == null ? "" : Model.Phone),
                                 QQ = "Null",
-                                Tel = "Null",
+                                Tel = (Model.Tel == null ? "" : Model.Tel),
                                 WeChat = "Null",
                                 Position = "Null"
                             };
                             DB.Customers.Add(c);
-                            DB.SaveChanges();
+                            try
+                            {
+                                DB.SaveChanges();
+                            }
+                            catch (DbEntityValidationException dbEx)
+                            {
+                                throw dbEx;
+                            }
                             project.CustomerID = c.ID;
                         }
                     }
                 }
+                else
+                {
+                    if (project.CustomerID != null)
+                    {
+                        CustomerModel customer = DB.Customers.Find(project.CustomerID);
+                        customer.Name = CustomerName;
+                        customer.Email = (Model.Email == null ? "" : Model.Email);
+                        customer.Phone = (Model.Phone == null ? "" : Model.Phone);
+                        customer.Tel = (Model.Tel == null ? "" : Model.Tel);
+                        try
+                        {
+                            DB.SaveChanges();
+                        }
+                        catch (DbEntityValidationException dbEx)
+                        {
+                            throw dbEx;
+                        }
+                    }
+                }
             }
-            project.Log += string.Format("[{0}] {1}({2}) 修改了项目\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Name, CurrentUser.Username);
-            DB.SaveChanges();
+            try
+            {
+                DB.SaveChanges();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                throw dbEx;
+            }
             return RedirectToAction("Show", "Project", new { id = id });
         }
 
         [HttpGet]
         public ActionResult Search(int Page, string Title, ProjectStatus? Status, DateTime? Begin, DateTime? End, string OrderBy, string Order, DateTime? InvoiceBegin, DateTime? InvoiceEnd, int? EnterpriseID)
         {
+            Title = StringUtils.Trim(Title);
             IEnumerable<ProjectModel> projects = (from p in DB.Projects
                                                   where p.Title.Contains(Title)
                                                   select p).ToList();
             if (Status.HasValue)
                 projects = projects.Where(x => x.Status == Status.Value);
             if (Begin.HasValue)
-                projects = projects.Where(x => x.Begin <= Begin.Value);
+                projects = projects.Where(x => x.SignTime >= Begin.Value);
             if (End.HasValue)
-                projects = projects.Where(x => x.End <= End.Value);
+                projects = projects.Where(x => x.SignTime <= End.Value);
             if (InvoiceBegin.HasValue)
                 projects = projects.Where(x => x.InvoiceTime >= InvoiceBegin.Value);
             if (InvoiceEnd.HasValue)
-                projects = projects.Where(x => x.InvoiceTime >= InvoiceEnd.Value);
+                projects = projects.Where(x => x.InvoiceTime <= InvoiceEnd.Value);
             if (EnterpriseID.HasValue)
-                projects.Where(x => x.EnterpriseID == EnterpriseID.Value);
+                projects = projects.Where(x => x.EnterpriseID == EnterpriseID.Value);
             if (CurrentUser.Role == UserRole.Employee)
                 projects = projects.Where(x => x.UserID == CurrentUser.ID);
             else if (CurrentUser.Role == UserRole.Master)
                 projects = projects.Where(x => x.User.DepartmentID != null && x.User.Department.UserID == CurrentUser.ID);
             if (string.IsNullOrEmpty(OrderBy))
             {
-                projects = projects.OrderByDescending(x => x.Status).ThenByDescending(x=>x.Priority);
+                projects = projects.OrderByDescending(x => x.SignTime).ThenByDescending(x => x.Priority);
             }
             else
             {
                 if (Order == "asc")
                 {
-                    if (OrderBy == "ID")
-                        projects = projects.OrderBy(x => x.ID);
+                    if (OrderBy == "RefNum")
+                        projects = projects.OrderBy(x => x.RefNum);
                     else if (OrderBy == "UserID")
                         projects = projects.OrderBy(x => x.UserID);
                     else if (OrderBy == "Title")
@@ -210,12 +308,12 @@ namespace EasySense.Controllers
                     else if (OrderBy == "InvoiceTime")
                         projects = projects.OrderBy(x => x.InvoiceTime);
                     else
-                        projects = projects.OrderBy(x => x.ChargeTime);
+                        projects = projects.OrderBy(x => x.SignTime);
                 }
                 else
                 {
-                    if (OrderBy == "ID")
-                        projects = projects.OrderByDescending(x => x.ID);
+                    if (OrderBy == "RefNum")
+                        projects = projects.OrderByDescending(x => x.RefNum);
                     else if (OrderBy == "UserID")
                         projects = projects.OrderByDescending(x => x.UserID);
                     else if (OrderBy == "Title")
@@ -237,27 +335,97 @@ namespace EasySense.Controllers
                     else if (OrderBy == "InvoiceTime")
                         projects = projects.OrderByDescending(x => x.InvoiceTime);
                     else
-                        projects = projects.OrderByDescending(x => x.ChargeTime);
+                        projects = projects.OrderByDescending(x => x.SignTime);
                 }
             }
-            projects = projects.Skip(20 * Page).Take(20).ToList();
-            var ret = new List<ProjectListViewModel>();
+            int countOfRecords = projects.Count();
+            projects = projects.Skip(20 * (Page - 1)).Take(20).ToList();
+            var data = new List<ProjectListViewModel>();
             foreach (var p in projects)
-                ret.Add((ProjectListViewModel)p);
-            return Json(ret, JsonRequestBehavior.AllowGet);
+            {
+                try
+                {
+                    data.Add((ProjectListViewModel)p);
+                }
+                catch
+                {
+                    //e.Message;
+                }
+            }
+            //
+            Pager pager = Pager.GetInstance(Page, 20, countOfRecords);
+            SearchResult searchResult = new SearchResult(data, pager);
+
+            return Json(searchResult, JsonRequestBehavior.AllowGet);
         }
 
+        [MinRole(UserRole.Finance)]
+        [HttpPost]
+        public ActionResult DeleteSelectedProjects(string ids)
+        {
+            foreach (string id in ids.Split(','))
+            {
+                var project = DB.Projects.Find(int.Parse(id));
+                DB.Projects.Remove(project);
+                DB.SaveChanges();
+            }
+            return Content("OK");
+        }
+        
+        [HttpGet]
+        public ActionResult SearchBills(int ProjectID, int Type, DateTime? Begin, DateTime? End)
+        {
+            var project = DB.Projects.Find(ProjectID);
+            var data = new List<BillListViewModel>();
+            foreach (var b in project.Bills)
+            {
+                if (Type >= 0)
+                {
+                    if (b.Type != Type)
+                    {
+                        continue;
+                    }
+                }
+                if (Begin.HasValue)
+                {
+                    if (b.Time < Begin.Value) {
+                        continue;
+                    }
+                }
+                if (End.HasValue)
+                {
+                    if (b.Time > End.Value.AddDays(1)) {
+                        continue;
+                    }
+                }
+
+                try
+                {
+                    data.Add((BillListViewModel)b);
+                }
+                catch
+                {
+                    //e.Message;
+                }
+            }
+            //
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        
         [HttpPost]
         [ValidateSID]
         public ActionResult Create(ProjectModel Model)
         {
             Model.Log = DateTime.Now + " 被创建.\r\n";
             Model.Hint = "无内容";
-            Model.UserID = CurrentUser.ID;
+            Model.UserID = Model.UserID;
             Model.Ordering = false;
             Model.Percent = 0;
             Model.PayMethod = PayMethod.Unpaid;
             DB.Projects.Add(Model);
+            DB.SaveChanges();
+            Model.RefNum = "39" + Model.ID.ToString().PadLeft(5, '0');
             DB.SaveChanges();
             return Content(Model.ID.ToString());
         }
@@ -280,6 +448,7 @@ namespace EasySense.Controllers
             foreach (var b in project.Bills)
                 bills.Add((BillViewModel)b);
             ViewBag.Bills = bills;
+            ViewBag.ProjectID = id;
             return View(project);
         }
 
@@ -297,13 +466,77 @@ namespace EasySense.Controllers
         {
             Model.ProjectID = id;
             Model.ID = Guid.NewGuid();
-            Model.Time = DateTime.Now;
             DB.Bills.Add(Model);
             DB.SaveChanges();
             var Project = DB.Projects.Find(id);
             Project.Log += string.Format("[{0}] {1}添加了支出(-{2})\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Username, Model.Plan);
             DB.SaveChanges();
             return Content(Model.ID.ToString());
+        }
+
+        [MinRole(UserRole.Finance)]
+        [ValidateSID]
+        [HttpPost]
+        public ActionResult EditBillType(Guid id, BillModel Model)
+        {
+            var bill = DB.Bills.Find(id);
+            bill.Type = Model.Type;
+            bill.Project.Log += string.Format("[{0}] {1}修改了支出\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Username);
+            DB.SaveChanges();
+
+            return RedirectToAction("Bill", "Project", new { id = bill.ProjectID });
+        }
+
+        [MinRole(UserRole.Finance)]
+        [ValidateSID]
+        [HttpPost]
+        public ActionResult EditBillHint(Guid id, BillModel Model)
+        {
+            var bill = DB.Bills.Find(id);
+            bill.Hint = Model.Hint;
+            bill.Project.Log += string.Format("[{0}] {1}修改了支出\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Username);
+            DB.SaveChanges();
+
+            return RedirectToAction("Bill", "Project", new { id = bill.ProjectID });
+        }
+
+        [MinRole(UserRole.Finance)]
+        [ValidateSID]
+        [HttpPost]
+        public ActionResult EditBillPlan(Guid id, BillModel Model)
+        {
+            var bill = DB.Bills.Find(id);
+            bill.Plan = Model.Plan;
+            bill.Project.Log += string.Format("[{0}] {1}修改了支出\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Username);
+            DB.SaveChanges();
+
+            return RedirectToAction("Bill", "Project", new { id = bill.ProjectID });
+        }
+
+        [MinRole(UserRole.Finance)]
+        [ValidateSID]
+        [HttpPost]
+        public ActionResult EditBillTime(Guid id, BillModel Model)
+        {
+            var bill = DB.Bills.Find(id);
+            bill.Time = Model.Time;
+            bill.Project.Log += string.Format("[{0}] {1}修改了支出\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Username);
+            DB.SaveChanges();
+
+            return RedirectToAction("Bill", "Project", new { id = bill.ProjectID });
+        }
+
+        [MinRole(UserRole.Finance)]
+        [ValidateSID]
+        [HttpPost]
+        public ActionResult EditBillActual(Guid id, BillModel Model)
+        {
+            var bill = DB.Bills.Find(id);
+            bill.Actual = Model.Actual;
+            bill.Project.Log += string.Format("[{0}] {1}修改了支出\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Username);
+            DB.SaveChanges();
+
+            return RedirectToAction("Bill", "Project", new { id = bill.ProjectID });
         }
 
         [MinRole(UserRole.Finance)]
@@ -316,10 +549,24 @@ namespace EasySense.Controllers
             bill.Type = Model.Type;
             bill.Plan = Model.Plan;
             bill.Actual = Model.Actual;
+            bill.Time = Model.Time;
             bill.Project.Log += string.Format("[{0}] {1}修改了支出\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Username);
             DB.SaveChanges();
 
             return RedirectToAction("Bill", "Project", new { id = bill.ProjectID });
+        }
+        
+        [MinRole(UserRole.Finance)]
+        [HttpPost]
+        public ActionResult DeleteSelectedBills(string ids)
+        {
+            foreach (string id in ids.Split(','))
+            {
+                var bill = DB.Bills.Find(new Guid(id));
+                DB.Bills.Remove(bill);
+                DB.SaveChanges();
+            }
+            return Content("OK");
         }
 
         [MinRole(UserRole.Finance)]
@@ -399,7 +646,15 @@ namespace EasySense.Controllers
         {
             var project = DB.Projects.Find(id);
             project.Percent = percent / 100;
-            DB.SaveChanges();
+            project.Log = "";
+            try
+            {
+                DB.SaveChanges();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                throw dbEx;
+            }
             return RedirectToAction("Show", "Project", new { id = id });
         }
 

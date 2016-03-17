@@ -50,6 +50,12 @@ namespace EasySense.Helpers
             }
             return sb.ToString();
         }
+        public static DateTime ToDateTime(string date, string format)
+        {
+            DateTime dt = DateTime.ParseExact(date, format, System.Globalization.CultureInfo.CurrentCulture);
+            return dt;
+        }
+
 
         public static DateTime ToDateTime(string TimeStamp)
         {

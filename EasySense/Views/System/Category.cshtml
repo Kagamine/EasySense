@@ -108,7 +108,7 @@
                     <tbody>
                         @foreach (var c in Model)
                         {
-                            <tr>
+                            <tr id="category_@c.ID">
                                 <td>@c.ID</td>
                                 <td><a href="javascript:LoadProducts(@c.ID)">@c.Title</a></td>
                                 <td>@c.TaxRatio</td>
@@ -117,7 +117,7 @@
                                 <td>@c.Products.Count</td>
                                 <td>
                                     <a href="javascript:EditCategory(@c.ID)">编辑</a>
-                                    @Url.LinkWithSID("删除", "DeleteCategory","System", new { id = c.ID })
+                                    <a href="javascript:DeleteCategory(@c.ID)">删除</a>
                                 </td>
                             </tr>
                         }
@@ -135,8 +135,16 @@
                             <th>操作</th>
                         </tr>
                     </thead>
-                    <tbody id="lstProducts">
-
+                    <tbody id="lstProducts">                        
+                        @foreach (var p in ViewBag.products)
+                        {
+                            <tr id="product_@p.ID">
+                                <td>@p.ID</td>
+                                <td>@p.Category.Title</td>
+                                <td>@p.Title</td>
+                                <td><a href="javascript:DeleteProduct(@p.ID)">删除</a></td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </td>
@@ -158,14 +166,31 @@
         });
     }
 
-    function DeleteProduct(id)
+    function DeleteCategory(id)
     {
         ShowLoading();
-        $.post("/System/DeleteProduct/" + id, { sid:'@ViewBag.SID'},function(){
-            $("#product_"+id).slideUp(200);
+        $.post("/System/DeleteCategory/" + id, { sid: '@ViewBag.SID' }, function (c) {
+            HideLoading();
+            if ("cannot delete" == c) {
+                alert("无法删除该产品。请确认其它地方是否关联了该产品信息。");
+                return;
+            }
+            $("#category_" + id).slideUp(200);
         });
     }
 
+    function DeleteProduct(id) {
+        ShowLoading();
+        $.post("/System/DeleteProduct/" + id, { sid: '@ViewBag.SID' }, function (c) {
+            HideLoading();
+            if ("cannot delete" == c) {
+                alert("无法删除该项目分类。请确认其它地方是否关联了该项目分类信息。");
+                return;
+            }
+            $("#product_" + id).slideUp(200);
+        });
+    }
+    
     function EditCategory(id)
     {
         ShowLoading();

@@ -21,13 +21,25 @@ namespace EasySense.Models
         public string Hint { get; set; }
 
         public DateTime? Begin { get; set; }
-        
+
         public DateTime? End { get; set; }
+
+        public Decimal? ChargeBegin { get; set; }
+
+        public Decimal? ChargeEnd { get; set; }
+
+        public string ProductIDs { get; set; }
+
+        public string CustomerIDs { get; set; }
+
+        public string Brands { get; set; }
+
+        public string EnterpriseIDs { get; set; }
         
-        [ForeignKey("User")]
+        //[ForeignKey("User")]
         public int? UserID { get; set; }
 
-        public virtual UserModel User { get; set; }
+        //public virtual UserModel User { get; set; }
 
         public ProjectStatus? Status { get; set; }
 
@@ -59,5 +71,8 @@ namespace EasySense.Models
         public string EmployeeGraphics { get; set; }
 
         public string EnterpriseGraphics { get; set; }
+
+        public string ExportedFields { get; set; }
+
     }
 }

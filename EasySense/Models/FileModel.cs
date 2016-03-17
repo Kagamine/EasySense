@@ -22,7 +22,7 @@ namespace EasySense.Models
 
         public byte[] FileBlob { get; set; }
 
-        [StringLength(64)]
+        [StringLength(500)]
         [Required]
         public string ContentType { get; set; }
 
@@ -64,5 +64,63 @@ namespace EasySense.Models
                 }
             }
         }
+        
+        [NotMapped]
+        public bool CanPreview
+        {
+            get
+            {
+                string extension = Extension;
+                if (extension != null)
+                {
+                    extension = extension.ToLower();
+                    if (extension.Equals(".doc") || extension.Equals(".docx") 
+                        || extension.Equals(".ppt") || extension.Equals(".pptx")
+                        || extension.Equals(".xls") || extension.Equals(".xlsx")
+                        /*|| extension.Equals(".txt") || extension.Equals(".pdf")*/)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        [NotMapped]
+        public bool IsTxt
+        {
+            get
+            {
+                string extension = Extension;
+                if (extension != null)
+                {
+                    extension = extension.ToLower();
+                    if (extension.Equals(".txt"))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        [NotMapped]
+        public string ExtensionForPreview
+        {
+            get
+            {
+                string extension = Extension;
+                if (extension != null)
+                {
+                    extension = extension.ToLower();
+                    if (extension.Equals(".txt"))
+                    {
+                        return ".doc";
+                    }
+                }
+                return extension;
+            }
+        }
+        
     }
 }

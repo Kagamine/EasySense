@@ -70,16 +70,29 @@ namespace EasySense.Controllers
             Model.Year = DateTime.Now.Year;
             if (Model.Type == ReportType.Day)
             {
-                Model.Month = DateTime.Now.Month;
-                Model.Day = DateTime.Now.Day;
+                DateTime date = Helpers.String.ToDateTime(Model.Date0, "yyyy/MM/dd");
+                Model.Year = date.Year;
+                Model.Month = date.Month;
+                Model.Day = date.Day;
             }
             else if (Model.Type == ReportType.Month)
             {
-                Model.Month = DateTime.Now.Month;
+                Model.Month = Model.Month0;
             }
             else
             {
-                Model.Week = Helpers.Time.WeekOfYear(DateTime.Now);
+                if (Model.Week0 == 1)
+                {
+                    Model.Week = Helpers.Time.WeekOfYear(DateTime.Now);
+                }
+                else if (Model.Week0 == 2)
+                {
+                    Model.Week = Helpers.Time.WeekOfYear(DateTime.Now) + 1;
+                }
+                else if (Model.Week0 == 3)
+                {
+                    Model.Week = Helpers.Time.WeekOfYear(DateTime.Now) + 2;
+                }
             }
             Model.Time = DateTime.Now;
             Model.UserID = CurrentUser.ID;

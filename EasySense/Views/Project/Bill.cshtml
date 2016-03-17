@@ -16,6 +16,19 @@
 </style>
 
 <div class="es-block-menu">
+    <div id="BillsFilter" class="es-menu-extend" offsetright="376">
+        <p>
+            费用类型：<select id="selectType" class="select">
+                     <option value="-1">(全部类型)</option>
+                @for (int i = 0; i < BillModel.BillTypes.Count(); i++)
+                {
+                <option value="@i">@(BillModel.BillTypes[i])</option>
+                }
+            </select>
+        </p>
+        <p>支出日期：从 <input id="txtBegin" type="text" class="textbox" value="" /> 到 <input id="txtEnd" type="text" class="textbox" value="" /></p>
+        <p><a href="javascript:$('#lstBills').html('');LoadBills(@ViewBag.ProjectID);CloseToggle();">检索</a>&nbsp;<a href="javascript:CloseToggle();">关闭</a></p>
+    </div>
     <div class="es-dialog" style="left: 500px; width:300px">
         <h2>编辑支出</h2>
         <p>
@@ -43,11 +56,17 @@
             <br />
             ￥<input type="text" class="textbox" id="Actual" />
         </p>
-        <p><a href="javascript:;" id="btnSaveBill">保存修改</a></p>
+        <p>
+            支出日期
+            <br />
+            ￥<input type="text" class="textbox" id="Time" />
+        </p>
+        <p><a href="javascript:;" id="btnSaveBill">保存修改</a>&nbsp;<a href='javascript:;' onclick='$(".es-dialog").removeClass("show");'>关闭</a></p>
     </div>
     <a href="/Project/Show/@Model.ID">项目信息</a>
     <a href="/Project/Bill/@Model.ID" class="es-block-menu-active">支出</a>
     <a href="#" data-toggle="ExportMenu">导出支出</a>
+    <a href="javascript:DeleteSelectedBills();">删除支出</a>
     <div class="es-menu-extend" id="ExportMenu">
         <table>
             <tr>
@@ -63,12 +82,15 @@
         </table>
     </div>
     <a href="/Project/Log/@Model.ID">操作记录</a>
-    @Url.LinkWithSID("删除项目", "Delete", "Project", new { id = Model.ID });
+    @Url.LinkWithSID("删除项目", "Delete", "Project", new { id = Model.ID })
+    <a href="#" data-toggle="BillsFilter" style="float:right">过滤器</a>
 </div>
 <div class="es-table-outer">
     <table class="table">
         <thead>
             <tr>
+                <th style="text-align:center;"><input type="checkbox" id="__checkboxAll" onchange="check_all()" /></th>
+                <th style="text-align:center;">ID</th>
                 <th>项目</th>
                 <th>项目金额</th>
                 <th>费用类型</th>
@@ -83,13 +105,15 @@
             @foreach (BillViewModel b in ViewBag.Bills)
             {
                 <tr id="@b.ID">
-                    <td><a href="/Project/Show/@Model.ID">P@(Model.ID) @Model.Title</a></td>
+                    <td style="text-align:center;"><input type="checkbox" name="__checkItem" idofbill="@b.ID" onchange="check_item()" /></td>
+                    <td style="text-align:center;">@Model.RefNum</td>
+                    <td><a href="/Project/Show/@Model.ID">@Model.Title</a></td>
                     <td>￥@(Model.Charge.HasValue ? Model.Charge.Value.ToString("0.00") : "N/A")</td>
-                    <td>@b.Type</td>
-                    <td>@b.Hint</td>
-                    <td>￥@b.Plan.ToString("0.00")</td>
-                    <td>￥@b.Actual.ToString("0.00")</td>
-                    <td>@b.Time</td>
+                    <td ondblclick="editType(this, '@b.ID')">@b.Type</td>
+                    <td ondblclick="editHint(this, '@b.ID')">@b.Hint</td>
+                    <td ondblclick="editPlan(this, '@b.ID')">￥@b.Plan.ToString("0.00")</td>
+                    <td ondblclick="editActual(this, '@b.ID')">￥@b.Actual.ToString("0.00")</td>
+                    <td ondblclick="editTime(this, '@b.ID')">@b.Time</td>
                     <td>
                         <a href="javascript:EditBill('@b.ID')">编辑</a>
                         <a href="javascript:DeleteBill('@b.ID')">删除</a>
@@ -99,7 +123,9 @@
         </tbody>
         <tbody>
             <tr>
-                <td><a href="/Project/Show/@Model.ID">P@(Model.ID) @Model.Title</a></td>
+                <td style="text-align:center;">&nbsp;</td>
+                <td style="text-align:center;">&nbsp;</td>
+                <td><a href="/Project/Show/@Model.ID">@Model.Title</a></td>
                 <td>￥@(Model.Charge.HasValue ? Model.Charge.Value.ToString("0.00") : "N/A")</td>
                 <td>
                     <select id="lstTypes" class="select">
@@ -112,7 +138,7 @@
                 <td><input type="text" class="textbox" id="txtHint" placeholder="说明" /></td>
                 <td>￥<input type="text" class="textbox" id="txtPlan" placeholder="计划金额" /></td>
                 <td>￥<input type="text" class="textbox" id="txtActual" placeholder="实际金额" /></td>
-                <td>@DateTime.Now.ToString("yyyy-MM-dd")</td>
+                <td><input type="text" class="textbox" id="txtTime" placeholder="支出日期" /></td>
                 <td>
                     <a href="javascript:;" id="btnAddBill">添加支出</a>
                 </td>
@@ -122,17 +148,26 @@
 </div>
 
 <script>
+    $("#txtBegin").datetimepicker({ timepicker: false, format: 'Y/m/d' });
+    $("#txtEnd").datetimepicker({ timepicker: false, format: 'Y/m/d' });
+    $("#txtTime").datetimepicker({ timepicker: false, format: 'Y-m-d' });
+    $("#Time").datetimepicker({ timepicker: false, format: 'Y-m-d' });
+
     $("#btnAddBill").click(function () {
         ShowLoading();
-        var type = $("table option[value='"+$("#lstTypes").val()+"']").html();
+        var type = $("table option[value='" + $("#lstTypes").val() + "']").html();
         $.post("/Project/AddBill/@Model.ID", {
             Type: $("#lstTypes").val(),
             Hint: $("#txtHint").val(),
             Plan: $("#txtPlan").val(),
             Actual: $("#txtActual").val(),
+            Time: $("#txtTime").val(),
             sid: "@ViewBag.SID"
         }, function (id) {
-            $("#lstBills").append("<tr id='" + id + "'><td>P@(Model.ID)  @Model.Title</td><td>￥@(Model.Charge.HasValue ? Model.Charge.Value.ToString("0.00") : "N/A")</td><td>" + type + "</td><td>" + $("#txtHint").val() + "</td><td>￥" + $("#txtPlan").val() + "</td><td>￥" + $("#txtActual").val() + "</td><td>@DateTime.Now.ToString("yyyy-MM-dd")</td><td><a href='javascript:EditBill(\'" + id + "\')'>编辑</a> <a href='javascript:DeleteBill(\"" + id + "\")'>删除</a></td></tr>");
+            var checkboxTd = '<td style="text-align:center;"><input type="checkbox" name="__checkItem" idOfBill="' + id + '" onchange="check_item()"/></td>';
+            var idTd = '<td style="text-align:center;">@(Model.RefNum)</td>';
+            $("#lstBills").append("<tr id='" + id + "'>" + checkboxTd + idTd + "<td>@Model.Title</td><td>￥@(Model.Charge.HasValue ? Model.Charge.Value.ToString("0.00") : "N/A")</td><td ondblclick='editType(this, \"" + id + "\")'>" + type + "</td><td ondblclick='editHint(this, \"" + id + "\")'>" + $("#txtHint").val() + "</td><td ondblclick='editPlan(this, \"" + id + "\")'>￥" + $("#txtPlan").val() + "</td><td ondblclick='editActual(this, \"" + id + "\")'>￥" + $("#txtActual").val() + "</td><td ondblclick='editTime(this, \"" + id + "\")'>" + $("#txtTime").val() + "</td><td><a href='javascript:EditBill(\"" + id + "\")'>编辑</a> <a href='javascript:DeleteBill(\"" + id + "\")'>删除</a></td></tr>");
+            check_item();
             HideLoading();
         });
     });
@@ -141,15 +176,16 @@
     function DeleteBill(id) {
         ShowLoading();
         $.post("/Project/DeleteBill/" + id, { sid: "@ViewBag.SID" }, function () {
-            $("#" + id).slideUp(200);
+            var tr = document.getElementById(id);
+            tr.parentNode.removeChild(tr);
+            check_item();
             HideLoading();
         });
     }
 
     var CurrentID;
 
-    function EditBill(id)
-    {
+    function EditBill(id) {
         ShowLoading();
         $.getJSON("/Project/GetBill/" + id, {}, function (data) {
             CurrentID = data.ID;
@@ -157,6 +193,7 @@
             $("#Hint").val(data.Hint);
             $("#Plan").val(data.Plan);
             $("#Actual").val(data.Actual);
+            $("#Time").val(data.Time);
             $(".es-dialog").addClass("show");
             HideLoading();
         });
@@ -169,14 +206,199 @@
             Hint: $("#Hint").val(),
             Plan: $("#Plan").val(),
             Actual: $("#Actual").val(),
+            Time: $("#Time").val(),
             sid: '@ViewBag.SID'
         }, function () {
-            $($("#" + CurrentID).children("td")[2]).html($(".es-dialog option[value='" + $("#Type").val() + "']").html());
-            $($("#" + CurrentID).children("td")[3]).html($("#Hint").val());
-            $($("#" + CurrentID).children("td")[4]).html($("#Plan").val());
-            $($("#" + CurrentID).children("td")[5]).html($("#Actual").val());
+            $($("#" + CurrentID).children("td")[4]).html($(".es-dialog option[value='" + $("#Type").val() + "']").html());
+            $($("#" + CurrentID).children("td")[5]).html($("#Hint").val());
+            $($("#" + CurrentID).children("td")[6]).html($("#Plan").val());
+            $($("#" + CurrentID).children("td")[7]).html($("#Actual").val());
+            $($("#" + CurrentID).children("td")[8]).html($("#Time").val());
             $(".es-dialog").removeClass("show");
             HideLoading();
         });
     });
+
+    function DeleteSelectedBills() {
+        var nameOfCheckItem = "__checkItem";
+        var inputs = document.getElementsByTagName('input');
+        var a = new Array();
+        var ids = new Array();
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (input.getAttribute('name') == nameOfCheckItem) {
+                a.push(input);
+                if (input.checked) {
+                    ids.push(input.getAttribute('idOfBill'));
+                }
+            }
+        }
+        //当一条记录也没有时
+        if (a.length == 0) {
+            alert('没有可供删除的记录');
+            return;
+        }
+        if (ids.length == 0) {
+            alert('请选择要删除的记录');
+            return;
+        }
+
+        ShowLoading();
+        $.post("/Project/DeleteSelectedBills/", { ids: ids.join(',') }, function () {
+            for (var i = 0; i < ids.length; i++) {
+                var id = ids[i];
+                var tr = document.getElementById(id);
+                tr.parentNode.removeChild(tr);
+                check_item();
+            }
+            HideLoading();
+        });
+    }
+    //
+    function sumitType(id) {
+        var select = document.getElementById('__editType');
+        var index = select.selectedIndex;
+        if (select.options[index].text == select.getAttribute('oldValue')) {
+            select.parentNode.innerHTML = select.options[index].text;
+            return;
+        }
+        //
+        ShowLoading();
+        var id = select.getAttribute('idOfBill');
+        $.post("/Project/EditBillType/" + id, {
+            Type: select.options[index].value,
+            sid: '@ViewBag.SID'
+        }, function () {
+            select.parentNode.innerHTML = select.options[index].text;
+            HideLoading();
+        });
+    }
+    function editType(td, id) {
+        var value = td.innerHTML;
+        td.innerHTML = '<select class="select" id="__editType" idOfBill="' + id + '" onblur="sumitType()"></select>';
+
+        var select = document.getElementById("__editType");
+        var lstTypesSelect = document.getElementById("lstTypes");
+        for (var i = 0; i < lstTypesSelect.options.length; i++) {
+            var text = lstTypesSelect.options[i].text;
+            var option = new Option(text, lstTypesSelect.options[i].value);
+            if (text == value) {
+                option.selected = true;
+            }
+            select.add(option)
+        }
+        select.setAttribute('oldValue', value);
+        select.focus();
+    }
+    //
+    function sumitHint(id) {
+        var input = document.getElementById('__editHint');
+        if (input.value == input.getAttribute('oldValue')) {
+            input.parentNode.innerHTML = input.value;
+            return;
+        }
+        //
+        ShowLoading();
+        var id = input.getAttribute('idOfBill');
+        $.post("/Project/EditBillHint/" + id, {
+            Hint: input.value,
+            sid: '@ViewBag.SID'
+        }, function () {
+            input.parentNode.innerHTML = input.value;
+            HideLoading();
+        });
+    }
+    function editHint(td, id) {
+        var value = td.innerHTML;
+        td.innerHTML = '<input type="text" class="textbox" id="__editHint" idOfBill="' + id + '" onblur="sumitHint()"/>';
+        var input = document.getElementById("__editHint");
+        input.value = value;
+        input.setAttribute('oldValue', value);
+        input.focus();
+    }
+    //
+    function sumitPlan(id) {
+        var input = document.getElementById('__editPlan');
+        if (input.value == input.getAttribute('oldValue')) {
+            input.parentNode.innerHTML = (input.value != '') ? ('￥' + input.value) : '';
+            return;
+        }
+        //
+        ShowLoading();
+        var id = input.getAttribute('idOfBill');
+        $.post("/Project/EditBillPlan/" + id, {
+            Plan: input.value,
+            sid: '@ViewBag.SID'
+        }, function () {
+            input.parentNode.innerHTML = (input.value != '') ? ('￥' + input.value) : '';
+            HideLoading();
+        });
+    }
+    function editPlan(td, id) {
+        var value = td.innerHTML;
+        if (value != null) {
+            value = value.toString().replace('￥', '');
+        }
+        td.innerHTML = '<input type="text" class="textbox" id="__editPlan" idOfBill="' + id + '" onblur="sumitPlan()"/>';
+        var input = document.getElementById("__editPlan");
+        input.value = value;
+        input.setAttribute('oldValue', value);
+        input.focus();
+    }
+    //
+    function sumitActual(id) {
+        var input = document.getElementById('__editActual');
+        if (input.value == input.getAttribute('oldValue')) {
+            input.parentNode.innerHTML = (input.value != '') ? ('￥' + input.value) : '';
+            return;
+        }
+        //
+        ShowLoading();
+        var id = input.getAttribute('idOfBill');
+        $.post("/Project/EditBillActual/" + id, {
+            Actual: input.value,
+            sid: '@ViewBag.SID'
+        }, function () {
+            input.parentNode.innerHTML = (input.value != '') ? ('￥' + input.value) : '';
+            HideLoading();
+        });
+    }
+    function editActual(td, id) {
+        var value = td.innerHTML;
+        if (value != null) {
+            value = value.toString().replace('￥', '');
+        }
+        td.innerHTML = '<input type="text" class="textbox" id="__editActual" idOfBill="' + id + '" onblur="sumitActual()"/>';
+        var input = document.getElementById("__editActual");
+        input.value = value;
+        input.setAttribute('oldValue', value);
+        input.focus();
+    }
+    //
+    function sumitTime(id) {
+        var input = document.getElementById('__editTime');
+        if (input.value == input.getAttribute('oldValue')) {
+            input.parentNode.innerHTML = input.value;
+            return;
+        }
+        //
+        ShowLoading();
+        var id = input.getAttribute('idOfBill');
+        $.post("/Project/EditBillTime/" + id, {
+            Time: input.value,
+            sid: '@ViewBag.SID'
+        }, function () {
+            input.parentNode.innerHTML = input.value;
+            HideLoading();
+        });
+    }
+    function editTime(td, id) {
+        var value = td.innerHTML;
+        td.innerHTML = '<input type="text" class="textbox" id="__editTime" idOfBill="' + id + '" onblur="sumitTime()"/>';
+        $("#__editTime").datetimepicker({ timepicker: false, format: 'Y-m-d' });
+        var input = document.getElementById("__editTime");
+        input.value = value;
+        input.setAttribute('oldValue', value);
+        input.focus();
+    }
 </script>

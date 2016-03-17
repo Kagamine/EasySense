@@ -56,6 +56,92 @@ namespace EasySense.Controllers
             return Content(Model.ID.ToString());
         }
 
+        [HttpGet]
+        public ActionResult SearchCustomer(string OrderBy, string Order, int EnterpriseID)
+        {
+            IEnumerable<CustomerModel> customers = (from c in DB.Customers
+                                                  where c.EnterpriseID == EnterpriseID
+                                                  select c).ToList();
+            if (Order == "asc")
+            {
+                if (OrderBy == "DepartmentName")
+                    customers = customers.OrderBy(x => x.DepartmentName);
+                else if (OrderBy == "ProductCategory")
+                    customers = customers.OrderBy(x => x.ProductCategory);
+                else if (OrderBy == "ProductName")
+                    customers = customers.OrderBy(x => x.ProductName);
+                else if (OrderBy == "OfficeEmail")
+                    customers = customers.OrderBy(x => x.OfficeEmail);
+                else if (OrderBy == "Name")
+                    customers = customers.OrderBy(x => x.Name);
+                else if (OrderBy == "Sex")
+                    customers = customers.OrderBy(x => x.Sex);
+                else if (OrderBy == "Position")
+                    customers = customers.OrderBy(x => x.Position);
+                else if (OrderBy == "Tel")
+                    customers = customers.OrderBy(x => x.Tel);
+                else if (OrderBy == "Phone")
+                    customers = customers.OrderBy(x => x.Phone);
+                else if (OrderBy == "Fax")
+                    customers = customers.OrderBy(x => x.Fax);
+                else if (OrderBy == "WeChat")
+                    customers = customers.OrderBy(x => x.WeChat);
+                else if (OrderBy == "QQ")
+                    customers = customers.OrderBy(x => x.QQ);
+                else if (OrderBy == "Email")
+                    customers = customers.OrderBy(x => x.Email);
+                else if (OrderBy == "Birthday")
+                    customers = customers.OrderBy(x => x.Birthday);
+                else if (OrderBy == "Hint")
+                    customers = customers.OrderBy(x => x.Hint);
+                else
+                    customers = customers.OrderBy(x => x.ID);
+            }
+            else
+            {
+                if (OrderBy == "DepartmentName")
+                    customers = customers.OrderByDescending(x => x.DepartmentName);
+                else if (OrderBy == "ProductCategory")
+                    customers = customers.OrderByDescending(x => x.ProductCategory);
+                else if (OrderBy == "ProductName")
+                    customers = customers.OrderByDescending(x => x.ProductName);
+                else if (OrderBy == "OfficeEmail")
+                    customers = customers.OrderByDescending(x => x.OfficeEmail);
+                else if (OrderBy == "Name")
+                    customers = customers.OrderByDescending(x => x.Name);
+                else if (OrderBy == "Sex")
+                    customers = customers.OrderByDescending(x => x.Sex);
+                else if (OrderBy == "Position")
+                    customers = customers.OrderByDescending(x => x.Position);
+                else if (OrderBy == "Tel")
+                    customers = customers.OrderByDescending(x => x.Tel);
+                else if (OrderBy == "Phone")
+                    customers = customers.OrderByDescending(x => x.Phone);
+                else if (OrderBy == "Fax")
+                    customers = customers.OrderByDescending(x => x.Fax);
+                else if (OrderBy == "WeChat")
+                    customers = customers.OrderByDescending(x => x.WeChat);
+                else if (OrderBy == "QQ")
+                    customers = customers.OrderByDescending(x => x.QQ);
+                else if (OrderBy == "Email")
+                    customers = customers.OrderByDescending(x => x.Email);
+                else if (OrderBy == "Birthday")
+                    customers = customers.OrderByDescending(x => x.Birthday);
+                else if (OrderBy == "Hint")
+                    customers = customers.OrderByDescending(x => x.Hint);
+                else
+                    customers = customers.OrderByDescending(x => x.ID);
+            }
+
+            int countOfRecords = customers.Count();
+            customers = customers.ToList();
+            var data = new List<CustomerListViewModel>();
+            foreach (var c in customers)
+                data.Add((CustomerListViewModel)c);
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult Edit(
             int id, 
             string Title, 
@@ -116,9 +202,16 @@ namespace EasySense.Controllers
         {
             var customer = DB.Customers.Find(id);
             var eid = customer.EnterpriseID;
-            DB.Customers.Remove(customer);
-            DB.SaveChanges();
-            return RedirectToAction("Show", "Enterprise", new { id = eid });
+            try
+            {
+                DB.Customers.Remove(customer);
+                DB.SaveChanges();
+                return Content(eid.ToString());
+            }
+            catch
+            {
+                return Content("cannot delete");
+            }
         }
 
         [ValidateSID]
@@ -127,6 +220,10 @@ namespace EasySense.Controllers
         {
             var customer = DB.Customers.Find(id);
             var eid = customer.EnterpriseID;
+            customer.DepartmentName = Model.DepartmentName;
+            customer.ProductCategory = Model.ProductCategory;
+            customer.ProductName = Model.ProductName;
+            customer.OfficeEmail = Model.OfficeEmail;
             customer.Birthday = Model.Birthday;
             customer.Email = Model.Email;
             customer.Fax = Model.Fax;
@@ -155,23 +252,35 @@ namespace EasySense.Controllers
         {
             var enterprise = DB.Enterprises.Find(id);
             DB.Enterprises.Remove(enterprise);
-            DB.SaveChanges();
-            return RedirectToAction("Index", "Enterprise");
+
+            try
+            {
+                DB.SaveChanges();
+                return RedirectToAction("Index", "Enterprise");
+            }
+            catch
+            {
+                return Content("cannot delete");
+            }
         }
 
         private string BuildHtmlTable(int id)
         {
             var enterprise = DB.Enterprises.Find(id);
-            var html = "<table style='border: 1px solid #000;border-collapse:collapse'><tr><td colspan=\"10\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>" + enterprise.Title + " 联系人</td></tr><tr><td style='border-bottom:1px solid #000'>姓名</td><td style='border-bottom:1px solid #000'>性别</td><td style='border-bottom:1px solid #000'>固定电话</td><td style='border-bottom:1px solid #000'>传真</td><td style='border-bottom:1px solid #000'>手机</td><td style='border-bottom:1px solid #000'>电子邮箱</td><td style='border-bottom:1px solid #000'>QQ</td><td style='border-bottom:1px solid #000'>微信</td><td style='border-bottom:1px solid #000'>生日</td><td style='border-bottom:1px solid #000'>备注</td></tr>";
+            var html = "<table style='border: 1px solid #000;border-collapse:collapse'><tr><td colspan=\"14\" style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>" + enterprise.Title + " 联系人</td></tr><tr><td style='border-bottom:1px solid #000'>部门</td><td style='border-bottom:1px solid #000'>产品类别</td><td style='border-bottom:1px solid #000'>产品名称</td><td style='border-bottom:1px solid #000'>联系人</td><td style='border-bottom:1px solid #000'>性别</td><td style='border-bottom:1px solid #000'>电话</td><td style='border-bottom:1px solid #000'>传真</td><td style='border-bottom:1px solid #000'>手机</td><td style='border-bottom:1px solid #000'>办公邮箱</td><td style='border-bottom:1px solid #000'>私人邮箱</td><td style='border-bottom:1px solid #000'>QQ</td><td style='border-bottom:1px solid #000'>微信</td><td style='border-bottom:1px solid #000'>生日</td><td style='border-bottom:1px solid #000'>备注</td></tr>";
             foreach (var c in enterprise.Customers)
             {
                 html += string.Format(
-                    "<tr><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{0}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{1}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{2}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{3}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{4}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{5}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{6}</td><td> style='font-weight: bold; border-bottom:1px solid #000; text-align: center'{7}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{8}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{9}</td></tr>",
+                    "<tr><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{0}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{1}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{2}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{3}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{4}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{5}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{6}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{7}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{8}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{9}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{10}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{11}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{12}</td><td style='font-weight: bold; border-bottom:1px solid #000; text-align: center'>{13}</td></tr>",
+                    c.DepartmentName,
+                    c.ProductCategory,
+                    c.ProductName,
                     c.Name,
                     c.Sex == Sex.Male?"男" :"女",
                     c.Tel,
                     c.Fax,
                     c.Phone,
+                    c.OfficeEmail,
                     c.Email,
                     c.QQ,
                     c.WeChat,

@@ -20,7 +20,11 @@ $(document).ready(function(){
 	$(".es-menu-extend").each(function () {
 	    var nav = $("[data-toggle='" + $(this).attr("id") + "']");
 	    $(this).css("top", nav.offset().top + 47);
-	    $(this).css("left", nav.offset().left);
+	    var offsetRight = $(this).attr("offsetRight");
+	    if (!offsetRight) {
+	        offsetRight = 0;
+	    }
+	    $(this).css("left", nav.offset().left - offsetRight);
 	});
 	$(".es-block-menu a[data-toggle]").click(function () {
 	    $(this).addClass("es-block-menu-active");
@@ -44,7 +48,12 @@ $(document).on('click', function (e) {
     if ($(e.target).attr("id") == CurrentNotification) return;
     if ($(e.target).parents('[data-toggle="' + CurrentNotification + '"]').length > 0) return;
     if ($(e.target).parents('#' + CurrentNotification).length > 0) return;
-    if ($(".xdsoft_datetimepicker").length > 0 && $(e.target).parents('.xdsoft_datetimepicker')) return;
+    if ('EnterpriseSelect' != CurrentNotification && 'CustomerSelect' != CurrentNotification
+        && 'ProjectNotification' != CurrentNotification && 'AlarmNotification' != CurrentNotification
+        && 'FinanceNotification' != CurrentNotification && 'BirthdayNotification' != CurrentNotification
+        && 'SearchResult' != CurrentNotification) {
+        if ($(".xdsoft_datetimepicker").length > 0 && $(e.target).parents('.xdsoft_datetimepicker')) return;
+    }
     $("#" + CurrentNotification).slideUp(200);
     $("a[data-toggle='"+CurrentNotification+"']").removeClass("es-block-menu-active");
     CurrentNotification = null;
@@ -56,20 +65,36 @@ $(document).on('click', function (e) {
     if ($(e.target).parents(".es-dialog").length > 0) return;
     if ($(e.target).parents(".es-customer").length > 0) return;
     if ($(e.target).parents(".fc-event-inner").length > 0) return;
+    if ($("#Time") != null) return;
     $(".es-dialog").removeClass("show");
+    $(".es-menu-extend").removeClass("show");
+    $(".es-menu-extend").removeClass("es-block-menu-active");
 });
 
-function CloseToggle()
+function CloseToggle(e)
 {
     $("#" + CurrentNotification).slideUp(200);
     $("a[data-toggle='" + CurrentNotification + "']").removeClass("es-block-menu-active");
     CurrentNotification = null;
+
+    stopPropagation(e);
+}
+
+function stopPropagation(e) {
+    e = window.event || e;
+    if (e) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        } else {
+            e.cancelBubble = true;
+        }
+    }
 }
 
 $(document).keyup(function (e) {
     var code = e.keyCode ? e.keyCode : e.which;
     if (code == 27)
-        CloseToggle();
+        CloseToggle(e);
 });
 
 $(".es-menu-item a").click(function () {
@@ -141,4 +166,60 @@ function getFirstAndEnd(d) {
     var first = new Date(d.getTime() - parseInt("6012345".charAt(w)) * n);
     var end = new Date(d.getTime() + parseInt("0654321".charAt(w)) * n);
     return { first: first, end: end };
+}
+
+function check_all(e) {
+    var idOfCheckboxAll = "__checkboxAll";
+    var nameOfCheckItem = "__checkItem";
+    var checkall = document.getElementById(idOfCheckboxAll).checked;
+    var inputs = document.getElementsByTagName('input');
+    var a = new Array();
+    for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        if (input.getAttribute('name') == nameOfCheckItem) {
+            a.push(input);
+        }
+    }
+    //当一条记录也没有时
+    if (a.length == 0) return;
+    if (a) {
+        if (a.length) {
+            for (var i = 0; i < a.length; i++) {
+                a[i].checked = checkall;
+            }
+        } else {
+            a.checked = checkall;
+        }
+    }
+}
+
+function check_item(e) {
+    var idOfCheckboxAll = "__checkboxAll";
+    var nameOfCheckItem = "__checkItem";
+    var flag = true;
+    var inputs = document.getElementsByTagName('input');
+    var a = new Array();
+    for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        if (input.getAttribute('name') == nameOfCheckItem) {
+            a.push(input);
+        }
+    }
+    if (a) {
+        if (a.length) {
+            for (var i = 0; i < a.length; i++) {
+                if (!a[i].checked) {
+                    flag = false;
+                }
+            }
+        } else {
+            if (!a.checked)
+                flag = false;
+        }
+
+        if (flag)
+            document.getElementById(idOfCheckboxAll).checked = true;
+        else
+            document.getElementById(idOfCheckboxAll).checked = false;
+    }
 }

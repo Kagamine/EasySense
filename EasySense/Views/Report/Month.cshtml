@@ -32,7 +32,7 @@
                 <option value="@i">@i</option>
             }
             <option value="@DateTime.Now.Year" selected>@DateTime.Now.Year</option>
-        </select>
+        </select>(超出5天后不可汇报)
     </p>
 
     <table class="table">
@@ -51,6 +51,71 @@
 </div>
 
 <script>
+
+    function expendReports(id) {
+        var div = $("#todo-part-" + id);
+        if (div) {
+            var hided = div.is(":hidden");
+            if (!hided) {
+                $("#todo-" + id).toggle();
+                $("#todo-tr-" + id).toggle();
+                $("#todo-part-" + id).hide();
+            }
+        }
+
+        div = $("#question-part-" + id);
+        if (div) {
+            var hided = div.is(":hidden");
+            if (!hided) {
+                $("#question-" + id).toggle();
+                $("#question-tr-" + id).toggle();
+                $("#question-part-" + id).hide();
+            }
+        }
+
+        div = $("#finished-part-" + id);
+        if (div) {
+            var hided = div.is(":hidden");
+            if (!hided) {
+                $("#finished-" + id).toggle();
+                $("#finished-tr-" + id).toggle();
+                $("#finished-part-" + id).hide();
+            }
+        }
+    }
+
+    function collapseReports(id) {
+        var div = $("#todo-part-" + id);
+        if (div) {
+            var hided = div.is(":hidden");
+            if (hided) {
+                $("#todo-" + id).toggle();
+                $("#todo-tr-" + id).toggle();
+                $("#todo-part-" + id).show();
+            }
+        }
+
+        div = $("#question-part-" + id);
+        if (div) {
+            var hided = div.is(":hidden");
+            if (hided) {
+                $("#question-" + id).toggle();
+                $("#question-tr-" + id).toggle();
+                $("#question-part-" + id).show();
+            }
+        }
+
+        div = $("#finished-part-" + id);
+        if (div) {
+            var hided = div.is(":hidden");
+            if (hided) {
+                $("#finished-" + id).toggle();
+                $("#finished-tr-" + id).toggle();
+                $("#finished-part-" + id).show();
+            }
+        }
+    }
+
     $(document).ready(function () {
         function LoadReports() {
             ShowLoading();
@@ -67,7 +132,7 @@
                             $("#lstReports").append("<tr><td>" + y + "年</td><td>" + i + "月</td><td></td><td></td><td></td></tr>");
                         }
                         else {
-                            $("#lstReports").append("<tr><td>" + y + "年</td><td>" + i + "月</td><td><p><a href='javascript:$(\"#todo-" + data[j].ID + "\").toggle()'>待办事项</a></p><div id='todo-" + data[j].ID + "' class='es-report'>" + data[j].TodoList + "</div><p><a href='javascript:$(\"#question-" + data[j].ID + "\").toggle()'>遇到问题</a></p><div id='question-" + data[j].ID + "' class='es-report'>" + data[j].QuestionList + "</div><p><a href='javascript:$(\"#finished-" + data[j].ID + "\").toggle()'>已办事项</a></p><div id='finished-" + data[j].ID + "' class='es-report'>" + data[j].FinishedList + "</div></td><td>" + data[j].Time + "</td><td><a href='/Report/Edit/" + data[j].ID + "'>编辑</a></td></tr>");
+                            $("#lstReports").append("<tr><td>" + y + "年</td><td>" + i + "月</td><td><table border='0' style='width:100%'><tr><td width='100px;'><a href='javascript:;' style='color:red;' onclick='javascript:$(\"#todo-" + data[j].ID + "\").toggle(); $(\"#todo-tr-" + data[j].ID + "\").toggle(); showOrHide(\"todo-part-" + data[j].ID + "\");'>待办事项</a></td><td><div id=\"todo-part-" + data[j].ID + "\">" + data[j].TodoListPart + "</div></td></tr><tr id=\"todo-tr-" + data[j].ID + "\" class='es-report'><td colspan='2'><div id='todo-" + data[j].ID + "' class='es-report'>" + data[j].TodoList + "</div></td></tr><tr><td><a href='javascript:;' onclick='$(\"#question-" + data[j].ID + "\").toggle(); $(\"#question-tr-" + data[j].ID + "\").toggle(); showOrHide(\"question-part-" + data[j].ID + "\");'>遇到问题</a></td><td><div id=\"question-part-" + data[j].ID + "\">" + data[j].QuestionListPart + "</div></td></tr><tr id=\"question-tr-" + data[j].ID + "\" class='es-report'><td colspan='2'><div id='question-" + data[j].ID + "' class='es-report'>" + data[j].QuestionList + "</div></td></tr><tr><td><a href='javascript:;' onclick='javascript:$(\"#finished-" + data[j].ID + "\").toggle(); $(\"#finished-tr-" + data[j].ID + "\").toggle(); showOrHide(\"finished-part-" + data[j].ID + "\");'>已办事项</a></td><td><div id=\"finished-part-" + data[j].ID + "\">" + data[j].FinishedListPart + "</div></td></tr><tr id=\"finished-tr-" + data[j].ID + "\" class='es-report'><td colspan='2'><div id='finished-" + data[j].ID + "' class='es-report'>" + data[j].FinishedList + "</div></td></tr></table></td><td>" + data[j].Time + "</td><td><a href='javascript:;' onclick='expendReports(\"" + data[j].ID + "\");'>展开</a>&nbsp;&nbsp;<a href='javascript:;' onclick='collapseReports(\"" + data[j].ID + "\");'>收起</a>&nbsp;&nbsp;<a href='/Report/Edit/" + data[j].ID + "'>编辑</a></td></tr>");
                             j++;
                         }
                     }

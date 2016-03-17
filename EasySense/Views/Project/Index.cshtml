@@ -17,6 +17,23 @@
         <div id="AddProject" class="es-menu-extend">
             <table style="width:600px">
                 <tr>
+                    <td>项目所有者</td>
+                    <td colspan="3">
+                        <select class="select" id="selectNewUserId" onchange="selectUser()">
+                            @foreach (UserModel u in ViewBag.Users)
+                            {
+                                <option value="@u.ID" department="@u.DepartmentTitle">@u.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>组</td>
+                    <td id="__department">&nbsp;</td>
+                    <td>公司</td>
+                    <td id="__cmpany">北京易佰思</td>
+                </tr>
+                <tr>
                     <td>项目名称</td>
                     <td><input id="txtNewTitle" type="text" class="textbox @(Convert.ToBoolean(ViewBag.Config["Title"])?"" :"nullable")" placeholder="项目名称" /></td>
                     <td>项目状态</td>
@@ -53,8 +70,7 @@
             <p style="text-align:center"><a href="javascript:void(0);" id="btnAddProject">下一步</a> <a href="javascript:CloseToggle();">关闭</a></p>
         </div>
     }
-    <a href="#" data-toggle="ProjectsFilter">过滤器</a>
-    <div id="ProjectsFilter" class="es-menu-extend">
+    <div id="ProjectsFilter" class="es-menu-extend" offsetRight="400">
         <p>项目名称：<input id="txtTitle" type="text" class="textbox" placeholder="项目名称" />&nbsp;&nbsp; 项目状态：<select id="lstStatus" class="select" style="width: 130px"><option value="">全部</option><option value="0">当前</option><option value="1">完成</option><option value="2">竞标</option><option value="3">废弃</option></select></p>
         <p>签订时间：从 <input id="txtBegin" type="text" class="textbox" value="" /> 到 <input id="txtEnd" type="text" class="textbox" value="" /></p>
         <p>开票时间：从 <input id="txtInvoiceBegin" type="text" class="textbox" value="" /> 到 <input id="txtInvoiceEnd" type="text" class="textbox" value="" /></p>
@@ -104,12 +120,16 @@
         }
         <p><a href="javascript:CloseToggle();">关闭</a></p>
     </div>
+
+    <a href="javascript:DeleteSelectedProjects();">删除</a>
+    <a href="#" data-toggle="ProjectsFilter" style="float:right">过滤器</a>
 </div>
 <div class="es-table-outer">
     <table class="table">
         <thead>
             <tr>
-                <th data-col="ID">ID</th>
+                <th style="text-align:center;"><input type="checkbox" id="__checkboxAll" onchange="check_all()" /></th>
+                <th data-col="RefNum">ID</th>
                 <th data-col="UserID">所有者 </th>
                 <th data-col="Title">项目名称 </th>
                 <th data-col="Charge">项目金额 </th>
@@ -126,6 +146,21 @@
         <tbody id="lstProjects">
         </tbody>
     </table>
+
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="cursor: default">
+        <tr width="100%">
+            <td height="7" align="right" valign="middle" nowrap>总记录数&nbsp;<span id="__countOfRecords">0</span>条&nbsp;&nbsp;<span id="__targetPageNo">0</span>/<span id="__countOfPages">0</span></td>
+            <td nowrap width="10">&nbsp;</td>
+            <td width="150" valign="middle" align="right">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-top:3px;">
+                    <tr>
+                        <td height="20" valign="middle" nowrap align="right"><img id="__firstYes" src="/Images/first_1.jpg" onclick="" style="display: none; cursor: hand" onmouseout="this.src='/Images/first_1.jpg'" onmouseover="this.src='/Images/first_2.jpg'" /><img id="__firstNo" src="/Images/first_1.jpg" /><img id="__preYes" src="/Images/pre_1.jpg" onclick="" style="display: none; cursor: hand" onmouseout="this.src='/Images/pre_1.jpg'" onmouseover="this.src='/Images/pre_2.jpg'" /><img id="__preNo" src="/Images/pre_1.jpg" /><img id="__nextYes" src="/Images/next_1.jpg" onclick="" style="display: none; cursor: hand" onmouseout="this.src='/Images/next_1.jpg'" onmouseover="this.src='/Images/next_2.jpg'" /><img id="__nextNo" src="/Images/next_1.jpg" /><img id="__lastYes" src="/Images/last_1.jpg" onclick="" style="display: none; cursor: hand" onmouseout="this.src='/Images/last_1.jpg'" onmouseover="this.src='/Images/last_2.jpg'" /><img id="__lastNo" src="/Images/last_1.jpg" /></td>
+                    </tr>
+                </table>
+            </td>
+            <td nowrap width="80">&nbsp;</td>
+        </tr>
+    </table>
 </div>
 <script>
     $("[name='begin']").datetimepicker();
@@ -133,8 +168,12 @@
     $("#txtBegin").datetimepicker();
     $("#txtEnd").datetimepicker();
     $("#txtPlanBegin").datetimepicker();
-    $("#txtPlanEnd").datetimepicker();
+    $("#txtPlanEnd").datetimepicker(); 
     $("#btnAddProject").click(function () {
+        if ($("#selectNewUserId").val() == "") {
+            alert("项目所有者不能为空！");
+            return;
+        }
         if ($("#txtNewTitle").val() == "") {
             alert("项目标题不能为空！");
             return;
@@ -154,6 +193,7 @@
         ShowLoading();
         $.post("/Project/Create",
             {
+                UserId: $("#selectNewUserId").val(),
                 Title: $("#txtNewTitle").val(),
                 Status: $("#lstNewStatus").val(),
                 Description: $("#txtDescription").val(),
@@ -162,7 +202,49 @@
                 Priority: $("#lstPriority").val(),
                 sid: "@ViewBag.SID"
             }, function (id) {
+                HideLoading();
+                if (id == "aaaaaaa...sameID...bbbbbb") {
+                    alert("所填写的ID已经被使用，请填写新的ID");
+                    return;
+                }
                 window.location = "/Project/Show/" + id;
             });
     });
+
+    function DeleteSelectedProjects() {
+        var nameOfCheckItem = "__checkItem";
+        var inputs = document.getElementsByTagName('input');
+        var a = new Array();
+        var ids = new Array();
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (input.getAttribute('name') == nameOfCheckItem) {
+                a.push(input);
+                if (input.checked) {
+                    ids.push(input.getAttribute('idOfProject'));
+                }
+            }
+        }
+        //当一条记录也没有时
+        if (a.length == 0) {
+            alert('没有可供删除的记录');
+            return;
+        }
+        if (ids.length == 0) {
+            alert('请选择要删除的记录');
+            return;
+        }
+
+        ShowLoading();
+        $.post("/Project/DeleteSelectedProjects/", { ids: ids.join(',') }, function () {
+            Load();
+            HideLoading();
+        });
+    }
+
+    function selectUser() {
+        var select = document.getElementById('selectNewUserId');
+        var index = select.selectedIndex;
+        document.getElementById('__department').innerHTML = select.options[index].getAttribute('department');
+    }
 </script>

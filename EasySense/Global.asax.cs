@@ -11,6 +11,7 @@ namespace EasySense
     {
         protected void Application_Start()
         {
+            System.Data.Entity.Database.SetInitializer<Models.EasySenseContext>(null);
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }

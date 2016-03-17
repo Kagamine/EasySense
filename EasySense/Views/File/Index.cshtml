@@ -62,6 +62,17 @@
                         {
                             @Url.LinkWithSID("删除", "Delete", "File", new { id = f.ID });
                         }
+                        @if (f.CanPreview)
+                        {
+                            if (f.IsTxt)
+                            {
+                                <a target="_blank" href="http://es.zhendoc.com/Preview/@f.ID@f.ExtensionForPreview">预览</a>
+                            }
+                            else
+                            {
+                                <a target="_blank" href="https://view.officeapps.live.com/op/view.aspx?src=http://es.zhendoc.com/Preview/@f.ID@f.Extension">预览</a>
+                            }
+                        }
                     </td>
                 </tr>
             }

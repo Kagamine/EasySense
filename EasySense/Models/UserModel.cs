@@ -31,6 +31,22 @@ namespace EasySense.Models
         [Required]
         public string Name { get; set; }
 
+        [NotMapped]
+        public string DepartmentTitle
+        {
+            get
+            {
+                if (Department != null)
+                {
+                    return Department.Title;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         [StringLength(8)]
         [Index]
         [Required]

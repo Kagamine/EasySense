@@ -118,13 +118,13 @@
                             <option value="@e.ID">@e.Title</option>
                         }
                     </select>
-                    <p><a href="javascript:page=0;$('#lstProjects').html('');Load();CloseToggle();">检索</a> <a href="javascript:CloseToggle();">关闭</a></p>
+                    <p><a href="javascript:page=0;$('#lstProjects').html('');Load();CloseToggle(event);">检索</a> <a href="javascript:CloseToggle();">关闭</a></p>
             </div>
         </div>
         <table class="table">
             <thead>
                 <tr>
-                    <th data-col="ID">ID</th>
+                    <th data-col="RefNum">ID</th>
                     <th data-col="UserID">所有者 </th>
                     <th data-col="Title">项目名称 </th>
                     <th data-col="Charge">项目金额 </th>
@@ -140,6 +140,22 @@
             </thead>
             <tbody id="lstProjects"></tbody>
         </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="cursor: default">
+            <tr width="100%">
+                <td height="7" align="right" valign="middle" nowrap>总记录数&nbsp;<span id="__countOfRecords">0</span>条&nbsp;&nbsp;<span id="__targetPageNo">0</span>/<span id="__countOfPages">0</span></td>
+                <td nowrap width="10">&nbsp;</td>
+                <td width="150" valign="middle" align="right">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-top:3px;">
+                        <tr>
+                            <td height="20" valign="middle" nowrap align="right"><img id="__firstYes" src="/Images/first_1.jpg" onclick="" style="display: none; cursor: hand" onmouseout="this.src='/Images/first_1.jpg'" onmouseover="this.src='/Images/first_2.jpg'" /><img id="__firstNo" src="/Images/first_1.jpg" /><img id="__preYes" src="/Images/pre_1.jpg" onclick="" style="display: none; cursor: hand" onmouseout="this.src='/Images/pre_1.jpg'" onmouseover="this.src='/Images/pre_2.jpg'" /><img id="__preNo" src="/Images/pre_1.jpg" /><img id="__nextYes" src="/Images/next_1.jpg" onclick="" style="display: none; cursor: hand" onmouseout="this.src='/Images/next_1.jpg'" onmouseover="this.src='/Images/next_2.jpg'" /><img id="__nextNo" src="/Images/next_1.jpg" /><img id="__lastYes" src="/Images/last_1.jpg" onclick="" style="display: none; cursor: hand" onmouseout="this.src='/Images/last_1.jpg'" onmouseover="this.src='/Images/last_2.jpg'" /><img id="__lastNo" src="/Images/last_1.jpg" /></td>
+                        </tr>
+                    </table>
+                </td>
+                <td nowrap width="80">&nbsp;</td>
+            </tr>
+        </table>
+
     </div>
     <script>
         $("#txtBegin").datetimepicker();

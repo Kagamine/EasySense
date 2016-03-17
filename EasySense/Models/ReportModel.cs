@@ -47,6 +47,15 @@ namespace EasySense.Models
         [Index]
         public DateTime Time { get; set; }
 
+        [NotMapped]
+        public int Month0 { get; set; }
+
+        [NotMapped]
+        public int Week0 { get; set; }
+
+        [NotMapped]
+        public string Date0 { get; set; }
+
         public override bool Equals(object obj)
         {
             var data = obj as ReportModel;

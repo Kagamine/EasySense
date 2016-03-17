@@ -23,7 +23,7 @@ namespace EasySense.Models
         public DbSet<StatisticsModel> Statistics { get; set; }
 
         public EasySenseContext() : base("mssqldb") { }
-
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

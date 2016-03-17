@@ -29,6 +29,7 @@ namespace EasySense.Controllers
         {
             var zone = DB.Zones.Find(id);
             DB.Zones.Remove(zone);
+            DB.SaveChanges();
             return RedirectToAction("Index", "System");
         }
 
@@ -59,6 +60,9 @@ namespace EasySense.Controllers
             var categories = (from c in DB.Categories
                               orderby c.ID descending
                               select c).ToList();
+
+            ViewBag.products = (from e in DB.Products select e).ToList();
+
             return View(categories);
         }
 
@@ -99,9 +103,28 @@ namespace EasySense.Controllers
         public ActionResult DeleteCategory(int id)
         {
             var category = DB.Categories.Find(id);
-            DB.Categories.Remove(category);
+            try
+            {
+                DB.Categories.Remove(category);
+                DB.SaveChanges();
+                return Content("OK");
+            }
+            catch
+            {
+                return Content("cannot delete");
+            }
+            //return RedirectToAction("Category", "System");
+        }
+
+        [HttpGet]
+        [ValidateSID]
+        [MinRole(UserRole.Root)]
+        public ActionResult DeleteDepartment(int id)
+        {
+            var department = DB.Departments.Find(id);
+            DB.Departments.Remove(department);
             DB.SaveChanges();
-            return RedirectToAction("Category", "System");
+            return RedirectToAction("Department", "System");
         }
 
         [HttpPost]
@@ -110,9 +133,16 @@ namespace EasySense.Controllers
         public ActionResult DeleteProduct(int id)
         {
             var product = DB.Products.Find(id);
-            DB.Products.Remove(product);
-            DB.SaveChanges();
-            return Content("OK");
+            try
+            {
+                DB.Products.Remove(product);
+                DB.SaveChanges();
+                return Content("OK");
+            }
+            catch
+            {
+                return Content("cannot delete");
+            }
         }
 
 
@@ -202,7 +232,10 @@ namespace EasySense.Controllers
         public ActionResult Field(bool Title, bool Description, bool Begin,
             bool End, bool SignTime, bool Charge, bool InvoicePrice, 
             bool InvoiceSN, bool Hint, bool ChargeTime, bool ActualPayments,
-            bool InvoiceTime)
+            bool InvoiceTime, bool Priority, bool Status, bool EnterpriseName,
+            bool CustomerName, bool Tel, bool Phone, bool Email, bool Brand,
+            bool Ordering, bool CategoryID, bool ProductID, bool ZoneID,
+            bool PayMethod)
         {
             ConfigurationManager.AppSettings["Title"] = Title.ToString();
             ConfigurationManager.AppSettings["Description"] = Description.ToString();
@@ -216,6 +249,19 @@ namespace EasySense.Controllers
             ConfigurationManager.AppSettings["ChargeTime"] = ChargeTime.ToString();
             ConfigurationManager.AppSettings["ActualPayments"] = ActualPayments.ToString();
             ConfigurationManager.AppSettings["InvoiceTime"] = InvoiceTime.ToString();
+            ConfigurationManager.AppSettings["Priority"] = Priority.ToString();
+            ConfigurationManager.AppSettings["Status"] = Status.ToString();
+            ConfigurationManager.AppSettings["EnterpriseName"] = EnterpriseName.ToString();
+            ConfigurationManager.AppSettings["CustomerName"] = CustomerName.ToString();
+            ConfigurationManager.AppSettings["Tel"] = Tel.ToString();
+            ConfigurationManager.AppSettings["Phone"] = Phone.ToString();
+            ConfigurationManager.AppSettings["Email"] = Email.ToString();
+            ConfigurationManager.AppSettings["Brand"] = Brand.ToString();
+            ConfigurationManager.AppSettings["Ordering"] = Ordering.ToString();
+            ConfigurationManager.AppSettings["CategoryID"] = CategoryID.ToString();
+            ConfigurationManager.AppSettings["ProductID"] = ProductID.ToString();
+            ConfigurationManager.AppSettings["ZoneID"] = ZoneID.ToString();
+            ConfigurationManager.AppSettings["PayMethod"] = PayMethod.ToString();
             return RedirectToAction("Field", "System");
         }
     }

@@ -33,34 +33,34 @@ namespace EasySense.Models
         public EnterpriseLevel Level { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Phone { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Fax { get; set; }
 
         [StringLength(128)]
-        [Required]
+        //[Required]
         public string Address { get; set; }
 
         [StringLength(16)]
-        [Required]
+        //[Required]
         public string Zip { get; set; }
 
         [StringLength(64)]
-        [Required]
+        //[Required]
         public string Website { get; set; }
 
-        [Required]
+        //[Required]
         public string Hint { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Property { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Type { get; set; }
 
         [StringLength(32)]
@@ -68,11 +68,11 @@ namespace EasySense.Models
         public string Brand { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string Scale { get; set; }
 
         [StringLength(32)]
-        [Required]
+        //[Required]
         public string SalesVolume { get; set; }
 
         public byte[] Icon { get; set; }
