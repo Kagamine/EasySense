@@ -744,5 +744,15 @@ namespace EasySense.Controllers
             else
                 return File(Helpers.Export.ToExcel(html), "application/vnd.ms-excel", Helpers.Time.ToTimeStamp(DateTime.Now) + ".xls");
         }
+
+        [HttpPost]
+        public ActionResult Handout(int id, string username)
+        {
+            var project = DB.Projects.Where(x => x.ID == id).Single();
+            var user = DB.Users.Where(x => x.Username == username).Single();
+            project.UserID = user.ID;
+            DB.SaveChanges();
+            return Redirect(Request.UrlReferrer.ToString());
+        }
     }
 }
