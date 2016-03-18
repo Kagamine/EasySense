@@ -28,8 +28,8 @@ namespace EasySense.Controllers
             ViewBag.Users = DB.Users.ToList();
             ViewBag.Enterprises = DB.Enterprises.ToList();
             ViewBag.Customers = DB.Customers.ToList();
-            ViewBag.Brands = (from e in DB.Enterprises
-                              select e.Brand).Distinct().ToList();
+            //ViewBag.Brands = (from e in DB.Enterprises
+            //                  select e.Brand).Distinct().ToList();
             ViewBag.Products = DB.Products.ToList();
             //
             /*
@@ -89,7 +89,7 @@ namespace EasySense.Controllers
             if (xBrands != null && xBrands.Count() > 0)
             {
                 var tmp = xBrands.ToList();
-                Projects = Projects.Where(x => x.Enterprise != null && tmp.Contains(x.Enterprise.Brand));
+                Projects = Projects.Where(x => x.Enterprise != null && tmp.Contains(x.Brand));
             }
             if (Model.ChargeBegin.HasValue)
                 Projects = Projects.Where(x => x.Charge >= Model.ChargeBegin.Value);
@@ -260,7 +260,7 @@ namespace EasySense.Controllers
             if (aXBrands != null && aXBrands.Count() > 0)
             {
                 var tmp = aXBrands.ToList();
-                Projects = Projects.Where(x => x.Enterprise != null && tmp.Contains(x.Enterprise.Brand));
+                Projects = Projects.Where(x => x.Enterprise != null && tmp.Contains(x.Brand));
             }
             if (Model.ChargeBegin.HasValue)
                 Projects = Projects.Where(x => x.Charge >= Model.ChargeBegin.Value);
@@ -491,7 +491,7 @@ namespace EasySense.Controllers
             if (statistics.Brands != null && statistics.Brands.Count() > 0)
             {
                 var tmp = statistics.Brands.Split(',').ToList();
-                Projects = Projects.Where(x => x.Enterprise != null && tmp.Contains(x.Enterprise.Brand));
+                Projects = Projects.Where(x => x.Enterprise != null && tmp.Contains(x.Brand));
             }
             if (statistics.ChargeBegin.HasValue)
                 Projects = Projects.Where(x => x.Charge >= statistics.ChargeBegin.Value);

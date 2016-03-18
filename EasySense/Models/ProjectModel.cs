@@ -105,7 +105,11 @@ namespace EasySense.Models
         [NotMapped]
         public string Email { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
+        //public string Brand { get; set; }
+
+        [StringLength(200)]
+        [Index]
         public string Brand { get; set; }
 
         [NotMapped]

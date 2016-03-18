@@ -24,7 +24,7 @@ namespace EasySense.Controllers
                                    select e).ToList();
             ViewBag.Users = (from u in DB.Users
                                    select u).ToList();
-            ViewBag.Config = System.Configuration.ConfigurationManager.AppSettings;
+            ViewBag.Config = Startup.Config;
             return View();
         }
 
@@ -44,7 +44,7 @@ namespace EasySense.Controllers
             ViewBag.Enterprises = new List<EnterpriseListViewModel>();
             foreach (var e in enterprises)
                 ViewBag.Enterprises.Add((EnterpriseListViewModel)e);
-            ViewBag.Config = System.Configuration.ConfigurationManager.AppSettings;
+            ViewBag.Config = Startup.Config;
             return View(project);
         }
 
@@ -73,6 +73,7 @@ namespace EasySense.Controllers
             project.CustomerID = Model.CustomerID;
             project.Title = Model.Title;
             project.Status = Model.Status;
+            project.Brand = Model.Brand;
             project.Log += string.Format("[{0}] {1}({2}) 修改了项目\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), CurrentUser.Name, CurrentUser.Username);
             if (Model.Status == ProjectStatus.Completed)
                 project.Percent = 1;
@@ -105,7 +106,7 @@ namespace EasySense.Controllers
                         enterprise.Title = EnterpriseName;
                         enterprise.Key = Helpers.Pinyin.Convert(EnterpriseName);
                         enterprise.Phone = (Model.Phone == null ? "" : Model.Phone);
-                        enterprise.Brand = Model.Brand;
+                       // enterprise.Brand = Model.Brand;
                         //
                         project.EnterpriseID = enterprise.ID;
                         try
@@ -128,7 +129,6 @@ namespace EasySense.Controllers
                             Address = "Null",
                             SalesVolume = "Null",
                             Scale = "Null",
-                            Brand = Model.Brand,
                             Hint = "Null",
                             Fax = "Null",
                             Property = "Null",
@@ -156,7 +156,7 @@ namespace EasySense.Controllers
                         enterprise.Title = EnterpriseName;
                         enterprise.Key = Helpers.Pinyin.Convert(EnterpriseName);
                         enterprise.Phone = (Model.Phone == null ? "" : Model.Phone);
-                        enterprise.Brand = Model.Brand;
+                        //enterprise.Brand = Model.Brand;
                         try
                         {
                             DB.SaveChanges();
@@ -255,12 +255,14 @@ namespace EasySense.Controllers
         }
 
         [HttpGet]
-        public ActionResult Search(int Page, string Title, ProjectStatus? Status, DateTime? Begin, DateTime? End, string OrderBy, string Order, DateTime? InvoiceBegin, DateTime? InvoiceEnd, int? EnterpriseID)
+        public ActionResult Search(int? ProjectID, int Page, string Title, ProjectStatus? Status, DateTime? Begin, DateTime? End, string OrderBy, string Order, DateTime? InvoiceBegin, DateTime? InvoiceEnd, int? EnterpriseID)
         {
             Title = StringUtils.Trim(Title);
             IEnumerable<ProjectModel> projects = (from p in DB.Projects
                                                   where p.Title.Contains(Title)
                                                   select p).ToList();
+            if(ProjectID.HasValue)
+                projects = projects.Where(x => x.ID == ProjectID.Value);
             if (Status.HasValue)
                 projects = projects.Where(x => x.Status == Status.Value);
             if (Begin.HasValue)

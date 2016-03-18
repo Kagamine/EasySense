@@ -174,7 +174,7 @@ namespace EasySense.Controllers
             var departments = (from d in DB.Departments
                                orderby d.ID descending
                                select d).ToList();
-            ViewBag.Users = DB.Users.OrderBy(x=>x.Role).ToList();
+            ViewBag.Users = DB.Users.OrderBy(x => x.Role).ToList();
             return View(departments);
         }
 
@@ -223,45 +223,75 @@ namespace EasySense.Controllers
         [MinRole(UserRole.Root)]
         public ActionResult Field()
         {
-            ViewBag.Config = ConfigurationManager.AppSettings;
+            ViewBag.Config = Startup.Config;
             return View();
         }
 
         [HttpPost]
         [MinRole(UserRole.Root)]
         public ActionResult Field(bool Title, bool Description, bool Begin,
-            bool End, bool SignTime, bool Charge, bool InvoicePrice, 
+            bool End, bool SignTime, bool Charge, bool InvoicePrice,
             bool InvoiceSN, bool Hint, bool ChargeTime, bool ActualPayments,
             bool InvoiceTime, bool Priority, bool Status, bool EnterpriseName,
             bool CustomerName, bool Tel, bool Phone, bool Email, bool Brand,
             bool Ordering, bool CategoryID, bool ProductID, bool ZoneID,
             bool PayMethod)
         {
-            ConfigurationManager.AppSettings["Title"] = Title.ToString();
-            ConfigurationManager.AppSettings["Description"] = Description.ToString();
-            ConfigurationManager.AppSettings["Begin"] = Begin.ToString();
-            ConfigurationManager.AppSettings["End"] = End.ToString();
-            ConfigurationManager.AppSettings["SignTime"] = SignTime.ToString();
-            ConfigurationManager.AppSettings["Charge"] = Charge.ToString();
-            ConfigurationManager.AppSettings["InvoicePrice"] = InvoicePrice.ToString();
-            ConfigurationManager.AppSettings["InvoiceSN"] = InvoiceSN.ToString();
-            ConfigurationManager.AppSettings["Hint"] = Hint.ToString();
-            ConfigurationManager.AppSettings["ChargeTime"] = ChargeTime.ToString();
-            ConfigurationManager.AppSettings["ActualPayments"] = ActualPayments.ToString();
-            ConfigurationManager.AppSettings["InvoiceTime"] = InvoiceTime.ToString();
-            ConfigurationManager.AppSettings["Priority"] = Priority.ToString();
-            ConfigurationManager.AppSettings["Status"] = Status.ToString();
-            ConfigurationManager.AppSettings["EnterpriseName"] = EnterpriseName.ToString();
-            ConfigurationManager.AppSettings["CustomerName"] = CustomerName.ToString();
-            ConfigurationManager.AppSettings["Tel"] = Tel.ToString();
-            ConfigurationManager.AppSettings["Phone"] = Phone.ToString();
-            ConfigurationManager.AppSettings["Email"] = Email.ToString();
-            ConfigurationManager.AppSettings["Brand"] = Brand.ToString();
-            ConfigurationManager.AppSettings["Ordering"] = Ordering.ToString();
-            ConfigurationManager.AppSettings["CategoryID"] = CategoryID.ToString();
-            ConfigurationManager.AppSettings["ProductID"] = ProductID.ToString();
-            ConfigurationManager.AppSettings["ZoneID"] = ZoneID.ToString();
-            ConfigurationManager.AppSettings["PayMethod"] = PayMethod.ToString();
+
+
+
+            Startup.Config["Title"] = Title.ToString();
+
+            Startup.Config["Description"] = Description.ToString();
+
+            Startup.Config["Begin"] = Begin.ToString();
+
+            Startup.Config["End"] = End.ToString();
+
+            Startup.Config["SignTime"] = SignTime.ToString();
+
+            Startup.Config["Charge"] = Charge.ToString();
+
+            Startup.Config["InvoicePrice"] = InvoicePrice.ToString();
+
+            Startup.Config["InvoiceSN"] = InvoiceSN.ToString();
+
+            Startup.Config["Hint"] = Hint.ToString();
+
+            Startup.Config["ChargeTime"] = ChargeTime.ToString();
+
+            Startup.Config["ActualPayments"] = ActualPayments.ToString();
+
+            Startup.Config["InvoiceTime"] = InvoiceTime.ToString();
+
+            Startup.Config["Priority"] = Priority.ToString();
+
+            Startup.Config["Status"] = Status.ToString();
+
+            Startup.Config["EnterpriseName"] = EnterpriseName.ToString();
+
+            Startup.Config["CustomerName"] = CustomerName.ToString();
+
+            Startup.Config["Tel"] = Tel.ToString();
+
+            Startup.Config["Phone"] = Phone.ToString();
+
+            Startup.Config["Email"] = Email.ToString();
+
+            Startup.Config["Brand"] = Brand.ToString();
+
+            Startup.Config["Ordering"] = Ordering.ToString();
+
+            Startup.Config["CategoryID"] = CategoryID.ToString();
+
+            Startup.Config["ProductID"] = ProductID.ToString();
+
+            Startup.Config["ZoneID"] = ZoneID.ToString();
+
+            Startup.Config["PayMethod"] = PayMethod.ToString();
+
+            System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "/config.json", Newtonsoft.Json.JsonConvert.SerializeObject(Startup.Config));
+
             return RedirectToAction("Field", "System");
         }
     }
