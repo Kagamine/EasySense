@@ -163,7 +163,7 @@ namespace EasySense.Controllers
             enterprise.Key = Helpers.Pinyin.Convert(Title);
             enterprise.Level = Level;
             enterprise.Type = Type;
-            enterprise.Brand = Brand;
+            //enterprise.Brand = Brand;
             enterprise.Scale = Scale;
             enterprise.SalesVolume = SalesVolume;
             enterprise.Phone = Phone;

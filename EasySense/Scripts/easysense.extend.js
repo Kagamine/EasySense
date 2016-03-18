@@ -70,10 +70,9 @@ $("[data-col]").click(function () {
     }
 });
 
-function Load(targetPageNo)
-{
+function Load(targetPageNo) {
     if (lock) return;
-    lock = true;    
+    lock = true;
     LoadProjects(targetPageNo);
 }
 
@@ -104,8 +103,7 @@ function LoadBills(ProjectID) {
     });
 }
 
-function LoadCustomer(enterpriseID)
-{
+function LoadCustomer(enterpriseID) {
     if (lock) return;
     lock = true;
 
@@ -162,14 +160,14 @@ function LoadCustomer(enterpriseID)
     });
 }
 
-function LoadProjects(targetPageNo)
-{
+function LoadProjects(targetPageNo) {
     if ($("#lstProjects").length <= 0) return;
     ShowLoading();
     $.getJSON("/Project/Search", {
-        Page: (targetPageNo != null)?targetPageNo:page,
+        Page: (targetPageNo != null) ? targetPageNo : page,
         Order: order,
         OrderBy: orderby,
+        ProjectID: $("#txtProjectID").val(),
         Title: $("#txtTitle").val(),
         Status: $("#lstStatus").val(),
         Begin: $("#txtBegin").val(),
@@ -199,8 +197,8 @@ function LoadProjects(targetPageNo)
             $("#__preYes").hide();
             $("#__preNo").show();
             //
-            document.getElementById("__firstYes").onclick = function () {}
-            document.getElementById("__preYes").onclick = function () {}
+            document.getElementById("__firstYes").onclick = function () { }
+            document.getElementById("__preYes").onclick = function () { }
         }
         if (pager.ExistNextPage) {
             $("#__lastYes").show();
@@ -227,8 +225,7 @@ function LoadProjects(targetPageNo)
         if (checkboxAll) {
             checkboxAll.checked = false;
         }
-        for (var i = 0; i < data.length; i++)
-        {
+        for (var i = 0; i < data.length; i++) {
             var checkboxTd = '';
             if (checkboxAll) {
                 checkboxTd = '<td style="text-align:center;"><input type="checkbox" name="__checkItem" idOfProject="' + data[i].ID + '" onchange="check_item()"/></td>';
@@ -283,7 +280,7 @@ $(document).ready(function () {
         if (e.keyCode == 13) {
             $("#btnAllSearch").click();
         }
-    }); 
+    });
 
     $("#btnAllSearch").click(function () {
         Search();

@@ -6,6 +6,7 @@
     .es-table-outer tr {
         cursor: pointer;
     }
+
     table {
         line-height: 36px;
     }
@@ -22,7 +23,7 @@
                         <select class="select" id="selectNewUserId" onchange="selectUser()">
                             @foreach (UserModel u in ViewBag.Users)
                             {
-                                <option value="@u.ID" department="@u.DepartmentTitle">@u.Name</option>
+                            <option value="@u.ID" department="@u.DepartmentTitle">@u.Name</option>
                             }
                         </select>
                     </td>
@@ -65,12 +66,15 @@
                             <option value="2">高</option>
                         </select>
                     </td>
+                    <td>价格</td>
+                    <td><input id="txtCharge" type="text" class="textbox @(Convert.ToBoolean(ViewBag.Config["Charge"])?"" :"nullable")" placeholder="金额" /></td>
                 </tr>
             </table>
             <p style="text-align:center"><a href="javascript:void(0);" id="btnAddProject">下一步</a> <a href="javascript:CloseToggle();">关闭</a></p>
         </div>
     }
     <div id="ProjectsFilter" class="es-menu-extend" offsetRight="400">
+        <p>项目ID：<input id="txtProjectID" type="text" class="textbox" placeholder="项目ID" /></p>
         <p>项目名称：<input id="txtTitle" type="text" class="textbox" placeholder="项目名称" />&nbsp;&nbsp; 项目状态：<select id="lstStatus" class="select" style="width: 130px"><option value="">全部</option><option value="0">当前</option><option value="1">完成</option><option value="2">竞标</option><option value="3">废弃</option></select></p>
         <p>签订时间：从 <input id="txtBegin" type="text" class="textbox" value="" /> 到 <input id="txtEnd" type="text" class="textbox" value="" /></p>
         <p>开票时间：从 <input id="txtInvoiceBegin" type="text" class="textbox" value="" /> 到 <input id="txtInvoiceEnd" type="text" class="textbox" value="" /></p>
@@ -143,8 +147,7 @@
                 <th data-col="ChargeTime">收款日期 </th>
             </tr>
         </thead>
-        <tbody id="lstProjects">
-        </tbody>
+        <tbody id="lstProjects"></tbody>
     </table>
 
     <table width="100%" border="0" cellpadding="0" cellspacing="0" style="cursor: default">
@@ -168,7 +171,7 @@
     $("#txtBegin").datetimepicker();
     $("#txtEnd").datetimepicker();
     $("#txtPlanBegin").datetimepicker();
-    $("#txtPlanEnd").datetimepicker(); 
+    $("#txtPlanEnd").datetimepicker();
     $("#btnAddProject").click(function () {
         if ($("#selectNewUserId").val() == "") {
             alert("项目所有者不能为空！");
@@ -190,6 +193,10 @@
             alert("项目结束时间不能为空！");
             return;
         }
+        if ($("#txtCharge").val() == "") {
+            alert("金额不能为空！");
+            return;
+        }
         ShowLoading();
         $.post("/Project/Create",
             {
@@ -200,6 +207,7 @@
                 Begin: $("#txtPlanBegin").val(),
                 End: $("#txtPlanEnd").val(),
                 Priority: $("#lstPriority").val(),
+                Charge: $("#txtCharge").val(),
                 sid: "@ViewBag.SID"
             }, function (id) {
                 HideLoading();

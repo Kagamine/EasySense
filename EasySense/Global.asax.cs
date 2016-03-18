@@ -11,7 +11,10 @@ namespace EasySense
     {
         protected void Application_Start()
         {
-            System.Data.Entity.Database.SetInitializer<Models.EasySenseContext>(null);
+            // System.Data.Entity.Database.SetInitializer<Models.EasySenseContext>(null);
+
+            Startup.Config = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "/config.json"));
+
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }

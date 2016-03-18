@@ -63,10 +63,10 @@ namespace EasySense.Models
                 Product = Project.Product == null ? "未指定" : Project.Product.Title,
                 Enterprise = Project.Enterprise == null ? "未指定" : Project.Enterprise.Title,
                 Customer = Project.Customer == null ? "未指定" : Project.Customer.Name,
-                Brand = Project.Enterprise == null ? "未知" : Project.Enterprise.Brand,
+                Brand = Project.Brand,
                 Status = status,
-                InvoiceTime = Project.InvoiceTime == null?"未开票" : Project.InvoiceTime.Value.ToString("yyyy-MM-dd"),
-                ChargeTime = Project.ChargeTime==null?"未付款" : Project.ChargeTime.Value.ToString("yyyy-MM-dd")
+                InvoiceTime = Project.InvoiceTime == null ? "未开票" : Project.InvoiceTime.Value.ToString("yyyy-MM-dd"),
+                ChargeTime = Project.ChargeTime == null ? "未付款" : Project.ChargeTime.Value.ToString("yyyy-MM-dd")
             };
         }
     }
