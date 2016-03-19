@@ -460,11 +460,8 @@
     <Fakes Include="Fakes\EntityFramework.SqlServer.fakes" />
     <Fakes Include="Fakes\HtmlAgilityPack.fakes" />
     <Content Include="config.json" />
-    <None Include="Properties\PublishProfiles\aaa.pubxml" />
-    <None Include="Properties\PublishProfiles\esdemo - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\esdemo - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\esdemo.pubxml" />
     <Content Include="Views\System\Field.cshtml" />
+    <None Include="Properties\PublishProfiles\Aliyun.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -487,7 +484,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1077</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

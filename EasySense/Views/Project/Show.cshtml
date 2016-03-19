@@ -55,29 +55,13 @@
     <a href="/Project/Log/@Model.ID">操作记录</a>
     @Url.LinkWithSID("删除项目", "Delete", "Project", new { id = Model.ID })
     <a href="javascript:EditProject();">编辑项目</a>
-    @if (ViewBag.CurrentUser.Role != UserRole.Root)
+    @if (ViewBag.CurrentUser.Role == UserRole.Root)
     {
         <a href="#" data-toggle="ProjectsHandOut">修改项目所有人</a>
-        <div id="ProjectsExport" class="es-menu-extend">
-            @using (Html.BeginForm("Export", "Project", FormMethod.Post))
-            {
-                @Html.AntiForgerySID()
-                <h3>导出项目</h3>
-                <p>
-                    签订时间：
-                    <input id="txtExportBegin" name="begin" type="text" class="textbox nullable" value="" /> 到
-                    <input id="txtExportEnd" name="end" type="text" class="textbox nullable" value="" />
-                </p>
-                <p>
-                    <button class="button button-def" name="type" value="Excel">导出Excel</button>
-                    <button class="button button-def" name="type" value="PDF">导出PDF</button>
-                </p>
-            }
-            @if (ViewBag.CurrentUser.Role >= UserRole.Root)
-            {
-                using (Html.BeginForm("Handout", "Project", FormMethod.Post))
+        <div id="ProjectsHandOut" class="es-menu-extend">
+            @using (Html.BeginForm("Handout", "Project", FormMethod.Post))
                 {
-                    <h3>转移项目所有人</h3>
+                <h3>转移项目所有人</h3>
                     <input type="hidden" value="@Model.ID" name="id" />
                     <p>
                         用户名：
@@ -86,7 +70,6 @@
                     <p>
                         <input type="submit" class="button button-def" value="提交" />
                     </p>
-                }
             }
             <p><a href="javascript:CloseToggle();">关闭</a></p>
         </div>
