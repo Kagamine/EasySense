@@ -461,6 +461,7 @@
     <Fakes Include="Fakes\HtmlAgilityPack.fakes" />
     <Content Include="config.json" />
     <None Include="Properties\PublishProfiles\aaa.pubxml" />
+    <None Include="Properties\PublishProfiles\es.pubxml" />
     <None Include="Properties\PublishProfiles\esdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\esdemo - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\esdemo.pubxml" />
