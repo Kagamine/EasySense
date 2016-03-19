@@ -161,7 +161,7 @@
 		validateOnBlur:true,
 		allowBlank:false,
 		yearStart:1950,
-		yearEnd:2050,
+		yearEnd:2099,
 		style:'',
 		id:'',
 		roundTime:'round', // ceil, floor
@@ -524,11 +524,11 @@
 									$(this).val(null);
 									datetimepicker.data('xdsoft_datetime').empty();
 								}else if( !Date.parseDate( $(this).val(), options.format ) ) {
-									$(this).val((_xdsoft_datetime.now()).dateFormat( options.format ));
-									datetimepicker.data('xdsoft_datetime').setCurrentTime($(this).val());
+									//$(this).val((_xdsoft_datetime.now()).dateFormat( options.format ));
+									//datetimepicker.data('xdsoft_datetime').setCurrentTime($(this).val());
 								}
 								else{
-									datetimepicker.data('xdsoft_datetime').setCurrentTime($(this).val());
+									//datetimepicker.data('xdsoft_datetime').setCurrentTime($(this).val());
  								}
 								datetimepicker.trigger('changedatetime.xdsoft');
 							});
@@ -1004,8 +1004,8 @@
 					})
 					.on('close.xdsoft', function( event ) {
 						var onClose = true;
-						if( options.onClose&&options.onClose.call ) {
-							onClose=options.onClose.call(datetimepicker,_xdsoft_datetime.currentTime,datetimepicker.data('input'));
+						if (options.onClose && options.onClose.call) {
+							//onClose=options.onClose.call(null,null,null);
 						}
 						if( onClose!==false&&!options.opened&&!options.inline ) {
 							datetimepicker.hide();
