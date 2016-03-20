@@ -28,8 +28,8 @@ namespace EasySense.Controllers
             ViewBag.Users = DB.Users.ToList();
             ViewBag.Enterprises = DB.Enterprises.ToList();
             ViewBag.Customers = DB.Customers.ToList();
-            //ViewBag.Brands = (from e in DB.Enterprises
-            //                  select e.Brand).Distinct().ToList();
+            ViewBag.Brands = (from e in DB.Projects
+                            select e.Brand).Distinct().ToList();
             ViewBag.Products = DB.Products.ToList();
             //
             /*
