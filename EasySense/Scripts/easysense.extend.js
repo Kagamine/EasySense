@@ -175,8 +175,7 @@ function LoadProjects(targetPageNo) {
         InvoiceBegin: $("#txtInvoiceBegin").val(),
         InvoiceEnd: $("#txtInvoiceEnd").val(),
         EnterpriseID: $("#lstEnterpriseID").val(),
-        Gte: $('#txtGte').val(),
-        Lte: $('#txtLte').val()
+        Charge: $('#txtSearchCharge').val()
     }, function (searchResult) {
         var data = searchResult.Data;
         var pager = searchResult.Pager;

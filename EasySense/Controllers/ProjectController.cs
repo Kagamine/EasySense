@@ -255,7 +255,7 @@ namespace EasySense.Controllers
         }
 
         [HttpGet]
-        public ActionResult Search(string ProjectID, int Page, string Title, ProjectStatus? Status, DateTime? Begin, DateTime? End, string OrderBy, string Order, DateTime? InvoiceBegin, DateTime? InvoiceEnd, int? EnterpriseID, int? gte, int? lte)
+        public ActionResult Search(string ProjectID, int Page, string Title, ProjectStatus? Status, DateTime? Begin, DateTime? End, string OrderBy, string Order, DateTime? InvoiceBegin, DateTime? InvoiceEnd, int? EnterpriseID, double? Charge)
         {
             Title = StringUtils.Trim(Title);
             IEnumerable<ProjectModel> projects = (from p in DB.Projects
@@ -275,10 +275,8 @@ namespace EasySense.Controllers
                 projects = projects.Where(x => x.InvoiceTime <= InvoiceEnd.Value);
             if (EnterpriseID.HasValue)
                 projects = projects.Where(x => x.EnterpriseID == EnterpriseID.Value);
-            if (gte.HasValue)
-                projects = projects.Where(x => x.Charge >= gte.Value);
-            if (lte.HasValue)
-                projects = projects.Where(x => x.Charge <= lte.Value);
+            if (Charge.HasValue)
+                projects = projects.Where(x => x.Charge == Convert.ToDecimal(Charge.Value));
             if (CurrentUser.Role == UserRole.Employee)
                 projects = projects.Where(x => x.UserID == CurrentUser.ID);
             else if (CurrentUser.Role == UserRole.Master)
