@@ -232,7 +232,7 @@
                         <br />
                     </p>
                 </td>
-                @if (ViewBag.CurrentUser.Role >= UserRole.Finance)
+                @if (ViewBag.CurrentUser.Role >= UserRole.Finance || ViewBag.CurrentUser.ID == Model.UserID)
                 {
                     <td>
                         <h3>财务信息</h3>
