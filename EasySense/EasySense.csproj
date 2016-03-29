@@ -459,7 +459,7 @@
     <Fakes Include="Fakes\AntiXssLibrary.fakes" />
     <Fakes Include="Fakes\EntityFramework.SqlServer.fakes" />
     <Fakes Include="Fakes\HtmlAgilityPack.fakes" />
-    <Content Include="config.json" />
+    <None Include="config.json" />
     <Content Include="Views\System\Field.cshtml" />
     <None Include="Properties\PublishProfiles\Aliyun.pubxml" />
     <None Include="Web.Debug.config">

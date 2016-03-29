@@ -290,7 +290,7 @@ namespace EasySense.Controllers
 
             Startup.Config["PayMethod"] = PayMethod.ToString();
 
-            System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "/config.json", Newtonsoft.Json.JsonConvert.SerializeObject(Startup.Config));
+            System.IO.File.WriteAllText(Server.MapPath("~/config.json"), Newtonsoft.Json.JsonConvert.SerializeObject(Startup.Config));
 
             return RedirectToAction("Field", "System");
         }

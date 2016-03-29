@@ -1,1 +1,27 @@
-{"Title":"False","Begin":"True","End":"True","Hint":"True","SignTime":"True","Charge":"True","InvoicePrice":"True","InvoiceTime":"True","Description":"False","ChargeTime":"True","ActualPayments":"True","InvoiceSN":"True","Status":"True","EnterpriseName":"True","CustomerName":"True","Tel":"True","Phone":"True","Email":"True","Brand":"True","Priority":"True","Ordering":"True","CategoryID":"True","ProductID":"True","ZoneID":"True","PayMethod":"True"}
+{
+  "Title": "False",
+  "Begin": "True",
+  "End": "True",
+  "Hint": "True",
+  "SignTime": "True",
+  "Charge": "True",
+  "InvoicePrice": "True",
+  "InvoiceTime": "True",
+  "Description": "False",
+  "ChargeTime": "True",
+  "ActualPayments": "True",
+  "InvoiceSN": "True",
+  "Status": "True",
+  "EnterpriseName": "True",
+  "CustomerName": "True",
+  "Tel": "True",
+  "Phone": "True",
+  "Email": "True",
+  "Brand": "True",
+  "Priority": "True",
+  "Ordering": "True",
+  "CategoryID": "True",
+  "ProductID": "True",
+  "ZoneID": "True",
+  "PayMethod": "True"
+}
