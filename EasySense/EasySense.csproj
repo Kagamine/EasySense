@@ -462,6 +462,7 @@
     <None Include="config.json" />
     <Content Include="Views\System\Field.cshtml" />
     <None Include="Properties\PublishProfiles\Aliyun.pubxml" />
+    <None Include="Properties\PublishProfiles\Publish.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

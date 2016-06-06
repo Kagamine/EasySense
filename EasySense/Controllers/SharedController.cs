@@ -84,8 +84,14 @@ namespace EasySense.Controllers
             var customers = new List<CustomerModel>();
             var files = new List<FileModel>();
 
+            decimal price = -1;
+            try
+            {
+                price = Convert.ToDecimal(Text);
+            }
+            catch { }
             users = (from u in DB.Users where  u.Username.Contains(Text) || u.ID.ToString().Equals(Text) select u).ToList();
-            projects = (from p in DB.Projects where p.Title.Contains(Text) || p.RefNum.Contains(Text) select p).ToList();
+            projects = (from p in DB.Projects where p.Title.Contains(Text) || p.RefNum.Contains(Text) || p.Charge == price select p).ToList();
             enterprises = (from e in DB.Enterprises where e.Title.Contains(Text) || e.ID.ToString().Equals(Text) select e).ToList();
             customers = (from c in DB.Customers where c.Name.Contains(Text) || c.ID.ToString().Equals(Text) select c).ToList();
             files = (from f in DB.Files where f.Filename.Contains(Text) select f).ToList();
